@@ -189,7 +189,7 @@ Error_t eviFindDevice(char * portName, size_t * portNameSize, bool verbose)
     return found ? ERROR_EVI_OK : ERROR_EVI_INSTRUMENT_NOT_FOUND;
 }
 
-HANDLE eviPortOpen(char * portName, uint32_t baudrate)
+HANDLE eviPortOpen(char * portName)
 {
 	HANDLE hComm;
 	{
@@ -243,7 +243,7 @@ HANDLE eviPortOpen(char * portName, uint32_t baudrate)
 	// Set the baud rate and other options.
 	DCB state = {0};
 	state.DCBlength = sizeof(DCB);
-	state.BaudRate = baudrate;
+    state.BaudRate = CBR_115200;
 	state.ByteSize = 8;
 	state.Parity = NOPARITY;
 	state.StopBits = ONESTOPBIT;

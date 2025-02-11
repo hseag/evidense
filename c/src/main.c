@@ -12,20 +12,21 @@
 #include "cmdsave.h"
 #include "cmddata.h"
 #include "cmdexport.h"
+#include "cmdempty.h"
 #include "printerror.h"
 #include <stdio.h>
 #include <string.h>
 
-#define VERSION_TOOL "0.2.0"
+#define VERSION_TOOL "0.2.1"
 
 void help(int argcCmd, char **argvCmd)
 {
 	if(argvCmd == NULL)
 	{
-            fprintf_s(stdout, "Usage: evifluor [OPTIONS] COMMAND [ARGUMENTS]\n");
+            fprintf_s(stdout, "Usage: evidense [OPTIONS] COMMAND [ARGUMENTS]\n");
             fprintf_s(stdout, "Commands:\n");
-            fprintf_s(stdout, "  baseline            : starts a baseline measurement and return the values\\n");
-            fprintf_s(stdout, "  command COMMAND     : executes a command e.g evifluor.exe command \"V 0\" returns the value at index 0\n");
+            fprintf_s(stdout, "  baseline            : starts a baseline measurement and returns the values\n");
+            fprintf_s(stdout, "  command COMMAND     : executes a command e.g evidense.exe command \"V 0\" returns the value at index 0\n");
             fprintf_s(stdout, "  data                : handels data in a data file\n");
             fprintf_s(stdout, "  fwupdate FILE       : loads a new firmware\n");
             fprintf_s(stdout, "  get INDEX           : get a value from the device\n");
@@ -36,7 +37,8 @@ void help(int argcCmd, char **argvCmd)
             fprintf_s(stdout, "  export              : export json as csv file\n");
             fprintf_s(stdout, "  selftest            : executes an internal selftest\n");
             fprintf_s(stdout, "  set INDEX VALUE     : set a value in the device\n");
-            fprintf_s(stdout, "  version             : return the version\n");
+            fprintf_s(stdout, "  version             : returns the version\n");
+            fprintf_s(stdout, "  empty               : checks if the cuvette guide is empty\n");
             fprintf_s(stdout, "Options:\n");
             fprintf_s(stdout, "  --verbose           : prints debug info\n");
             fprintf_s(stdout, "  --help -h           : show this help and exit\n");
@@ -67,7 +69,7 @@ void help(int argcCmd, char **argvCmd)
 		{
 			if(strcmp(argvCmd[1], "get") == 0)
 			{
-                fprintf_s(stdout, "Usage: evifluor get INDEX\n");
+                fprintf_s(stdout, "Usage: evidense get INDEX\n");
                 fprintf_s(stdout, "  Get a value from the device\n");
                 fprintf_s(stdout, "INDEX:\n");
                 fprintf_s(stdout, "   0: Firmware version\n");
@@ -91,7 +93,7 @@ void help(int argcCmd, char **argvCmd)
 			}
 			else if(strcmp(argvCmd[1], "set") == 0)
 			{
-                fprintf_s(stdout, "Usage: evifluor set INDEX VALUE\n");
+                fprintf_s(stdout, "Usage: evidense set INDEX VALUE\n");
                 fprintf_s(stdout, "  Set a value in the device\n");
                 fprintf_s(stdout, "WARNING:\n");
                 fprintf_s(stdout, "  Changing a value can damage the device or lead to incorrect results!\n");
@@ -115,7 +117,7 @@ void help(int argcCmd, char **argvCmd)
 			}
 			else if(strcmp(argvCmd[1], "save") == 0)
 			{
-                fprintf_s(stdout, "Usage: evifluor save [OPTIONS] [FILE] [COMMENT]\n");
+                fprintf_s(stdout, "Usage: evidense save [OPTIONS] [FILE] [COMMENT]\n");
                 fprintf_s(stdout, "  Saves the levelling data and the last measurements in the given file FILE as a JSON file.\n");
                 fprintf_s(stdout, "  The optional string COMMENT is added as a comment to the measurement in the JSON file.\n");
                 fprintf_s(stdout, "Options: \n");
@@ -126,7 +128,7 @@ void help(int argcCmd, char **argvCmd)
 			}
             else if(strcmp(argvCmd[1], "export") == 0)
             {
-                fprintf_s(stdout, "Usage: evifluor export [OPTIONS] [JSON FILE] [CSV FILE]\n");
+                fprintf_s(stdout, "Usage: evidense export [OPTIONS] [JSON FILE] [CSV FILE]\n");
                 fprintf_s(stdout, "  Exports data from the JSON file in CSV format.\n");
                 fprintf_s(stdout, "Options: \n");
                 fprintf_s(stdout, "  --delimiter-comma     : use commas as separators (Default).\n");
@@ -137,12 +139,12 @@ void help(int argcCmd, char **argvCmd)
             }
 			else if(strcmp(argvCmd[1], "data") == 0)
 			{
-                fprintf_s(stdout, "Usage: evifluor data print FILE\n");
+                fprintf_s(stdout, "Usage: evidense data print FILE\n");
                 fprintf_s(stdout, "  Prints the calculated values from file FILE.\n");
                 fprintf_s(stdout, "Output:\n");
                 fprintf_s(stdout, "  dsDNA ssDNA ssRNS purity_ratio_260/230 purity_ratio_260/280 comment\n");
                 fprintf_s(stdout, "\n");
-                fprintf_s(stdout, "Usage: evifluor data calculate [OPTIONS] FILE\n");
+                fprintf_s(stdout, "Usage: evidense data calculate [OPTIONS] FILE\n");
                 fprintf_s(stdout, "  Calculates the concentration in the given file and adds the values to the file.\n");
                 fprintf_s(stdout, "  To calculate the values at least the first value must be a blank.\n");
                 fprintf_s(stdout, "Options:\n");
@@ -151,9 +153,9 @@ void help(int argcCmd, char **argvCmd)
 			}
 			else if(strcmp(argvCmd[1], "measure") == 0)
 			{
-                fprintf_s(stdout, "Usage: evifluor measure\n");
+                fprintf_s(stdout, "Usage: evidense measure\n");
                 fprintf_s(stdout, "  Measures with all LEDs and print the values to stdout.\n");
-                fprintf_s(stdout, "Usage: evifluor measure LAST\n");
+                fprintf_s(stdout, "Usage: evidense measure LAST\n");
                 fprintf_s(stdout, "  Retrives the last LAST measurement and print the values to stdout.\n");
                 fprintf_s(stdout, "  The last measurement is at 0, the second last 1.\n");
                 fprintf_s(stdout, "Output: all units in [uV]\n");
@@ -161,7 +163,7 @@ void help(int argcCmd, char **argvCmd)
 			}
 			else if(strcmp(argvCmd[1], "baseline") == 0)
 			{
-                fprintf_s(stdout, "Usage: evifluor baseline\n");
+                fprintf_s(stdout, "Usage: evidense baseline\n");
                 fprintf_s(stdout, "  If a levelling is needed, the command levelling is executed before a measurement is started. For this measurement, the cuvette holder must be empty.\n");
                 fprintf_s(stdout, "  The firmware has an internal storage for up to ten measurements. The command baseline clears this storage.\n");
                 fprintf_s(stdout, "Output: all units in [uV]\n");
@@ -169,25 +171,31 @@ void help(int argcCmd, char **argvCmd)
 			}
 			else if(strcmp(argvCmd[1], "version") == 0)
 			{
-                fprintf_s(stdout, "Usage: evifluor version\n");
+                fprintf_s(stdout, "Usage: evidense version\n");
                 fprintf_s(stdout, "  Prints the version of this tool to stdout.\n");
 			}
 			else if(strcmp(argvCmd[1], "selftest") == 0)
 			{
-                fprintf_s(stdout, "Usage: evifluor selftest\n");
+                fprintf_s(stdout, "Usage: evidense selftest\n");
                 fprintf_s(stdout, "  Executes a selftest and prints the result.\n");
                 fprintf_s(stdout, "  If the result is not ok, the must common case is that the cuvette guide is blocking the optical path\n");
                 fprintf_s(stdout, "  or a cuvette is stuck in the cuvette guide.\n");
 			}
 			else if(strcmp(argvCmd[1], "fwupdate") == 0)
 			{
-                fprintf_s(stdout, "Usage: evifluor fwupdate SREC_FILE\n");
+                fprintf_s(stdout, "Usage: evidense fwupdate SREC_FILE\n");
                 fprintf_s(stdout, "  Updates the firmware.\n");
 			}
+            else if(strcmp(argvCmd[1], "empty") == 0)
+            {
+                fprintf_s(stdout, "Usage: evidense empty\n");
+                fprintf_s(stdout, "  Checks if the cuvette guide is empty.\n");
+                fprintf_s(stdout, "  Returns 'Empty' if the cuvette guide is empty or if not empty 'Not empty'\n");
+            }
 			else if(strcmp(argvCmd[1], "command") == 0)
             {
-                fprintf_s(stdout, "Usage: evifluor command COMMAND\n");
-                fprintf_s(stdout, "  Executes any evifluor command. Usefull for testing.\n");
+                fprintf_s(stdout, "Usage: evidense command COMMAND\n");
+                fprintf_s(stdout, "  Executes any evidense command. Usefull for testing.\n");
 			}
             else
 			{
@@ -293,6 +301,10 @@ int main(int argc, char *argv[])
         {
             return cmdExport(&eviDense, argcCmd, argvCmd);
         }
+        else if (strcmp(argvCmd[0], "empty") == 0)
+        {
+            return cmdEmpty(&eviDense);
+        }
         else if (strcmp(argvCmd[0], "help") == 0)
 		{
 			help(argcCmd, argvCmd);
@@ -300,7 +312,7 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
-            return printError(ERROR_EVI_UNKOWN_COMMAND_LINE_ARGUMENT, "'%s' is not a colibri command. See 'colibri --help'.", argvCmd[0]);
+            return printError(ERROR_EVI_UNKOWN_COMMAND_LINE_ARGUMENT, "'%s' is not a evidense command. See 'evidense --help'.", argvCmd[0]);
 		}
 	}
 	else

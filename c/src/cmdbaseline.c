@@ -9,19 +9,12 @@
 
 Error_t cmdBaseline(Evi_t * self)
 {
-    uint32_t sample230 = 0;
-    uint32_t reference230 = 0;
-    uint32_t sample260 = 0;
-    uint32_t reference260 = 0;
-    uint32_t sample280 = 0;
-    uint32_t reference280 = 0;
-    uint32_t sample340 = 0;
-    uint32_t reference340 = 0;
+    SingleMeasurement_t measuremnt = {0};
 
-    Error_t ret = eviDenseBaseline(self, &sample230, &reference230, &sample260, &reference260, &sample280, &reference280, &sample340, &reference340);
+    Error_t ret = eviDenseBaseline(self, &measuremnt);
     if (ret == ERROR_EVI_OK)
     {
-        fprintf(stdout, "%i %i %i %i %i %i %i %i\n", sample230, reference230, sample260, reference260, sample280, reference280, sample340, reference340);
+        fprintf(stdout, "%i %i %i %i %i %i %i %i\n", measuremnt.channel230.sample, measuremnt.channel230.reference, measuremnt.channel260.sample, measuremnt.channel260.reference, measuremnt.channel280.sample, measuremnt.channel280.reference, measuremnt.channel340.sample, measuremnt.channel340.reference);
     }
     else
     {

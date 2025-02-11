@@ -7,7 +7,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <winbase.h>
 
 #define VERSION_DLL "0.2.0"
 
@@ -150,7 +149,7 @@ Error_t eviCommand(Evi_t *self, const char * command, EvieResponse_t *response)
 
     if (ret == ERROR_EVI_OK)
 	{
-        HANDLE hComm = eviPortOpen(portNameBuffer, CBR_115200);
+        HANDLE hComm = eviPortOpen(portNameBuffer);
         ret = eviCommandComm(self, hComm, command, response);
         eviPortClose(hComm);
 	}
@@ -328,7 +327,7 @@ Error_t eviFwUpdate(Evi_t * self, const char * file)
 		}
 
         EvieResponse_t *response = eviCreateResponse();
-        HANDLE hComm = eviPortOpen(self->portName, CBR_115200);
+        HANDLE hComm = eviPortOpen(self->portName);
         ret = eviCommandComm(self, hComm, "F", response);
 		do
 		{

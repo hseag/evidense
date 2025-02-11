@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: © 2024 HSE AG, <opensource@hseag.com>
 
 #include "measurement.h"
+#include "evibase.h"
 #include <string.h>
 #include <math.h>
 
@@ -40,10 +41,10 @@ Quadruple_t measurement_calculateAbsorbance(const SingleMeasurement_t * baseline
         correctionFactor = &correctionFactorOne;
     }
 
-    ods.value230 = log10(baseline->channel230.sample / baseline->channel230.reference * measurement->channel230.reference / measurement->channel230.sample * correctionFactor->value230);
-    ods.value260 = log10(baseline->channel260.sample / baseline->channel260.reference * measurement->channel260.reference / measurement->channel260.sample * correctionFactor->value260);
-    ods.value280 = log10(baseline->channel280.sample / baseline->channel280.reference * measurement->channel280.reference / measurement->channel280.sample * correctionFactor->value280);
-    ods.value340 = log10(baseline->channel340.sample / baseline->channel340.reference * measurement->channel340.reference / measurement->channel340.sample * correctionFactor->value340);
+    ods.value230 = log10((double)baseline->channel230.sample / (double)baseline->channel230.reference * (double)measurement->channel230.reference / (double)measurement->channel230.sample * correctionFactor->value230);
+    ods.value260 = log10((double)baseline->channel260.sample / (double)baseline->channel260.reference * (double)measurement->channel260.reference / (double)measurement->channel260.sample * correctionFactor->value260);
+    ods.value280 = log10((double)baseline->channel280.sample / (double)baseline->channel280.reference * (double)measurement->channel280.reference / (double)measurement->channel280.sample * correctionFactor->value280);
+    ods.value340 = log10((double)baseline->channel340.sample / (double)baseline->channel340.reference * (double)measurement->channel340.reference / (double)measurement->channel340.sample * correctionFactor->value340);
 
     return ods;
 }

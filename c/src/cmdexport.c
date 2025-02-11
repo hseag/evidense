@@ -205,7 +205,6 @@ static Error_t export(Options_t * options)
 Error_t cmdExport(Evi_t* self, int argcCmd, char** argvCmd)
 {
     Error_t ret  = ERROR_EVI_OK;
-    cJSON*  json = NULL;
     Options_t options = { 0 };
 
     options.delimiter = ',';

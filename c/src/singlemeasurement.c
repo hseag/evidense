@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: © 2024 HSE AG, <opensource@hseag.com>
 
 #include "singlemeasurement.h"
+#include "evibase.h"
 
 SingleMeasurement_t singleMeasurement_init(Channel_t channel230, Channel_t channel260, Channel_t channel280, Channel_t channel340)
 {

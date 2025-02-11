@@ -3,20 +3,35 @@
 
 #include "evidense.h"
 #include <stdio.h>
+#include <stdlib.h>
+
+typedef struct
+{
+    SingleMeasurement_t * measurement;
+} UserMeasurement;
+
+
+typedef struct
+{
+    Levelling_t * levelling230;
+    Levelling_t * levelling260;
+    Levelling_t * levelling280;
+    Levelling_t * levelling340;
+} UserLevelling;
 
 Error_t eviDenseMeasure_(EvieResponse_t *response, void *user)
 {
     UserMeasurement *u = (UserMeasurement *)user;
     if (response->argc == 9)
     {
-        *(u->sample230)    = atoi(response->argv[1]);
-        *(u->reference230) = atoi(response->argv[2]);
-        *(u->sample260)    = atoi(response->argv[3]);
-        *(u->reference260) = atoi(response->argv[4]);
-        *(u->sample280)    = atoi(response->argv[5]);
-        *(u->reference280) = atoi(response->argv[6]);
-        *(u->sample340)    = atoi(response->argv[7]);
-        *(u->reference340) = atoi(response->argv[8]);
+        u->measurement->channel230.sample    = atoi(response->argv[1]);
+        u->measurement->channel230.reference = atoi(response->argv[2]);
+        u->measurement->channel260.sample    = atoi(response->argv[3]);
+        u->measurement->channel260.reference = atoi(response->argv[4]);
+        u->measurement->channel280.sample    = atoi(response->argv[5]);
+        u->measurement->channel280.reference = atoi(response->argv[6]);
+        u->measurement->channel340.sample    = atoi(response->argv[7]);
+        u->measurement->channel340.reference = atoi(response->argv[8]);
         return ERROR_EVI_OK;
     }
     else
@@ -25,15 +40,15 @@ Error_t eviDenseMeasure_(EvieResponse_t *response, void *user)
     }
 }
 
-Error_t eviDenseMeasure(Evi_t * self, uint32_t * sample230, uint32_t * reference230, uint32_t * sample260, uint32_t * reference260, uint32_t * sample280, uint32_t * reference280, uint32_t * sample340, uint32_t * reference340)
+Error_t eviDenseMeasure(Evi_t * self, SingleMeasurement_t * measurement)
 {
-    UserMeasurement user = {sample230 = sample230, reference230 = reference230, sample260 = sample260, reference260 = reference260, sample280 = sample280, reference280 = reference280, sample340 = sample340, reference340 = reference340};
+    UserMeasurement user = {.measurement = measurement};
     return eviExecute(self, "M", eviDenseMeasure_, &user);
 }
 
-Error_t eviDenseLastMeasurements(Evi_t * self, uint32_t last, uint32_t * sample230, uint32_t * reference230, uint32_t * sample260, uint32_t * reference260, uint32_t * sample280, uint32_t * reference280, uint32_t * sample340, uint32_t * reference340)
+Error_t eviDenseLastMeasurements(Evi_t * self, uint32_t last, SingleMeasurement_t * measurement)
 {
-    UserMeasurement user = {sample230 = sample230, reference230 = reference230, sample260 = sample260, reference260 = reference260, sample280 = sample280, reference280 = reference280, sample340 = sample340, reference340 = reference340};
+    UserMeasurement user = {.measurement = measurement};
     char cmd[EVI_MAX_LINE_LENGTH];
     sprintf_s(cmd, sizeof(cmd), "M %i", last);
     return eviExecute(self, cmd, eviDenseMeasure_, &user);
@@ -89,14 +104,14 @@ Error_t eviDenseBaseline_(EvieResponse_t *response, void *user)
     UserMeasurement *u = (UserMeasurement *)user;
     if (response->argc == 9)
     {
-        *(u->sample230)    = atoi(response->argv[1]);
-        *(u->reference230) = atoi(response->argv[2]);
-        *(u->sample260)    = atoi(response->argv[3]);
-        *(u->reference260) = atoi(response->argv[4]);
-        *(u->sample280)    = atoi(response->argv[5]);
-        *(u->reference280) = atoi(response->argv[6]);
-        *(u->sample340)    = atoi(response->argv[7]);
-        *(u->reference340) = atoi(response->argv[8]);
+        u->measurement->channel230.sample    = atoi(response->argv[1]);
+        u->measurement->channel230.reference = atoi(response->argv[2]);
+        u->measurement->channel260.sample    = atoi(response->argv[3]);
+        u->measurement->channel260.reference = atoi(response->argv[4]);
+        u->measurement->channel280.sample    = atoi(response->argv[5]);
+        u->measurement->channel280.reference = atoi(response->argv[6]);
+        u->measurement->channel340.sample    = atoi(response->argv[7]);
+        u->measurement->channel340.reference = atoi(response->argv[8]);
         return ERROR_EVI_OK;
     }
     else
@@ -105,8 +120,33 @@ Error_t eviDenseBaseline_(EvieResponse_t *response, void *user)
     }
 }
 
-Error_t eviDenseBaseline(Evi_t * self, uint32_t * sample230, uint32_t * reference230, uint32_t * sample260, uint32_t * reference260, uint32_t * sample280, uint32_t * reference280, uint32_t * sample340, uint32_t * reference340)
+Error_t eviDenseBaseline(Evi_t * self, SingleMeasurement_t * measurement)
 {
-    UserMeasurement user = {sample230 = sample230, reference230 = reference230, sample260 = sample260, reference260 = reference260, sample280 = sample280, reference280 = reference280, sample340 = sample340, reference340 = reference340};
+    UserMeasurement user = {.measurement = measurement};
     return eviExecute(self, "G", eviDenseBaseline_, &user);
+}
+
+typedef struct
+{
+    bool * empty;
+} UserEmpty;
+
+Error_t eviDenseIsCuvetteHolderEmpty_(EvieResponse_t *response, void *user)
+{
+    UserEmpty *u = (UserEmpty *)user;
+    if (response->argc >= 2)
+    {
+        (*u->empty) = atoi(response->argv[1]);
+        return ERROR_EVI_OK;
+    }
+    else
+    {
+        return ERROR_EVI_PROTOCOL_ERROR;
+    }
+}
+
+Error_t eviDenseIsCuvetteHolderEmpty(Evi_t * self, bool * empty)
+{
+    UserEmpty user = {empty = empty};
+    return eviExecute(self, "X", eviDenseIsCuvetteHolderEmpty_, &user);
 }

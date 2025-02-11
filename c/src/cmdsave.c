@@ -4,12 +4,15 @@
 #include "cmdsave.h"
 #include "json.h"
 #include "evidense.h"
+#include "commonindex.h"
+#include "evidenseindex.h"
 #include "printerror.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
+
 
 typedef struct
 {
@@ -84,11 +87,11 @@ static char* result2text(uint32_t value)
     }
 }
 
-static cJSON* channelObject(uint32_t sample, uint32_t reference)
+static cJSON* channelToJson(const Channel_t * channel)
 {
     cJSON* obj        = cJSON_CreateObject();
-    cJSON* oSample    = cJSON_CreateNumber(sample);
-    cJSON* oReference = cJSON_CreateNumber(reference);
+    cJSON* oSample    = cJSON_CreateNumber(channel->sample);
+    cJSON* oReference = cJSON_CreateNumber(channel->reference);
 
     cJSON_AddItemToObject(obj, DICT_SAMPLE, oSample);
     cJSON_AddItemToObject(obj, DICT_REFERENCE, oReference);
@@ -96,14 +99,14 @@ static cJSON* channelObject(uint32_t sample, uint32_t reference)
     return obj;
 }
 
-static cJSON* measuremtObject(uint32_t sample230, uint32_t reference230, uint32_t sample260, uint32_t reference260, uint32_t sample280, uint32_t reference280, uint32_t sample340, uint32_t reference340)
+static cJSON* measurementToJson(const SingleMeasurement_t * measurement)
 {
     cJSON* obj = cJSON_CreateObject();
 
-    cJSON_AddItemToObject(obj, DICT_230, channelObject(sample230, reference230));
-    cJSON_AddItemToObject(obj, DICT_260, channelObject(sample260, reference260));
-    cJSON_AddItemToObject(obj, DICT_280, channelObject(sample280, reference280));
-    cJSON_AddItemToObject(obj, DICT_340, channelObject(sample340, reference340));
+    cJSON_AddItemToObject(obj, DICT_230, channelToJson(&measurement->channel230));
+    cJSON_AddItemToObject(obj, DICT_260, channelToJson(&measurement->channel260));
+    cJSON_AddItemToObject(obj, DICT_280, channelToJson(&measurement->channel280));
+    cJSON_AddItemToObject(obj, DICT_340, channelToJson(&measurement->channel340));
 
     return obj;
 }
@@ -111,25 +114,19 @@ static cJSON* measuremtObject(uint32_t sample230, uint32_t reference230, uint32_
 static Error_t addSingleMeasurement(Evi_t* self, char* key, int index, cJSON* obj)
 {
     Error_t  ret = ERROR_EVI_OK;
-    uint32_t sample230;
-    uint32_t reference230;
-    uint32_t sample260;
-    uint32_t reference260;
-    uint32_t sample280;
-    uint32_t reference280;
-    uint32_t sample340;
-    uint32_t reference340;
 
-    ret = eviDenseLastMeasurements(self, index, &sample230, &reference230, &sample260, &reference260, &sample280, &reference280, &sample340, &reference340);
+    SingleMeasurement_t measuremnt = {0};
+
+    ret = eviDenseLastMeasurements(self, index, &measuremnt);
     if (ret == ERROR_EVI_OK)
     {
         if(key == NULL)
         {
-            cJSON_AddItemToArray(obj, measuremtObject(sample230, reference230, sample260, reference260, sample280, reference280, sample340, reference340));
+            cJSON_AddItemToArray(obj, measurementToJson(&measuremnt));
         }
         else
         {
-            cJSON_AddItemToObject(obj, key, measuremtObject(sample230, reference230, sample260, reference260, sample280, reference280, sample340, reference340));
+            cJSON_AddItemToObject(obj, key, measurementToJson(&measuremnt));
         }
         return ret;
     }

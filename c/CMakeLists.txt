@@ -65,7 +65,7 @@ if (UNIX)
     target_link_libraries(libevidense usb-1.0)
 endif()
 
-set_target_properties(libevidense PROPERTIES PUBLIC_HEADER "src/evidense.h;${FW}/evidenseerror.h;${FW}/evidenseindex.h;${FW_COMMON}/commonerror.h;${FW_COMMON}/commonindex.h;${COMMOM_LIB}/evibase.h")
+set_target_properties(libevidense PROPERTIES PUBLIC_HEADER "src/channel.h;src/measurement.h;src/singlemeasurement.h;src/quadruple.h;src/evidense.h;${FW}/evidenseerror.h;${FW}/evidenseindex.h;${FW_COMMON}/commonerror.h;${FW_COMMON}/commonindex.h;${COMMOM_LIB}/evibase.h")
 
 add_executable(evidense)
 target_sources(evidense PRIVATE src/main.c
@@ -74,6 +74,7 @@ src/cmdbaseline.c
 src/cmddata.c
 src/cmdsave.c
 src/cmdexport.c
+src/cmdempty.c
 src/json.c
 src/cmdselftest.c
 src/eviconfig.h

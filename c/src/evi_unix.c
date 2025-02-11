@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: © 2024 HSE AG, <opensource@hseag.com>
 
-#include "sparkle.h"
+#include "evibase.h"
+#include "eviconfig.h"
 #include "crc-16-ccitt.h"
 #include <stdio.h>
 #include <string.h>
@@ -12,48 +13,150 @@
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-Error_t sparkleFindDevice(char *portName, size_t *portNameSize, bool verbose)
+int findTtyXXX(const char * name, char * devicePath, int devicePathLength)
 {
-    struct dirent **namelist;
-    int n;
-    char *id = "usb-HSE_Sparkle_";
-    char * path = "/dev/serial/by-id/";
-    bool found = false;
+    int ret = -1;
+    DIR *dir;
+    struct dirent *entry;
 
-    memset(portName, 0, *portNameSize);
+    if (!(dir = opendir(name)))
+        return -1;
 
-    n = scandir(path, &namelist, NULL, NULL);
-    if (n < 0)
+    while ((entry = readdir(dir)) != NULL && ret != 0)
     {
-        return ERROR_SPARKLE_NOT_FOUND;
+        if (entry->d_type == DT_DIR || entry->d_type == DT_LNK)
+        {
+            char path[1024] = {0};
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+                continue;
+            snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
+            strncpy(devicePath, entry->d_name, devicePathLength);
+            ret = 0;
+        }
+    }
+    closedir(dir);
+    return ret;
+}
+
+int findTty(const char * name, int maxDepth, int currentDepth, char * devicePath, int devicePathLength)
+{
+    int ret = -1;
+    DIR *dir;
+    struct dirent *entry;
+
+    if(currentDepth >= maxDepth)
+        return -1;
+
+    if (!(dir = opendir(name)))
+        return -1;
+
+    while ((entry = readdir(dir)) != NULL && ret != 0)
+    {
+        if (entry->d_type == DT_DIR || entry->d_type == DT_LNK)
+        {
+            char path[1024] = {0};
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+                continue;
+            snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
+
+            if(strcmp(entry->d_name, "tty") == 0)
+            {
+                ret = findTtyXXX(path, devicePath, devicePathLength);
+                break;
+            }
+
+            ret = findTty(path, maxDepth, currentDepth + 1, devicePath, devicePathLength);
+        }
+    }
+    closedir(dir);
+    return ret;
+}
+
+int getDeviceVidPid(const char *dev_path, uint16_t *vid, uint16_t *pid)
+{
+    char path[256];
+    snprintf(path, sizeof(path), "%s/idVendor", dev_path);
+
+    FILE *f_vid = fopen(path, "r");
+    if (!f_vid) {
+        return -1;
+    }
+    fscanf(f_vid, "%4hx", vid);  // Read 4 hex digits for VID
+    fclose(f_vid);
+
+    snprintf(path, sizeof(path), "%s/idProduct", dev_path);
+
+    FILE *f_pid = fopen(path, "r");
+    if (!f_pid) {
+        return -1;
+    }
+    fscanf(f_pid, "%4hx", pid);  // Read 4 hex digits for PID
+    fclose(f_pid);
+
+    return 0;
+}
+
+int listDir(const char *name, int maxDepth, int currentDepth, char * devicePath, int devicePathLength)
+{
+    int ret = -1;
+    DIR *dir;
+    struct dirent *entry;
+
+    if(currentDepth >= maxDepth)
+        return -1;
+
+    if (!(dir = opendir(name)))
+        return -1;
+
+    while ((entry = readdir(dir)) != NULL && ret != 0)
+    {
+        if (entry->d_type == DT_DIR || entry->d_type == DT_LNK)
+        {
+            char path[1024] = {0};
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+                continue;
+
+            snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
+
+            uint16_t devVid;
+            uint16_t devPid;
+            if(getDeviceVidPid(path, &devVid, &devPid) == 0)
+            {
+                if(devVid == EVI_COMMON_VID && devPid == EVI_COMMON_PID)
+                {
+                    ret = findTty(name, 4, 0, devicePath, devicePathLength);
+                    if(ret == 0)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            ret = listDir(path, maxDepth, currentDepth + 1, devicePath, devicePathLength);
+        }
+    }
+    closedir(dir);
+    return ret;
+}
+
+
+Error_t eviFindDevice(char *portName, size_t *portNameSize, bool verbose)
+{
+    char path[64] = {0};
+    int found = listDir("/sys/bus/usb/devices", 4, 0, path, sizeof(path));
+    
+    if(found == 0)
+    {
+        *portNameSize = snprintf(portName, *portNameSize, "/dev/%s", path);
+        return ERROR_EVI_OK;
     }
     else
     {
-        while (n--)
-        {
-            if(verbose)
-            {
-                printf("%s\n", namelist[n]->d_name);
-            }
-            if (!found)
-            {
-                if (strncmp(namelist[n]->d_name, id, strlen(id)) == 0)
-                {
-                    found = true;
-                    strncat(portName, path, *portNameSize);
-                    strncat(portName, namelist[n]->d_name, *portNameSize);
-                    *portNameSize = strlen(portName);
-                }
-            }
-            free(namelist[n]);
-        }
-        free(namelist);
+        return ERROR_EVI_INSTRUMENT_NOT_FOUND;
     }
-
-    return found ? ERROR_SPARKLE_OK : ERROR_SPARKLE_NOT_FOUND;
 }
 
-int sparklePortOpen(char *portName)
+int eviPortOpen(char *portName)
 {
     int hComm;
     {
@@ -105,7 +208,7 @@ int sparklePortOpen(char *portName)
     return hComm;
 }
 
-void sparklePortClose(int hComm)
+void eviPortClose(int hComm)
 {
     if (hComm != -1)
     {
@@ -113,7 +216,7 @@ void sparklePortClose(int hComm)
     }
 }
 
-bool sparklePortWrite(int hComm, char *buffer, bool verbose)
+bool eviPortWrite(int hComm, char *buffer, bool verbose)
 {
     ssize_t written;
     size_t size = strlen(buffer);
@@ -140,11 +243,11 @@ bool sparklePortWrite(int hComm, char *buffer, bool verbose)
     return true;
 }
 
-uint32_t sparklePortRead(int hComm, char *buffer, size_t size, bool verbose)
+uint32_t eviPortRead(int hComm, char *buffer, size_t size, bool verbose)
 {
     ssize_t received;
     size_t count = 0;
-    char rx[SPARKLE_MAX_LINE_LENGTH];
+    char rx[EVI_MAX_LINE_LENGTH];
     bool waitForStart = true;
     bool done = false;
     bool useChecksum = false;
@@ -152,8 +255,8 @@ uint32_t sparklePortRead(int hComm, char *buffer, size_t size, bool verbose)
 
     do
     {
-        memset(rx, 0, SPARKLE_MAX_LINE_LENGTH);
-        received = read(hComm, rx, SPARKLE_MAX_LINE_LENGTH);
+        memset(rx, 0, EVI_MAX_LINE_LENGTH);
+        received = read(hComm, rx, EVI_MAX_LINE_LENGTH);
         if (received == -1)
         {
             fprintf(stderr, "Could not read from port\n");
@@ -169,10 +272,10 @@ uint32_t sparklePortRead(int hComm, char *buffer, size_t size, bool verbose)
         {
             if (waitForStart)
             {
-                if (rx[i] == SPARKLE_START_NO_CHK || rx[i] == SPARKLE_START_WITH_CHK)
+                if (rx[i] == EVI_START_NO_CHK || rx[i] == EVI_START_WITH_CHK)
                 {
                     waitForStart = false;
-                    if (rx[i] == SPARKLE_START_WITH_CHK)
+                    if (rx[i] == EVI_START_WITH_CHK)
                     {
                         useChecksum = true;
                     }
@@ -180,7 +283,7 @@ uint32_t sparklePortRead(int hComm, char *buffer, size_t size, bool verbose)
             }
             else
             {
-                if (rx[i] == SPARKLE_STOP1 || rx[i] == SPARKLE_STOP2)
+                if (rx[i] == EVI_STOP1 || rx[i] == EVI_STOP2)
                 {
                     done = true;
                     buffer[count] = 0;
@@ -188,7 +291,7 @@ uint32_t sparklePortRead(int hComm, char *buffer, size_t size, bool verbose)
                 else
                 {
                     buffer[count] = rx[i];
-                    if (buffer[count] == SPARKLE_CHECKSUM_SEPARATOR)
+                    if (buffer[count] == EVI_CHECKSUM_SEPARATOR)
                     {
                         checkSumSeparator = count;
                     }
@@ -250,6 +353,22 @@ errno_t strcpy_s(char *restrict dest, rsize_t destsz, const char *restrict src)
 
     // on success
     return 0;
+}
+
+int fprintf_s(FILE *stream, const char *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+
+    return vfprintf(stream, format, args);
+}
+
+int sprintf_s(char *str, size_t snprintf, const char *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+
+    return vsnprintf(str, snprintf, format, args);
 }
 
 void Sleep(uint32_t dwMilliseconds)

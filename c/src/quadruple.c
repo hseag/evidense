@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: © 2024 HSE AG, <opensource@hseag.com>
 
 #include "quadruple.h"
+#include "evibase.h"
 
 Quadruple_t quadruple_initAllTheSame(double value)
 {

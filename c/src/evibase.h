@@ -11,6 +11,7 @@
 #include <windows.h>
 #define DLLEXPORT __declspec(dllexport)
 #else
+#include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
@@ -23,6 +24,8 @@ typedef size_t rsize_t;
 extern errno_t strncat_s(char *restrict dest, rsize_t destsz, const char *restrict src, rsize_t count);
 extern errno_t strncpy_s(char *restrict dest, rsize_t destsz, const char *restrict src, rsize_t count);
 extern errno_t strcpy_s(char *restrict dest, rsize_t destsz, const char *restrict src);
+extern int fprintf_s(FILE *stream, const char *format, ...);
+extern int sprintf_s(char *str, size_t snprintf, const char *format, ...);
 extern void Sleep(uint32_t dwMilliseconds);
 #endif
 
@@ -172,10 +175,9 @@ DLLEXPORT const char *eviVersion();
  * @brief Opens a communication port for the Evi device.
  *
  * @param portName Name of the port to open.
- * @param baudrate The baud rate for communication. The baudrate must be 115200 Baud.
  * @return A handle to the opened communication port.
  */
-HANDLE eviPortOpen(char *portName, uint32_t baudrate);
+HANDLE eviPortOpen(char *portName);
 
 /**
  * @brief Closes an open communication port.

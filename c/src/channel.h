@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #if defined(_WIN64) || defined(_WIN32)
 #include <windows.h>
@@ -22,8 +23,8 @@
  */
 typedef struct
 {
-    double sample;   /**< Sample value in microvolts (uV). */
-    double reference; /**< Reference value in microvolts (uV). */
+    uint32_t sample;   /**< Sample value in microvolts (uV). */
+    uint32_t reference; /**< Reference value in microvolts (uV). */
 } Channel_t;
 
 /**
@@ -33,7 +34,7 @@ typedef struct
  * @param reference Reference value in microvolts (µV).
  * @return An initialized Channel_t structure.
  */
-DLLEXPORT Channel_t channel_init(double sample, double reference);
+DLLEXPORT Channel_t channel_init(uint32_t sample, uint32_t reference);
 
 /**
  * @brief Prints the contents of a Channel_t structure to the specified stream.
