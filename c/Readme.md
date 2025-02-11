@@ -8,7 +8,7 @@
 7. Execute `evidense measure`
 8. Dispense approximately 10.5 &#956;l sample into the cuvette
 9. Execute `evidense measure`
-10. Move the cuvette out off the eviFluor module
+10. Move the cuvette out off the eviDense module
 11. Execute `evidense save data.json`
 12. Aspirate the sample back into the tip
 13. Dispose the cuvette
