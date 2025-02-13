@@ -108,21 +108,41 @@ internal class Program
     void MeasureSample(string comment)
     {
         var baseline = device.Baseline();
-        var air = device.Measure();
-        var sample = device.Measure();
 
-        var measurement = new Measurement(baseline, air, sample);
-
-        if (factors == null)
+        if (device.IsCuvetteHolderEmpty() == true)
         {
-            throw new Exception("Factors can't be null!");
+            var volume = 10.5; //Cuvette volume in ul
+            MoveCuvetteInCuvetteGuide();
+            var air = device.Measure();
+
+            Dispense(volume);
+            var sample = device.Measure();
+
+            Aspirate(volume);
+            MoveCuvetteOutOfCuvetteGuide();
+
+            if (device.IsCuvetteHolderEmpty() == false)
+            {
+                throw new Exception("Cuvette is stuck in cuvette guide!");
+            }
+
+            var measurement = new Measurement(baseline, air, sample);
+
+            if (factors == null)
+            {
+                throw new Exception("Factors can't be null!");
+            }
+
+            var results = measurement.Results(factors);
+
+            storage.AppendWithResults(measurement, results, comment);
+
+            Console.WriteLine($"{comment} : {results}");
         }
-
-        var results = measurement.Results(factors);
-
-        storage.AppendWithResults(measurement, results, comment);
-
-        Console.WriteLine($"{comment} : {results}");
+        else
+        {
+            throw new Exception("Cuvette guide must be empty!");
+        }
     }
 
     static int Main(string[] args)
