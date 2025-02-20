@@ -1,12 +1,12 @@
 # Usage
 1. Pick up a tip with your liquid handler
-2. Aspirate at least 11 &#956;l of sample
+2. Aspirate at least 10 &#956;l of sample
 3. Pick up a cuvette
 4. Move the cuvette over the eviDense module
 5. Execute `evidense baseline`
 6. Insert the cuvette into the eviDense module
 7. Execute `evidense measure`
-8. Dispense approximately 10.5 &#956;l sample into the cuvette
+8. Dispense approximately 10.0 &#956;l sample into the cuvette
 9. Execute `evidense measure`
 10. Move the cuvette out off the eviDense module
 11. Execute `evidense save data.json`

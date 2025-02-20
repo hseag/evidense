@@ -72,7 +72,7 @@ internal class Program
 
         if (device.IsCuvetteHolderEmpty() == true)
         {
-            var volume = 10.5; //Cuvette volume in ul
+            var volume = 10.0; //Cuvette volume in ul
             MoveCuvetteInCuvetteGuide();
             var air = device.Measure();
 
@@ -106,7 +106,7 @@ internal class Program
 
         if (device.IsCuvetteHolderEmpty() == true)
         {
-            var volume = 10.5; //Cuvette volume in ul
+            var volume = 10.0; //Cuvette volume in ul
             MoveCuvetteInCuvetteGuide();
             var air = device.Measure();
 
