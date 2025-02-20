@@ -15,8 +15,6 @@ For more information see https://www.hseag.com/colibri-factsheet-and-contact. To
 9. Measure the cuvette with sample
 10. Calculate the concentration of the sample
 11. Move the cuvette out off the eviDense module
-12. Aspirate the sample back into the tip
-13. Dispose the cuvette
-14. Process the sample further according to your needs
+12. Dispose the tip with attached cuvette
 
 A detailed description can be found at TBD.

@@ -10,14 +10,12 @@
 9. Execute `evidense measure`
 10. Move the cuvette out off the eviDense module
 11. Execute `evidense save data.json`
-12. Aspirate the sample back into the tip
-13. Dispose the cuvette
-14. Process the sample further according to your needs
-15. Repeat steps 1-14 until all samples are processed
+12. Dispose the tip with attached cuvette
+13. Repeat steps 1-13 until all samples are processed
 
 For a calculation of the concentration the first or last sample(s) must be blank sample(s).
 
-With `evidense data calculate --blanksStart data.json` add the caclculated values to the data.json.
+With `evidense data calculate --blanksStart 1 data.json` add the caclculated values to the data.json.
 
 # Help
 ```

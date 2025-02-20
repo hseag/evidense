@@ -35,20 +35,15 @@ internal class Program
     {
         //Move the tip with the cuvette over the eviDense cuvette guide.
     }
-
-    void DisposeCuvette()
-    {
-        //Dispose the cuvette when you want to use the sample further.
-    }
-        
+       
     void DispenseToSample()
     {
         //Dispense the sample back.
     }
 
-    void DisposeTip()
+    void DisposeTipWithAttachedCuvette()
     {
-        //Dispose the tip.
+        //Dispose the tip with attached cuvette.
     }
 
     void MoveCuvetteInCuvetteGuide()
@@ -169,9 +164,7 @@ internal class Program
                 {
                     program.MeasureSample($"Sample #{sample}");
                 }
-                program.DisposeCuvette();
-                program.DispenseToSample();
-                program.DisposeTip();
+                program.DisposeTipWithAttachedCuvette();
             }
 
             program.storage.Save("data-evidense.json");
