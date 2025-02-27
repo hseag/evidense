@@ -22,52 +22,19 @@ typedef struct
     char * comment;
 } Options_t;
 
-static double amplification2number(Evi_t* self, bool isSample, uint32_t value)
+static double amplification2number(Evi_t* self, uint32_t value)
 {
-    int  index;
-    char buffer[100];
-
-    if (isSample)
+    switch (value)
     {
-        switch (value)
-        {
-            case 0:
-                index = INDEX_AMPLIFIER_SAMPLEFACTOR___1_1;
-                break;
-            case 1:
-                index = INDEX_AMPLIFIER_SAMPLEFACTOR__11_0;
-                break;
-            case 2:
-                index = INDEX_AMPLIFIER_SAMPLEFACTOR_111_0;
-                break;
-            default:
-                return 0.0;
-        }
+        case 0:
+            return 1.1;
+        case 1:
+            return 11.0;
+        case 2:
+            return 111.0;
+        default:
+            return 0.0;
     }
-    else
-    {
-        switch (value)
-        {
-            case 0:
-                index = INDEX_AMPLIFIER_REFERENCEFACTOR___1_1;
-                break;
-            case 1:
-                index = INDEX_AMPLIFIER_REFERENCEFACTOR__11_0;
-                break;
-            case 2:
-                index = INDEX_AMPLIFIER_REFERENCEFACTOR_111_0;
-                break;
-            default:
-                return 0.0;
-        }
-    }
-
-    if (eviGet(self, index, buffer, sizeof(buffer)) != ERROR_EVI_OK)
-    {
-        return 0.0;
-    }
-
-    return atof(buffer);
 }
 
 static char* result2text(uint32_t value)
@@ -141,8 +108,8 @@ static cJSON* levellingChannel(Evi_t* self, Levelling_t levelling)
 {
     cJSON* obj = cJSON_CreateObject();
 
-    cJSON_AddItemToObject(obj, DICT_AMPLIFICATION_SAMPLE, cJSON_CreateNumber(amplification2number(self, true, levelling.amplificationSample)));
-    cJSON_AddItemToObject(obj, DICT_AMPLIFICATION_REFERENCE, cJSON_CreateNumber(amplification2number(self, false, levelling.amplificationReference)));
+    cJSON_AddItemToObject(obj, DICT_AMPLIFICATION_SAMPLE, cJSON_CreateNumber(amplification2number(self, levelling.amplificationSample)));
+    cJSON_AddItemToObject(obj, DICT_AMPLIFICATION_REFERENCE, cJSON_CreateNumber(amplification2number(self, levelling.amplificationReference)));
     cJSON_AddItemToObject(obj, DICT_CURRENT, cJSON_CreateNumber(levelling.current));
     cJSON_AddItemToObject(obj, DICT_RESULT, cJSON_CreateNumber(levelling.result));
     cJSON_AddItemToObject(obj, DICT_RESULT_TEXT, cJSON_CreateString(result2text(levelling.result)));

@@ -45,6 +45,7 @@ public class Dict
     public const string RESULTS = "results";
     public const string SERIALNUMBER = "serialnumber";
     public const string FIRMWAREVERSION = "firmwareVersion";
+    public const string PRODUCTIONNUMBER = "productionnumber";
     public const string LEVELLING = "levelling";
     public const string LEVELLING_RESULT = "result";
     public const string LEVELLING_CURRENT = "current";
@@ -75,22 +76,12 @@ public enum Index
 {
     VERSION = 0,
     SERIALNUMBER = 1,
-    HARDWARETYPE = 2,
+    PRODUCTIONNUMBER = 3,
     LAST_MEASUREMENT_COUNT = 10,
     LED230NM_MAX_CURRENT = 23,
     LED260NM_MAX_CURRENT = 33,
     LED280NM_MAX_CURRENT = 43,
     LED340NM_MAX_CURRENT = 53,
-    AMPLIFIER_SAMPLEFACTOR___1_1 = 60,
-    AMPLIFIER_SAMPLEFACTOR__11_0 = 61,
-    AMPLIFIER_SAMPLEFACTOR_111_0 = 62,
-    AMPLIFIER_REFERENCEFACTOR___1_1 = 63,
-    AMPLIFIER_REFERENCEFACTOR__11_0 = 64,
-    AMPLIFIER_REFERENCEFACTOR_111_0 = 65,
-    SETUP_TARGET230 = 80,
-    SETUP_TARGET260 = 81,
-    SETUP_TARGET280 = 82,
-    SETUP_TARGET340 = 83,
 
     SELFTEST_AMPLIFIER_SPLITRATIO230NM = 100,
     SELFTEST_AMPLIFIER_CURRENT = 101,
@@ -195,4 +186,15 @@ public enum Selftest
     SAMPLE = 0x00002000,
     SPLITRATIO = 0x00004000,
     LEVELLING_230 = 0x00008000
+}
+
+/// <summary>
+/// Enumeration representing different status led colors .
+/// </summary>
+public enum StatusLedColor
+{
+    OFF = 0,
+    RED = 1,
+    GREEN = 2,
+    BLUE = 3, 
 }

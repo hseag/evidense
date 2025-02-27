@@ -269,13 +269,15 @@ public class SelfTestResult
         return obj;
     }
 }
+
 /// <summary>
 /// This class represents the eviDense module.
 /// </summary>
 public class Device : IDisposable
 {
     private SerialPort serialPort_;
-    private string? serialPortName_ = null;
+    private string serialNumber_ = "?";
+    private string firmwareVersion_ = "?";
 
     public void Dispose()
     {
@@ -308,8 +310,8 @@ public class Device : IDisposable
     {
         if (string.IsNullOrEmpty(serialPortName))
         {
-            serialPortName_ = FindDevice();
-            if (serialPortName_ == null)
+            serialPortName = FindDevice();
+            if (serialPortName == null)
                 throw new Exception("No EviDense module found found on any serial port with auto find");
         }
         else
@@ -318,13 +320,23 @@ public class Device : IDisposable
                 throw new Exception($"No EviDense device found on given serial port '{serialPortName}'");
         }
 
-        serialPort_ = new SerialPort(serialPortName_, 115200, Parity.None, 8, StopBits.One)
+        serialPort_ = new SerialPort(serialPortName, 115200, Parity.None, 8, StopBits.One)
         {
             ReadTimeout = 30000
         };
         serialPort_.Open();
         serialPort_.DiscardInBuffer();
         serialPort_.DiscardOutBuffer();
+
+        try
+        {
+            SerialNumber();
+            FirmwareVersion();
+        }
+        catch (Exception)
+        {
+            // silent fail
+        }
     }
 
     ~Device()
@@ -392,8 +404,11 @@ public class Device : IDisposable
         return deviceId.Substring(startIndex, 4); // VID and PID are 4 characters long
     }
 
-    private string [] Command(string tx)
+    private string[] Command(string tx)
     {
+        serialPort_.DiscardInBuffer();
+        serialPort_.DiscardOutBuffer();
+
         tx = $":{tx}";
         serialPort_.WriteLine(tx);
 
@@ -410,20 +425,19 @@ public class Device : IDisposable
         {
             int errorCode = -1;
 
-            if(parts.Length >= 2)
-            if (int.TryParse(parts[1], out errorCode))
-                throw new Exception($"Response of TX:{tx} has an error: {ErrorToText(errorCode)}");
-            else
-                throw new Exception($"Response of TX:{tx} has an unknown error: {rx}");
+            if (parts.Length >= 2)
+                if (int.TryParse(parts[1], out errorCode))
+                    throw new Exception($"Response of TX:{tx} has an error: {ErrorToText(errorCode)}");
+                else
+                    throw new Exception($"Response of TX:{tx} has an unknown error: {rx}");
         }
         else
         {
-
-            if(tx.Remove(0,1).Split()[0] != parts[0])
+            if (tx.Remove(0, 1).Split()[0] != parts[0])
             {
                 throw new Exception($"Response for sent command '{tx}' does not start with same command: '{rx}'");
             }
-        }           
+        }
 
         return parts;
     }
@@ -482,8 +496,41 @@ public class Device : IDisposable
     /// </exception>
     public T Get<T>(Index index)
     {
-        string [] response = Command($"V {(int)index}");
+        string[] response = Command($"V {(int)index}");
         return (T)Convert.ChangeType(response[1], typeof(T));
+    }
+
+    /// <summary>
+    /// Sets a value on the device at the specified index.
+    /// Sends a command to update the value on the device.
+    /// </summary>
+    /// <param name="index">The index where the value should be set.</param>
+    /// <param name="value">The integer value to set at the specified index.</param>
+    public void Set(Index index, int value)
+    {
+        string[] response = Command($"V {(int)index} {value}");
+    }
+
+    /// <summary>
+    /// Sets a value on the device at the specified index.
+    /// Sends a command to update the value on the device.
+    /// </summary>
+    /// <param name="index">The index where the value should be set.</param>
+    /// <param name="value">The double value to set at the specified index.</param>
+    public void Set(Index index, double value)
+    {
+        string[] response = Command($"V {(int)index} {value}");
+    }
+
+    /// <summary>
+    /// Sets a value on the device at the specified index.
+    /// Sends a command to update the value on the device.
+    /// </summary>
+    /// <param name="index">The index where the value should be set.</param>
+    /// <param name="value">The string value to set at the specified index.</param>
+    public void Set(Index index, string value)
+    {
+        string[] response = Command($"V {(int)index} {value}");
     }
 
     /// <summary>
@@ -502,8 +549,13 @@ public class Device : IDisposable
     /// </exception>
     public string SerialNumber()
     {
-        return Get<string>(Index.SERIALNUMBER);
+        var serialNumber = Get<string>(Index.SERIALNUMBER);
+
+        // save the serial number for the ToString() function
+        serialNumber_ = serialNumber;
+        return serialNumber;
     }
+
 
     /// <summary>
     /// Retrieves the firmware version of the connected device.
@@ -521,26 +573,28 @@ public class Device : IDisposable
     /// </exception>
     public string FirmwareVersion()
     {
-        return Get<string>(Index.VERSION);
+        var firmwareVersion = Get<string>(Index.VERSION);
+
+        // save the firmware version for the ToString() function
+        serialNumber_ = firmwareVersion;
+        return firmwareVersion;
     }
 
+
     /// <summary>
-    /// Retrieves the hardware type of the connected device.
-    /// This method uses the <see cref="Get{T}(Index)"/> method to fetch the hardware type
-    /// from the device at the predefined index for hardware types.
+    /// Retrieves the production number of the connected device.
+    /// This method uses the <see cref="Get{T}(Index)"/> method to fetch the production number
+    /// from the device at the predefined index.
     /// </summary>
     /// <returns>
-    /// The hardware type of the device as an int.
+    /// The production number of the device as a string.
     /// </returns>
-    /// <exception cref="InvalidCastException">
-    /// Thrown if the retrieval or conversion of the hardware type fails.
-    /// </exception>
     /// <exception cref="Exception">
     /// Thrown if there is an issue communicating with the device or retrieving the value.
     /// </exception>
-    public int HardwareType()
+    public string ProductionNumber()
     {
-        return Get<int>(Index.HARDWARETYPE);
+        return Get<string>(Index.PRODUCTIONNUMBER);
     }
 
     /// <summary>
@@ -556,7 +610,7 @@ public class Device : IDisposable
     /// Thrown if the device response is invalid or does not contain the expected number of values.
     /// </exception>
     /// <remarks>
-    /// This command expects and empty cuvette guide. 
+    /// This command expects and empty cuvette guide.
     /// Each LED channel current is set so that the detector measures 90% of the maximum level.
     /// </remarks>
     public LevellingResult Levelling()
@@ -612,7 +666,7 @@ public class Device : IDisposable
     /// </exception>
     public SelfTestResult SelfTest()
     {
-        string [] response = Command("Y");
+        string[] response = Command("Y");
         return new SelfTestResult(int.Parse(response[1]));
     }
 
@@ -630,7 +684,7 @@ public class Device : IDisposable
     /// </exception>
     public bool IsCuvetteHolderEmpty()
     {
-        string [] response = Command("X");
+        string[] response = Command("X");
         return int.Parse(response[1]) == 1;
     }
 
@@ -650,7 +704,7 @@ public class Device : IDisposable
     {
         string command = "M";
 
-        string [] response = Command(command);
+        string[] response = Command(command);
         return new SingleMeasurement(
             new Channel(int.Parse(response[1]), int.Parse(response[2])),
             new Channel(int.Parse(response[3]), int.Parse(response[4])),
@@ -699,7 +753,7 @@ public class Device : IDisposable
 
     /// <summary>
     /// Performs a firmware update on the device.
-    /// The method reads the firmware file, erases the existing firmware, writes the new firmware line by line, 
+    /// The method reads the firmware file, erases the existing firmware, writes the new firmware line by line,
     /// and then verifies its validity. If the update fails at any stage, an exception is thrown.
     /// </summary>
     /// <param name="filename">
@@ -754,7 +808,7 @@ public class Device : IDisposable
 
     /// <summary>
     /// Adds detailed self-test measurement data to a given JSON node.
-    /// The method retrieves various self-test parameters from the device and stores them in the provided 
+    /// The method retrieves various self-test parameters from the device and stores them in the provided
     /// JSON structure, including amplifier values and LED measurement data for different wavelengths.
     /// </summary>
     /// <param name="node">
@@ -766,7 +820,7 @@ public class Device : IDisposable
     /// <remarks>
     /// The method follows these steps:
     /// 1. Retrieves amplifier-related self-test values and adds them to the JSON node.
-    /// 2. Uses the helper method <c>LedAsJson</c> to fetch and structure LED-specific measurement data for 
+    /// 2. Uses the helper method <c>LedAsJson</c> to fetch and structure LED-specific measurement data for
     ///    different wavelengths (230nm, 260nm, 280nm, and 340nm).
     /// 3. Each LED entry contains:
     ///    - ILED (LED intensity)
@@ -820,6 +874,7 @@ public class Device : IDisposable
     /// - <see cref="Dict.SELFTEST"/>: The base self-test results in JSON format, with additional details added via <see cref="AddSelfTestDetails"/>.
     /// - <see cref="Dict.SERIALNUMBER"/>: The device's serial number.
     /// - <see cref="Dict.FIRMWAREVERSION"/>: The firmware version currently installed on the device.
+    /// - <see cref="Dict.PRODUCTIONNUMBER"/>: The device's production number.
     /// </remarks>
     public JsonNode TechnicalReport()
     {
@@ -830,6 +885,7 @@ public class Device : IDisposable
         AddSelfTestDetails(obj[Dict.SELFTEST]);
         obj[Dict.SERIALNUMBER] = SerialNumber();
         obj[Dict.FIRMWAREVERSION] = FirmwareVersion();
+        obj[Dict.PRODUCTIONNUMBER] = ProductionNumber();
 
         return obj;
     }
@@ -848,6 +904,21 @@ public class Device : IDisposable
     /// </remarks>
     public override string ToString()
     {
-        return $"eviDense Module@{this.serialPort_.PortName} SN:{SerialNumber()} Version:{FirmwareVersion()}";
+        var portName = "?";
+        if (serialPort_ != null)
+            portName = this.serialPort_.PortName;
+
+        return $"eviFluor Module@{portName} SN:{serialNumber_} Version:{firmwareVersion_}";
+    }
+
+    /// <summary>
+    /// Sets the status led color.
+    /// </summary>
+    /// <exception cref="IndexOutOfRangeException">
+    /// Thrown if the device response does not contain the expected number of values.
+    /// </exception>
+    public void SetStatusLed(StatusLedColor color)
+    {
+        Command($"Z {(int)color}");
     }
 }

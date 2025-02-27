@@ -12,25 +12,6 @@ enum EviDenseIndices
     INDEX_LED260NM_MAX_CURRENT                    = 33,
     INDEX_LED280NM_MAX_CURRENT                    = 43,
     INDEX_LED340NM_MAX_CURRENT                    = 53,
-
-    INDEX_AMPLIFIER_SAMPLEFACTOR___1_1            = 60,
-    INDEX_AMPLIFIER_SAMPLEFACTOR__11_0            = 61,
-    INDEX_AMPLIFIER_SAMPLEFACTOR_111_0            = 62,
-    INDEX_AMPLIFIER_REFERENCEFACTOR___1_1         = 63,
-    INDEX_AMPLIFIER_REFERENCEFACTOR__11_0         = 64,
-    INDEX_AMPLIFIER_REFERENCEFACTOR_111_0         = 65,
-
-    INDEX_AUTO_MEASURE_T1                         = 70,
-    INDEX_AUTO_MEASURE_T2                         = 71,
-    INDEX_AUTO_MEASURE_T3                         = 72,
-
-    INDEX_SETUP_TARGET230                         = 80,
-    INDEX_SETUP_TARGET260                         = 81,
-    INDEX_SETUP_TARGET280                         = 82,
-    INDEX_SETUP_TARGET340                         = 83,
-    INDEX_CURRENT_ON_WAIT_TIME                    = 84,
-    INDEX_CURRENT_OFF_WAIT_TIME                   = 85,
-    INDEX_NUMBER_OF_SAMPLES                       = 86,
     
     INDEX_CUVETTE_EMPTY_SPLIT_RATIO_THRESHOLD     = 90,
 
@@ -94,17 +75,6 @@ enum EviDenseIndices
     INDEX_VOLTAGE_REF                             = 1002,
     INDEX_CURRENT_LED                             = 1003,
 
-    INDEX_VOLTAGE_SAMPLE_MIN                      = 2000,
-    INDEX_VOLTAGE_SAMPLE_MAX                      = 2001,
-    INDEX_VOLTAGE_SAMPLE_DELTA                    = 2002,
-    INDEX_VOLTAGE_REFERENCE_MIN                   = 2003,
-    INDEX_VOLTAGE_REFERENCE_MAX                   = 2004,
-    INDEX_VOLTAGE_REFERENCE_DELTA                 = 2005,
-
-    INDEX_VOLTAGE_REF_MIN                         = 0206,
-    INDEX_VOLTAGE_REF_MAX                         = 2007,
-    INDEX_VOLTAGE_REF_DELTA                       = 2008,
-
     INDEX_LED230NM_AMPLIFICATIONSAMPLE            = 2010,
     INDEX_LED230NM_AMPLIFICATIONREFERENCE         = 2011,
     INDEX_LED230NM_CURRENT                        = 2012,
@@ -125,12 +95,6 @@ enum EviDenseIndices
     INDEX_LED340NM_CURRENT                        = 2042,
     INDEX_LED340NM_SETUPRESULT                    = 2043,
 
-    INDEX_CURRENT_LED_MIN                         = 2050,
-    INDEX_CURRENT_LED_MAX                         = 2051,
-    INDEX_CURRENT_LED_DELTA                       = 2052,
-
     INDEX_CUVETTE_EMPTY_IS_EMPTY                  = 2060,
     INDEX_CUVETTE_EMPTY_SPLIT_RATIO_MEASURED      = 2061,
-
-    INDEX_DEMO_MODE_STATE                         = 3000,
 };

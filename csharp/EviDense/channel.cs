@@ -7,7 +7,7 @@ using System.Text.Json.Nodes;
 namespace Hse.EviDense;
 
 /// <summary>
-/// Represents a measurement channel with sample and reference values, measured in ?V.
+/// Represents a measurement channel with sample and reference values, measured in uV.
 /// </summary>
 public class Channel
 {

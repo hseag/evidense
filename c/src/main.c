@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define VERSION_TOOL "0.2.1"
+#define VERSION_TOOL "0.4.0"
 
 void help(int argcCmd, char **argvCmd)
 {
@@ -28,17 +28,17 @@ void help(int argcCmd, char **argvCmd)
             fprintf_s(stdout, "  baseline            : starts a baseline measurement and returns the values\n");
             fprintf_s(stdout, "  command COMMAND     : executes a command e.g evidense.exe command \"V 0\" returns the value at index 0\n");
             fprintf_s(stdout, "  data                : handels data in a data file\n");
+            fprintf_s(stdout, "  empty               : checks if the cuvette guide is empty\n");
+            fprintf_s(stdout, "  export              : export json as csv file\n");
             fprintf_s(stdout, "  fwupdate FILE       : loads a new firmware\n");
             fprintf_s(stdout, "  get INDEX           : get a value from the device\n");
-            fprintf_s(stdout, "  help COMMAND        : Prints a detailed help\n");
+            fprintf_s(stdout, "  help COMMAND        : prints a detailed help\n");
             fprintf_s(stdout, "  levelling           : prepares the module for a measurment\n");
             fprintf_s(stdout, "  measure             : starts a measurement and return the values\n");
-            fprintf_s(stdout, "  save                : save the last measurement(s)\n");
-            fprintf_s(stdout, "  export              : export json as csv file\n");
+            fprintf_s(stdout, "  save                : save the last measurement(s)\n");            
             fprintf_s(stdout, "  selftest            : executes an internal selftest\n");
             fprintf_s(stdout, "  set INDEX VALUE     : set a value in the device\n");
-            fprintf_s(stdout, "  version             : returns the version\n");
-            fprintf_s(stdout, "  empty               : checks if the cuvette guide is empty\n");
+            fprintf_s(stdout, "  version             : returns the version\n");            
             fprintf_s(stdout, "Options:\n");
             fprintf_s(stdout, "  --verbose           : prints debug info\n");
             fprintf_s(stdout, "  --help -h           : show this help and exit\n");
@@ -74,22 +74,12 @@ void help(int argcCmd, char **argvCmd)
                 fprintf_s(stdout, "INDEX:\n");
                 fprintf_s(stdout, "   0: Firmware version\n");
                 fprintf_s(stdout, "   1: Serial number\n");
-                fprintf_s(stdout, "   2: Hardware type\n");
+                fprintf_s(stdout, "   3: Production number\n");
                 fprintf_s(stdout, "  10: Number of internal stored last measurements\n");
                 fprintf_s(stdout, "  23: Max current in [uA] for the 230nm LED\n");
                 fprintf_s(stdout, "  33: Max current in [uA] for the 260nm LED\n");
                 fprintf_s(stdout, "  43: Max current in [uA] for the 280nm LED\n");
                 fprintf_s(stdout, "  53: Max current in [uA] for the 340nm LED\n");
-                fprintf_s(stdout, "  60: Sample amplification factor nominal 1.1\n");
-                fprintf_s(stdout, "  61: Sample amplification factor nominal 11.0\n");
-                fprintf_s(stdout, "  62: Sample amplification factor nominal 111.0\n");
-                fprintf_s(stdout, "  63: Reference amplification factor nominal 1.1\n");
-                fprintf_s(stdout, "  64: Reference amplification factor nominal 11.0\n");
-                fprintf_s(stdout, "  65: Reference amplification factor nominal 111.0\n");
-                fprintf_s(stdout, "  80: Levelling voltage in [uV] for the 230nm LED\n");
-                fprintf_s(stdout, "  81: Levelling voltage in [uV] for the 260nm LED\n");
-                fprintf_s(stdout, "  82: Levelling voltage in [uV] for the 280nm LED\n");
-                fprintf_s(stdout, "  83: Levelling voltage in [uV] for the 340nm LED\n");
 			}
 			else if(strcmp(argvCmd[1], "set") == 0)
 			{
@@ -98,22 +88,7 @@ void help(int argcCmd, char **argvCmd)
                 fprintf_s(stdout, "WARNING:\n");
                 fprintf_s(stdout, "  Changing a value can damage the device or lead to incorrect results!\n");
                 fprintf_s(stdout, "INDEX:\n");
-                fprintf_s(stdout, "   1: Serial number\n");
-                fprintf_s(stdout, "   2: Hardware type\n");
-                fprintf_s(stdout, "  23: Max current in [uA] for the 230nm LED\n");
-                fprintf_s(stdout, "  33: Max current in [uA] for the 260nm LED\n");
-                fprintf_s(stdout, "  43: Max current in [uA] for the 280nm LED\n");
-                fprintf_s(stdout, "  53: Max current in [uA] for the 340nm LED\n");
-                fprintf_s(stdout, "  60: Sample amplification factor nominal 1.1\n");
-                fprintf_s(stdout, "  61: Sample amplification factor nominal 11.0\n");
-                fprintf_s(stdout, "  62: Sample amplification factor nominal 111.0\n");
-                fprintf_s(stdout, "  63: Reference amplification factor nominal 1.1\n");
-                fprintf_s(stdout, "  64: Reference amplification factor nominal 11.0\n");
-                fprintf_s(stdout, "  65: Reference amplification factor nominal 111.0\n");
-                fprintf_s(stdout, "  80: Levelling voltage in [uV] for the 230nm LED\n");
-                fprintf_s(stdout, "  81: Levelling voltage in [uV] for the 260nm LED\n");
-                fprintf_s(stdout, "  82: Levelling voltage in [uV] for the 280nm LED\n");
-                fprintf_s(stdout, "  83: Levelling voltage in [uV] for the 340nm LED\n");
+                fprintf_s(stdout, "   -\n");
 			}
 			else if(strcmp(argvCmd[1], "save") == 0)
 			{
