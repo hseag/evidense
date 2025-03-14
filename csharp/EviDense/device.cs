@@ -2,11 +2,46 @@
 // SPDX-FileCopyrightText: © 2025 HSE AG, <opensource@hseag.com>
 
 using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Management;
 using System.Text.Json.Nodes;
 
 namespace Hse.EviDense;
+
+/// <summary>
+/// Represents the ADC values.
+/// </summary>
+public class AdcResult
+{
+    /// <summary>
+    /// Voltage of sample detector in uV.
+    /// </summary>
+    public int SampleValue { get; set; }
+
+    /// <summary>
+    /// Voltage of reference detector in uV.
+    /// </summary>
+    public int ReferenceValue { get; set; }
+
+    /// <summary>
+    /// Voltage of internal 5V reference in uV.
+    /// </summary>
+    public int Vref { get; set; }
+
+    /// <summary>
+    /// LED current in uA.
+    /// </summary>
+    public int Current { get; set; }
+
+    public AdcResult(int sampleValue, int referenceValue, int vref, int current)
+    {
+        SampleValue = sampleValue;
+        ReferenceValue = referenceValue;
+        Vref = vref;
+        Current = current;
+    }
+}
 
 /// <summary>
 /// Represents the result of a levelling operation for a single measurement channel.
@@ -297,27 +332,21 @@ public class Device : IDisposable
     /// - No device is found during auto-detection.
     /// - The provided serial port does not match the expected VID/PID for the EviDense device.
     /// </summary>
-    /// <param name="serialPortName">
-    /// The name of the serial port to connect to. If null or empty, the constructor
-    /// attempts to automatically find the correct port.
+    /// <param name="serialNumber">
+    /// The serial number of the device to connect to. If null or empty, the constructor
+    /// attempts to automatically find a device.
     /// </param>
     /// <exception cref="Exception">
     /// Thrown when:
     /// - No device is found during auto-detection (if <paramref name="serialPortName"/> is null or empty).
     /// - The provided serial port does not correspond to an EviDense device.
     /// </exception>
-    public Device(string? serialPortName = null)
+    public Device(string? serialNumber = null)
     {
-        if (string.IsNullOrEmpty(serialPortName))
+        var serialPortName = FindDevice(serialNumber);
+        if (serialPortName == null)
         {
-            serialPortName = FindDevice();
-            if (serialPortName == null)
-                throw new Exception("No EviDense module found found on any serial port with auto find");
-        }
-        else
-        {
-            if (!IsSerialPortMatchingVidAndPid(serialPortName, USB.VID, USB.PID))
-                throw new Exception($"No EviDense device found on given serial port '{serialPortName}'");
+            throw new Exception($"EviDense ({serialNumber}) module not found");
         }
 
         serialPort_ = new SerialPort(serialPortName, 115200, Parity.None, 8, StopBits.One)
@@ -354,18 +383,44 @@ public class Device : IDisposable
         }
     }
 
-    private string? FindDevice()
+    /// <summary>
+    /// Retrieves a list of available eviDense devices by scanning serial ports.    
+    /// </summary>
+    /// <returns>A list of serial numbers of available matching devices.</returns>
+    public static List<string> GetAvailableDevices()
+    {
+        List<string> serialnumbers = new List<string>() { };
+
+        foreach (var port in SerialPort.GetPortNames())
+        {
+            string serialNumber = "";
+
+            if (IsSerialPortMatchingVidAndPid(port, USB.VID, USB.PID, ref serialNumber))
+            {
+                serialnumbers.Add(serialNumber);
+            }
+        }
+        return serialnumbers;
+    }
+
+    private static string? FindDevice(string? serialNumber)
     {
         foreach (var port in SerialPort.GetPortNames())
         {
-            if (IsSerialPortMatchingVidAndPid(port, USB.VID, USB.PID))
-                return port;
+            string sn = "";
+            if (IsSerialPortMatchingVidAndPid(port, USB.VID, USB.PID, ref sn))
+            {
+                if (serialNumber == null || sn == serialNumber)
+                {
+                    return port;
+                }
+            }
         }
 
         return null;
     }
 
-    private bool IsSerialPortMatchingVidAndPid(string portName, int vid, int pid)
+    private static bool IsSerialPortMatchingVidAndPid(string portName, int vid, int pid, ref string serialNumber)
     {
         if (!OperatingSystem.IsWindows())
         {
@@ -381,12 +436,14 @@ public class Device : IDisposable
         {
             var name = device["Name"]?.ToString(); // Friendly name (e.g., "USB Serial Device (COM3)")
             var deviceId = device["DeviceID"]?.ToString(); // Device ID containing VID and PID
+            var pnpDeviceId = device["PNPDeviceID"]?.ToString(); // Full PNPDeviceID (useful for extracting serial number)
 
-            if (name != null && name.Contains($"({portName})") && deviceId != null)
+            if (name != null && name.Contains($"({portName})") && deviceId != null && pnpDeviceId != null)
             {
                 // Check if VID and PID match
                 var foundVid = ExtractValue(deviceId, "VID_");
                 var foundPid = ExtractValue(deviceId, "PID_");
+                serialNumber = ExtractSerialNumber(pnpDeviceId);
 
                 if (foundVid == vidAsHex && foundPid == pidAsHex)
                 {
@@ -398,10 +455,20 @@ public class Device : IDisposable
         return false;
     }
 
-    private string ExtractValue(string deviceId, string key)
+    private static string ExtractValue(string deviceId, string key)
     {
         var startIndex = deviceId.IndexOf(key) + key.Length;
         return deviceId.Substring(startIndex, 4); // VID and PID are 4 characters long
+    }
+
+    private static string ExtractSerialNumber(string pnpDeviceId)
+    {
+        var parts = pnpDeviceId.Split('\\');
+        if (parts.Length > 2)
+        {
+            return parts[^1]; // Letztes Segment enthält die Seriennummer
+        }
+        return string.Empty;
     }
 
     private string[] Command(string tx)
@@ -914,11 +981,34 @@ public class Device : IDisposable
     /// <summary>
     /// Sets the status led color.
     /// </summary>
-    /// <exception cref="IndexOutOfRangeException">
-    /// Thrown if the device response does not contain the expected number of values.
-    /// </exception>
     public void SetStatusLed(StatusLedColor color)
     {
         Command($"Z {(int)color}");
     }
+
+    /// <summary>
+    /// Sets the current of the given LED. Current is in uA.
+    /// </summary>
+    public void SetLedAndCurrent(Led led, int current)
+    {
+        Command($"L {(int)led} {current}");
+    }
+
+    /// <summary>
+    /// Set the amplification factor of the given amplifier.
+    /// </summary>
+    public void SetAmplifiyingFactor(Amplifier amplifier, AmplifierFactors factor)
+    {
+        Command($"D {(int)amplifier} {(int)factor}");
+    }
+
+    /// <summary>
+    /// Get ADC values.
+    /// </summary>
+    public AdcResult GetAdcValues()
+    {
+        string[] response = Command("A");
+        return new AdcResult(int.Parse(response[1]), int.Parse(response[2]), int.Parse(response[3]), int.Parse(response[4]));
+    }
+
 }

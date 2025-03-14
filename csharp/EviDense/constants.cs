@@ -198,3 +198,34 @@ public enum StatusLedColor
     GREEN = 2,
     BLUE = 3, 
 }
+
+/// <summary>
+/// Enumeration representing different led wave lengths.
+/// </summary>
+public enum Led
+{
+    LED_OFF = 0,
+    LED_230 = 1,
+    LED_260 = 2,
+    LED_280 = 3,
+    LED_340 = 4
+}
+
+/// <summary>
+/// Enumeration representing the two amplifiers.
+/// </summary>
+public enum Amplifier
+{
+    SAMPLE = 0,
+    REFERENCE = 1
+}
+
+/// <summary>
+/// Enumeration representing amplification factor of the amplifiers.
+/// </summary>
+public enum AmplifierFactors
+{
+    F_1_1 = 0,
+    F_11_0 = 1,
+    F_111_0 = 2,
+}
