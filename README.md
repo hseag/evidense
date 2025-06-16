@@ -18,3 +18,5 @@ For more information see https://www.hseag.com/colibri-factsheet-and-contact. To
 12. Dispose the tip with attached cuvette
 
 A detailed description can be found at TBD.
+
+The C# documentation can be found [here](csharp/doc).

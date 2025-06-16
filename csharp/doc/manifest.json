@@ -1,0 +1,468 @@
+{
+  "source_base_path": "C:/scm/hse/colibri/evidense/module/csharp/EviDense/doc",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/DeviceTests.TestDevice.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/DeviceTests.TestDevice.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "DeviceTests.TestDevice",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/DeviceTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/DeviceTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "DeviceTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.AdcResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.AdcResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.AdcResult",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.AdcResult.yml\" sourcestartlinenumber=\"1\">Represents the ADC values.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Amplifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Amplifier.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Amplifier",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Amplifier.yml\" sourcestartlinenumber=\"1\">Enumeration representing the two amplifiers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.AmplifierFactors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.AmplifierFactors.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.AmplifierFactors",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.AmplifierFactors.yml\" sourcestartlinenumber=\"1\">Enumeration representing amplification factor of the amplifiers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Channel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Channel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Channel",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Channel.yml\" sourcestartlinenumber=\"1\">Represents a measurement channel with sample and reference values, measured in uV.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Device.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Device.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Device",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Device.yml\" sourcestartlinenumber=\"1\">This class represents the eviDense module.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Dict.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Dict.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Dict",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Dict.yml\" sourcestartlinenumber=\"1\">Defines constant dictionary keys used in measurement processing.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Error.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Error.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Error",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Error.yml\" sourcestartlinenumber=\"1\">Enumeration representing various error codes.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Factors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Factors.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Factors",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Factors.yml\" sourcestartlinenumber=\"1\">Correction factors due to different light absorption at different wavelengths of the cuvette.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Index.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Index.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Index",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Index.yml\" sourcestartlinenumber=\"1\">Enumeration representing different index values for hardware configurations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Led.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Led.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Led",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Led.yml\" sourcestartlinenumber=\"1\">Enumeration representing different led wave lengths.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.LevellingChannelResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.LevellingChannelResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.LevellingChannelResult",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.LevellingChannelResult.yml\" sourcestartlinenumber=\"1\">Represents the result of a levelling operation for a single measurement channel.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.LevellingResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.LevellingResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.LevellingResult",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.LevellingResult.yml\" sourcestartlinenumber=\"1\">Represents the overall levelling results for multiple measurement channels.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Measurement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Measurement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Measurement",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Measurement.yml\" sourcestartlinenumber=\"1\">Represents a measurement containing baseline, air, and sample values, along with optional comments.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Quadruple.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Quadruple.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Quadruple",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Quadruple.yml\" sourcestartlinenumber=\"1\">Represents a quadruple set of measurement values at different wavelengths.\nThis class performs mathematical operations (plus, minus, ...) on all four wavelengths at the same time.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Results.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Results.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Results",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Results.yml\" sourcestartlinenumber=\"1\">Represents the results of a nucleic acid analysis, including DNA and RNA concentrations and purity ratios.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.SelfTestResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.SelfTestResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.SelfTestResult",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.SelfTestResult.yml\" sourcestartlinenumber=\"1\">Represents the result of a self-test, containing various checks and problem indicators.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Selftest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Selftest.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Selftest",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Selftest.yml\" sourcestartlinenumber=\"1\">Flags enumeration for self-test components.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.SingleMeasurement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.SingleMeasurement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.SingleMeasurement",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.SingleMeasurement.yml\" sourcestartlinenumber=\"1\">Represents a single measurement consisting of multiple wavelength channels.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.StatusLedColor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.StatusLedColor.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.StatusLedColor",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.StatusLedColor.yml\" sourcestartlinenumber=\"1\">Enumeration representing different status led colors .</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.StorageMeasurement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.StorageMeasurement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.StorageMeasurement",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.StorageMeasurement.yml\" sourcestartlinenumber=\"1\">Handles storage and retrieval of measurements using JSON serialization.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.TypeOf.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.TypeOf.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.TypeOf",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.TypeOf.yml\" sourcestartlinenumber=\"1\">Enumeration representing different data types.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.USB.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.USB.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.USB",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.USB.yml\" sourcestartlinenumber=\"1\">Provides USB-related constants.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "images/favicon.ico"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/hseagmitsubzeile_weissaufrot_150x30.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/hseagmitsubzeile_weissaufrot_150x30.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/hseagohnesubzeile_cmyk_150px.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/hseagohnesubzeile_cmyk_150px.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
