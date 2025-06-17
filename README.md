@@ -17,4 +17,4 @@ For more information see https://www.hseag.com/colibri-factsheet-and-contact. To
 11. Move the cuvette out off the eviDense module
 12. Dispose the tip with attached cuvette
 
-The C# documentation can be found [here](csharp/doc).
+The C# documentation can be found [here](csharp/doc/api/Hse.EviDense.html).
