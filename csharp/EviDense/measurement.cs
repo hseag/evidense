@@ -115,6 +115,10 @@ public class Results
                Math.Abs(PurityRatio260_280 - other.PurityRatio260_280) < delta;
     }
 
+    /// <summary>
+    /// Returns the hash code for this instance.
+    /// </summary>
+    /// <returns>A hash code for the current object.</returns>
     public override int GetHashCode()
     {
         return HashCode.Combine(DsDNA, SsDNA, SsRNA, PurityRatio260_230, PurityRatio260_280);
@@ -127,24 +131,17 @@ public class Results
 public class Factors
 {
     /// <summary>
-    /// Gets or sets the correction factor for air to blank measurements.
+    /// Gets or sets the correction absorbance for air to blank measurements.
     /// </summary>
-    public Quadruple AirToBlank { get; set; }
-
-    /// <summary>
-    /// Gets or sets the correction factor for F340 to NNN measurements.
-    /// </summary>
-    public Quadruple F340ToNNN { get; set; }
+    public Quadruple AbsobanceBufferBlank { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Factors"/> class with optional correction factors.
     /// </summary>
-    /// <param name="factorAirToBlank">Correction factor for air to blank measurements.</param>
-    /// <param name="factor340ToNNN">Correction factor for F340 to NNN measurements.</param>
-    public Factors(Quadruple? factorAirToBlank = null, Quadruple? factor340ToNNN = null)
+    /// <param name="fAbsobanceBufferBlank">Correction absorbance for air to blank measurements.</param>
+    public Factors(Quadruple? fAbsobanceBufferBlank = null)
     {
-        AirToBlank = factorAirToBlank ?? new Quadruple(0.0);
-        F340ToNNN = factor340ToNNN ?? new Quadruple(0.0);
+        AbsobanceBufferBlank = fAbsobanceBufferBlank ?? new Quadruple(0.0);
     }
 
     /// <summary>
@@ -153,7 +150,7 @@ public class Factors
     /// <returns>A formatted string displaying the correction factors.</returns>
     public override string ToString()
     {
-        return $"airToBlank:{AirToBlank} 340ToNNN:{F340ToNNN}";
+        return $"absobanceBufferBlank:{AbsobanceBufferBlank}";
     }
 
     /// <summary>
@@ -166,8 +163,7 @@ public class Factors
     {
         return new Factors
         {
-            AirToBlank = left.AirToBlank + right.AirToBlank,
-            F340ToNNN = left.F340ToNNN + right.F340ToNNN
+            AbsobanceBufferBlank = left.AbsobanceBufferBlank + right.AbsobanceBufferBlank,
         };
     }
 
@@ -181,8 +177,7 @@ public class Factors
     {
         return new Factors
         {
-            AirToBlank = left.AirToBlank / right.AirToBlank,
-            F340ToNNN = left.F340ToNNN / right.F340ToNNN
+            AbsobanceBufferBlank = left.AbsobanceBufferBlank / right.AbsobanceBufferBlank,
         };
     }
 
@@ -196,8 +191,7 @@ public class Factors
     {
         return new Factors
         {
-            AirToBlank = left.AirToBlank / scalar,
-            F340ToNNN = left.F340ToNNN / scalar
+            AbsobanceBufferBlank = left.AbsobanceBufferBlank / scalar,
         };
     }
 }
@@ -211,6 +205,11 @@ public class Measurement
     private SingleMeasurement baseline;
     private SingleMeasurement air;
     private SingleMeasurement sample;
+
+    /// <summary>
+    /// Defines the default path length of the cuvette.
+    /// </summary>
+    public const double DefaultCuvettePathLength = 1.1; //mm
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Measurement"/> class.
@@ -271,68 +270,63 @@ public class Measurement
     /// <returns>A <see cref="Factors"/> object containing computed correction factors.</returns>
     public Factors Factors()
     {
-        return new Factors(FactorAirToBlank(), Factor340ToNNN());
+        return new Factors(FactorAbsorbanceBufferBlank());
     }
 
-    private Quadruple FactorAirToBlank()
+    private Quadruple FactorAbsorbanceBufferBlank()
     {
-        return sample.Sample() / sample.Reference() * air.Reference() / air.Sample();
-    }
-
-    private Quadruple Factor340ToNNN()
-    {
-        Quadruple aNNN = CalculateAbsorbance(air, sample);
-        Quadruple a340 = new Quadruple(aNNN.Value340);
-        return a340 / aNNN;
+        Quadruple a = CalculateAbsorbance(air, sample);
+        return a;
     }
 
     /// <summary>
     /// Computes the final results using given correction factors.
     /// </summary>
     /// <param name="factors">The correction factors.</param>
+    /// <param name="cuvettePathLength">The cuvette path length.</param>
     /// <returns>A <see cref="Results"/> object containing calculated values.</returns>
-    public Results Results(Factors factors)
+    public Results Results(Factors factors, double cuvettePathLength = DefaultCuvettePathLength)
     {
         return new Results(
-            DsDNA(factors.AirToBlank, factors.F340ToNNN),
-            SsDNA(factors.AirToBlank, factors.F340ToNNN),
-            SsRNA(factors.AirToBlank, factors.F340ToNNN),
-            PurityRatio260_230(factors.AirToBlank, factors.F340ToNNN),
-            PurityRatio260_280(factors.AirToBlank, factors.F340ToNNN)
+            DsDNA(factors.AbsobanceBufferBlank, cuvettePathLength),
+            SsDNA(factors.AbsobanceBufferBlank, cuvettePathLength),
+            SsRNA(factors.AbsobanceBufferBlank, cuvettePathLength),
+            PurityRatio260_230(factors.AbsobanceBufferBlank),
+            PurityRatio260_280(factors.AbsobanceBufferBlank)
         );
     }
 
-    private double DsDNA(Quadruple airToBlank, Quadruple f340ToNNN)
+    private double DsDNA(Quadruple fAbsobanceBufferBlank, double cuvettePathLength)
     {
-        return AlgorithmV7(airToBlank, f340ToNNN).Value260 * 50 * 10 / 1;
+        return AlgorithmV9(fAbsobanceBufferBlank).Value260 * 50 * 10 / cuvettePathLength;
     }
 
-    private double SsDNA(Quadruple airToBlank, Quadruple f340ToNNN)
+    private double SsDNA(Quadruple fAbsobanceBufferBlank, double cuvettePathLength)
     {
-        return AlgorithmV7(airToBlank, f340ToNNN).Value260 * 33 * 10 / 1;
+        return AlgorithmV9(fAbsobanceBufferBlank).Value260 * 33 * 10 / cuvettePathLength;
     }
 
-    private double SsRNA(Quadruple airToBlank, Quadruple f340ToNNN)
+    private double SsRNA(Quadruple fAbsobanceBufferBlank, double cuvettePathLength)
     {
-        return AlgorithmV7(airToBlank, f340ToNNN).Value260 * 40 * 10 / 1;
+        return AlgorithmV9(fAbsobanceBufferBlank).Value260 * 40 * 10 / cuvettePathLength;
     }
 
-    private double PurityRatio260_280(Quadruple airToBlank, Quadruple f340ToNNN)
+    private double PurityRatio260_280(Quadruple fAbsobanceBufferBlank)
     {
-        Quadruple aNNN = AlgorithmV7(airToBlank, f340ToNNN);
+        Quadruple aNNN = AlgorithmV9(fAbsobanceBufferBlank);
         return aNNN.Value280 == 0 ? double.NaN : aNNN.Value260 / aNNN.Value280;
     }
 
-    private double PurityRatio260_230(Quadruple airToBlank, Quadruple f340ToNNN)
+    private double PurityRatio260_230(Quadruple fAbsobanceBufferBlank)
     {
-        Quadruple aNNN = AlgorithmV7(airToBlank, f340ToNNN);
+        Quadruple aNNN = AlgorithmV9(fAbsobanceBufferBlank);
         return aNNN.Value230 == 0 ? double.NaN : aNNN.Value260 / aNNN.Value230;
     }
 
-    private Quadruple AlgorithmV7(Quadruple airToBlank, Quadruple f340ToNNN)
+    private Quadruple AlgorithmV9(Quadruple fAbsobanceBufferBlank)
     {
-        Quadruple aNNN = CalculateAbsorbance(air, sample, airToBlank);
-        return aNNN - new Quadruple(aNNN.Value340) * f340ToNNN;
+        Quadruple aSampleMinusBlank = CalculateAbsorbance(air, sample) - fAbsobanceBufferBlank;
+        return aSampleMinusBlank - new Quadruple(aSampleMinusBlank.Value340);
     }
 
     /// <summary>

@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define VERSION_TOOL "0.4.0"
+#define VERSION_TOOL "0.6.0"
 
 void help(int argcCmd, char **argvCmd)
 {
@@ -125,6 +125,7 @@ void help(int argcCmd, char **argvCmd)
                 fprintf_s(stdout, "Options:\n");
                 fprintf_s(stdout, "  --blanksStart      : number of blanks from the begining. Default is 1\n");
                 fprintf_s(stdout, "  --blanksEnd        : number of blanks at the end. Default is 0\n");
+                fprintf_s(stdout, "  --pathLength       : cuvette path length. Default is 1.1\n");                
 			}
 			else if(strcmp(argvCmd[1], "measure") == 0)
 			{

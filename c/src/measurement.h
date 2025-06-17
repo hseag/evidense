@@ -44,70 +44,61 @@ typedef struct
 DLLEXPORT Measurement_t measurement_init(SingleMeasurement_t baseline, SingleMeasurement_t air, SingleMeasurement_t sample, const char * comment);
 
 /**
- * @brief Computes the air-to-blank correction factor for a measurement.
- *
- * @param self Pointer to the Measurement_t structure.
- * @return The air-to-blank correction factor as a Quadruple_t.
- */
-DLLEXPORT Quadruple_t measurement_factorAirToBlank(const Measurement_t * self);
-
-/**
- * @brief Computes the correction factor from 340 nm to another wavelength.
+ * @brief Computes the correction air to blank.
  *
  * @param self Pointer to the Measurement_t structure.
  * @return The correction factor as a Quadruple_t.
  */
-DLLEXPORT Quadruple_t measurement_factor340ToNNN(const Measurement_t * self);
+DLLEXPORT Quadruple_t measurement_factorAbsorbanceBufferBlank(const Measurement_t * self);
+
 
 /**
  * @brief Computes the dsDNA concentration based on the measurement.
  *
  * @param self Pointer to the Measurement_t structure.
- * @param factorAirToBlank Correction factor for air to blank.
- * @param factor340ToNNN Correction factor from 340 nm to another wavelength.
+ * @param factorAbsorbanceBufferBlank Correction value for air to blank.
+ * @param cuvettePathLength Pointer to cuvette path length. If NULL, a default value is used.
  * @return The dsDNA concentration.
  */
-DLLEXPORT double measurement_dsDNA(const Measurement_t * self, const Quadruple_t * factorAirToBlank, const Quadruple_t * factor340ToNNN);
+DLLEXPORT double measurement_dsDNA(const Measurement_t * self, const Quadruple_t * factorAbsorbanceBufferBlank, const double * cuvettePathLength);
 
 /**
  * @brief Computes the ssDNA concentration based on the measurement.
  *
  * @param self Pointer to the Measurement_t structure.
- * @param factorAirToBlank Correction factor for air to blank.
- * @param factor340ToNNN Correction factor from 340 nm to another wavelength.
+ * @param factorAbsorbanceBufferBlank Correction value for air to blank.
+ * @param cuvettePathLength Pointer to cuvette path length. If NULL, a default value is used.
  * @return The ssDNA concentration.
  */
-DLLEXPORT double measurement_ssDNA(const Measurement_t * self, const Quadruple_t * factorAirToBlank, const Quadruple_t * factor340ToNNN);
+DLLEXPORT double measurement_ssDNA(const Measurement_t * self, const Quadruple_t * factorAbsorbanceBufferBlank, const double * cuvettePathLength);
 
 /**
  * @brief Computes the ssRNA concentration based on the measurement.
  *
  * @param self Pointer to the Measurement_t structure.
- * @param factorAirToBlank Correction factor for air to blank.
- * @param factor340ToNNN Correction factor from 340 nm to another wavelength.
+ * @param factorAbsorbanceBufferBlank Correction value for air to blank.
+ * @param cuvettePathLength Pointer to cuvette path length. If NULL, a default value is used.
  * @return The ssRNA concentration.
  */
-DLLEXPORT double measurement_ssRNA(const Measurement_t * self, const Quadruple_t * factorAirToBlank, const Quadruple_t * factor340ToNNN);
+DLLEXPORT double measurement_ssRNA(const Measurement_t * self, const Quadruple_t * factorAbsorbanceBufferBlank, const double * cuvettePathLength);
 
 /**
  * @brief Computes the 260/230 purity ratio of the sample.
  *
  * @param self Pointer to the Measurement_t structure.
- * @param factorAirToBlank Correction factor for air to blank.
- * @param factor340ToNNN Correction factor from 340 nm to another wavelength.
+ * @param factorAbsorbanceBufferBlank Correction value for air to blank. 
  * @return The 260/230 purity ratio.
  */
-DLLEXPORT double measurement_purityRatio260_230(const Measurement_t * self, const Quadruple_t * factorAirToBlank, const Quadruple_t * factor340ToNNN);
+DLLEXPORT double measurement_purityRatio260_230(const Measurement_t * self, const Quadruple_t * factorAbsorbanceBufferBlank);
 
 /**
  * @brief Computes the 260/280 purity ratio of the sample.
  *
  * @param self Pointer to the Measurement_t structure.
- * @param factorAirToBlank Correction factor for air to blank.
- * @param factor340ToNNN Correction factor from 340 nm to another wavelength.
- * @return The 260/280 purity ratio.
+ * @param factorAbsorbanceBufferBlank Correction value for air to blank.
+  * @return The 260/280 purity ratio.
  */
-DLLEXPORT double measurement_purityRatio260_280(const Measurement_t * self, const Quadruple_t * factorAirToBlank, const Quadruple_t * factor340ToNNN);
+DLLEXPORT double measurement_purityRatio260_280(const Measurement_t * self, const Quadruple_t * factorAbsorbanceBufferBlank);
 
 /**
  * @brief Prints the contents of a Measurement_t structure to the specified stream.

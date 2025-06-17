@@ -192,6 +192,41 @@ Class Measurement
 
 
 
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Hse_EviDense_Measurement_DefaultCuvettePathLength" data-uid="Hse.EviDense.Measurement.DefaultCuvettePathLength">
+  DefaultCuvettePathLength
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Defines the default path length of the cuvette.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const double DefaultCuvettePathLength = 1.1</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -396,8 +431,8 @@ Class Measurement
 
   <a id="Hse_EviDense_Measurement_Results_" data-uid="Hse.EviDense.Measurement.Results*"></a>
 
-  <h3 id="Hse_EviDense_Measurement_Results_Hse_EviDense_Factors_" data-uid="Hse.EviDense.Measurement.Results(Hse.EviDense.Factors)">
-  Results(Factors)
+  <h3 id="Hse_EviDense_Measurement_Results_Hse_EviDense_Factors_System_Double_" data-uid="Hse.EviDense.Measurement.Results(Hse.EviDense.Factors,System.Double)">
+  Results(Factors, double)
   
   </h3>
 
@@ -406,7 +441,7 @@ Class Measurement
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Results Results(Factors factors)</code></pre>
+    <pre><code class="lang-csharp hljs">public Results Results(Factors factors, double cuvettePathLength = 1.1)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -414,12 +449,15 @@ Class Measurement
     <dt><code>factors</code> <a class="xref" href="Hse.EviDense.Factors.html">Factors</a></dt>
     <dd><p>The correction factors.</p>
 </dd>
+    <dt><code>cuvettePathLength</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The cuvette path length.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="Hse.EviDense.Results.html">Results</a></dt>
-    <dd><p>A <a class="xref" href="Hse.EviDense.Measurement.html#Hse_EviDense_Measurement_Results_Hse_EviDense_Factors_">Results(Factors)</a> object containing calculated values.</p>
+    <dd><p>A <a class="xref" href="Hse.EviDense.Measurement.html#Hse_EviDense_Measurement_Results_Hse_EviDense_Factors_System_Double_">Results(Factors, double)</a> object containing calculated values.</p>
 </dd>
   </dl>
 

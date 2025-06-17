@@ -13,6 +13,7 @@ typedef struct
 {
     uint32_t blanksStart;
     uint32_t blanksEnd;
+    double   cuvettePathLength;
 
 } Parameters_t;
 
@@ -20,16 +21,16 @@ Parameters_t parametersCreate()
 {
     Parameters_t ret;
 
-    ret.blanksStart = 1;
-    ret.blanksEnd   = 0;
+    ret.blanksStart       = 1;
+    ret.blanksEnd         = 0;
+    ret.cuvettePathLength = 1.1; //mm
 
     return ret;
 }
 
 typedef struct
 {
-    Quadruple_t factorAirToBlank;
-    Quadruple_t factor340ToNNN;
+    Quadruple_t fAbsorbanceBufferBlank;
 } Factors_t;
 
 static Channel_t channel_fromJson(cJSON * node, const char * key)
@@ -88,18 +89,15 @@ static Factors_t calculateFactors(cJSON *oMeasurments, const Parameters_t * para
 
     uint32_t length = cJSON_GetArraySize(oMeasurments);
 
-    factors.factorAirToBlank = quadruple_initAllTheSame(0.0);
-    factors.factor340ToNNN   = quadruple_initAllTheSame(0.0);
+    factors.fAbsorbanceBufferBlank = quadruple_initAllTheSame(0.0);
 
     cJSON_ArrayForEach(iterator, oMeasurments)
     {
         if ((index < parameters->blanksStart) || (index >= (length - parameters->blanksEnd)))
         {
             Measurement_t m = measurement_fromJson(iterator);
-            Quadruple_t f1  = measurement_factorAirToBlank(&m);
-            Quadruple_t f2  = measurement_factor340ToNNN(&m);
-            factors.factorAirToBlank = quadruple_add(&factors.factorAirToBlank, &f1);
-            factors.factor340ToNNN   = quadruple_add(&factors.factor340ToNNN, &f2);
+            Quadruple_t f1  = measurement_factorAbsorbanceBufferBlank(&m);
+            factors.fAbsorbanceBufferBlank = quadruple_add(&factors.fAbsorbanceBufferBlank, &f1);
             count++;
         }
         index++;
@@ -107,15 +105,13 @@ static Factors_t calculateFactors(cJSON *oMeasurments, const Parameters_t * para
 
     if (count == 0)
     {
-        factors.factorAirToBlank = quadruple_initAllTheSame(1.0);
-        factors.factor340ToNNN   = quadruple_initAllTheSame(1.0);
+        factors.fAbsorbanceBufferBlank = quadruple_initAllTheSame(1.0);
     }
     else
     {
         Quadruple_t qCount       = quadruple_initAllTheSame(count);
 
-        factors.factorAirToBlank = quadruple_div(&factors.factorAirToBlank, &qCount);
-        factors.factor340ToNNN   = quadruple_div(&factors.factor340ToNNN, &qCount);
+        factors.fAbsorbanceBufferBlank = quadruple_div(&factors.fAbsorbanceBufferBlank, &qCount);
     }
     return factors;
 }
@@ -126,12 +122,12 @@ static cJSON *calculate(cJSON *measurement, const Factors_t * factors, const Par
 
     Measurement_t m = measurement_fromJson(measurement);
 
-    cJSON_AddNumberToObject(obj, DICT_DS_DNA, measurement_dsDNA(&m, &factors->factorAirToBlank, &factors->factor340ToNNN));
-    cJSON_AddNumberToObject(obj, DICT_SS_DNA, measurement_ssDNA(&m, &factors->factorAirToBlank, &factors->factor340ToNNN));
-    cJSON_AddNumberToObject(obj, DICT_SS_RNA, measurement_ssRNA(&m, &factors->factorAirToBlank, &factors->factor340ToNNN));
+    cJSON_AddNumberToObject(obj, DICT_DS_DNA, measurement_dsDNA(&m, &factors->fAbsorbanceBufferBlank, &parameters->cuvettePathLength));
+    cJSON_AddNumberToObject(obj, DICT_SS_DNA, measurement_ssDNA(&m, &factors->fAbsorbanceBufferBlank, &parameters->cuvettePathLength));
+    cJSON_AddNumberToObject(obj, DICT_SS_RNA, measurement_ssRNA(&m, &factors->fAbsorbanceBufferBlank, &parameters->cuvettePathLength));
 
-    cJSON_AddNumberToObject(obj, DICT_PURITY_260_230, measurement_purityRatio260_230(&m, &factors->factorAirToBlank, &factors->factor340ToNNN));
-    cJSON_AddNumberToObject(obj, DICT_PURITY_260_280, measurement_purityRatio260_280(&m, &factors->factorAirToBlank, &factors->factor340ToNNN));
+    cJSON_AddNumberToObject(obj, DICT_PURITY_260_230, measurement_purityRatio260_230(&m, &factors->fAbsorbanceBufferBlank));
+    cJSON_AddNumberToObject(obj, DICT_PURITY_260_280, measurement_purityRatio260_280(&m, &factors->fAbsorbanceBufferBlank));
 
     return obj;
 }
@@ -156,6 +152,11 @@ static Error_t cmdCalculate(Evi_t *self, int argcCmd, char **argvCmd)
             {
                 i++;
                 parameters.blanksEnd = atoi(argvCmd[i]);
+            }
+            else if ((strcmp(argvCmd[i], "--pathLength") == 0) && (i + 1 < argcCmd))
+            {
+                i++;
+                parameters.cuvettePathLength = atof(argvCmd[i]);
             }
             else
             {

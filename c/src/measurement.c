@@ -6,6 +6,8 @@
 #include <string.h>
 #include <math.h>
 
+#define DEFAULT_CUVETTE_PATH_LENGTH 1.1 //mm
+
 Measurement_t measurement_init(SingleMeasurement_t baseline, SingleMeasurement_t air, SingleMeasurement_t sample, const char * comment)
 {
     Measurement_t ret = {.baseline = baseline, .air = air, .sample = sample, .comment = {0}};
@@ -49,63 +51,63 @@ Quadruple_t measurement_calculateAbsorbance(const SingleMeasurement_t * baseline
     return ods;
 }
 
-Quadruple_t measurement_factorAirToBlank(const Measurement_t * self)
+Quadruple_t measurement_factorAbsorbanceBufferBlank(const Measurement_t * self)
 {
-    Quadruple_t a  = singleMeasurement_sample(&self->sample);
-    Quadruple_t b  = singleMeasurement_reference(&self->sample);
-    Quadruple_t c  = singleMeasurement_reference(&self->air);
-    Quadruple_t d  = singleMeasurement_sample(&self->air);
-    Quadruple_t ab = quadruple_div(&a, &b);
-    Quadruple_t cd = quadruple_div(&c, &d);
-
-    Quadruple_t ret = quadruple_mul(&ab, &cd);
-    return ret;
+    return measurement_calculateAbsorbance(&self->air, &self->sample, NULL);
 }
 
-Quadruple_t measurement_factor340ToNNN(const Measurement_t * self)
+Quadruple_t measurement_algorithmV9(const Measurement_t * self, const Quadruple_t * factorAbsorbanceBufferBlank)
 {
-    Quadruple_t aNNN = measurement_calculateAbsorbance(&self->air, &self->sample, NULL);
-    Quadruple_t a340 = quadruple_initAllTheSame(aNNN.value340);
-    return quadruple_div(&a340, &aNNN);
-}
-
-Quadruple_t measurement_algorithmV7(const Measurement_t * self, const Quadruple_t * factorAirToBlank, const Quadruple_t * factor340ToNNN)
-{
-    Quadruple_t aNNN     = measurement_calculateAbsorbance(&self->air, &self->sample, factorAirToBlank);
-    Quadruple_t aNNN_340 = quadruple_initAllTheSame(aNNN.value340);
-    Quadruple_t b        = quadruple_mul(&aNNN_340, factor340ToNNN);
-    Quadruple_t ret      = quadruple_sub(&aNNN, &b);
+    Quadruple_t aSample           = measurement_calculateAbsorbance(&self->air, &self->sample,NULL);
+    Quadruple_t aSampleMinusBlank = quadruple_sub(&aSample, factorAbsorbanceBufferBlank);
+    Quadruple_t a340              = quadruple_initAllTheSame(aSampleMinusBlank.value340);
+    Quadruple_t ret               = quadruple_sub(&aSampleMinusBlank, &a340);
 
     return ret;
 }
 
-double measurement_dsDNA(const Measurement_t * self, const Quadruple_t * factorAirToBlank, const Quadruple_t * factor340ToNNN)
+double measurement_dsDNA(const Measurement_t * self, const Quadruple_t * factorAbsorbanceBufferBlank, const double * cuvettePathLength)
 {
-    Quadruple_t aNNN = measurement_algorithmV7(self, factorAirToBlank, factor340ToNNN);
-    return aNNN.value260 * 50 * 10 / 1; //50ng/ul * 10mm / 1mm
+    double tempCcuvettePathLength = DEFAULT_CUVETTE_PATH_LENGTH;
+    if(cuvettePathLength)
+    {
+        tempCcuvettePathLength = *cuvettePathLength;
+    }
+    Quadruple_t aNNN = measurement_algorithmV9(self, factorAbsorbanceBufferBlank);
+    return aNNN.value260 * 50.0 * 10.0 / tempCcuvettePathLength; //50ng/ul * 10mm / 1.1mm
 }
 
-double measurement_ssDNA(const Measurement_t * self, const Quadruple_t * factorAirToBlank, const Quadruple_t * factor340ToNNN)
+double measurement_ssDNA(const Measurement_t * self, const Quadruple_t * factorAbsorbanceBufferBlank, const double * cuvettePathLength)
 {
-    Quadruple_t aNNN = measurement_algorithmV7(self, factorAirToBlank, factor340ToNNN);
-    return aNNN.value260 * 33 * 10 / 1; //33ng/ul * 10mm / 1mm
+    double tempCcuvettePathLength = DEFAULT_CUVETTE_PATH_LENGTH;
+    if(cuvettePathLength)
+    {
+        tempCcuvettePathLength = *cuvettePathLength;
+    }
+    Quadruple_t aNNN = measurement_algorithmV9(self, factorAbsorbanceBufferBlank);
+    return aNNN.value260 * 33.0 * 10.0 / tempCcuvettePathLength; //33ng/ul * 10mm / 1.1mm
 }
 
-double measurement_ssRNA(const Measurement_t * self, const Quadruple_t * factorAirToBlank, const Quadruple_t * factor340ToNNN)
+double measurement_ssRNA(const Measurement_t * self, const Quadruple_t * factorAbsorbanceBufferBlank, const double * cuvettePathLength)
 {
-    Quadruple_t aNNN = measurement_algorithmV7(self, factorAirToBlank, factor340ToNNN);
-    return aNNN.value260 * 40 * 10 / 1; //40ng/ul * 10mm / 1mm
+    double tempCcuvettePathLength = DEFAULT_CUVETTE_PATH_LENGTH;
+    if(cuvettePathLength)
+    {
+        tempCcuvettePathLength = *cuvettePathLength;
+    }
+    Quadruple_t aNNN = measurement_algorithmV9(self, factorAbsorbanceBufferBlank);
+    return aNNN.value260 * 40.0 * 10.0 / tempCcuvettePathLength; //40ng/ul * 10mm / 1.1mm
 }
 
-double measurement_purityRatio260_280(const Measurement_t * self, const Quadruple_t * factorAirToBlank, const Quadruple_t * factor340ToNNN)
+double measurement_purityRatio260_280(const Measurement_t * self, const Quadruple_t * factorAbsorbanceBufferBlank)
 {
-    Quadruple_t aNNN = measurement_algorithmV7(self, factorAirToBlank, factor340ToNNN);
+    Quadruple_t aNNN = measurement_algorithmV9(self, factorAbsorbanceBufferBlank);
     return  aNNN.value260 / aNNN.value280;
 }
 
-double measurement_purityRatio260_230(const Measurement_t * self, const Quadruple_t * factorAirToBlank, const Quadruple_t * factor340ToNNN)
+double measurement_purityRatio260_230(const Measurement_t * self, const Quadruple_t * factorAbsorbanceBufferBlank)
 {
-    Quadruple_t aNNN = measurement_algorithmV7(self, factorAirToBlank, factor340ToNNN);
+    Quadruple_t aNNN = measurement_algorithmV9(self, factorAbsorbanceBufferBlank);
     return  aNNN.value260 / aNNN.value230;
 }
 

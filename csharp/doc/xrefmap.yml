@@ -1855,6 +1855,12 @@ references:
   isSpec: "True"
   fullName: Hse.EviDense.Measurement.Comment
   nameWithType: Measurement.Comment
+- uid: Hse.EviDense.Measurement.DefaultCuvettePathLength
+  name: DefaultCuvettePathLength
+  href: api/Hse.EviDense.Measurement.html#Hse_EviDense_Measurement_DefaultCuvettePathLength
+  commentId: F:Hse.EviDense.Measurement.DefaultCuvettePathLength
+  fullName: Hse.EviDense.Measurement.DefaultCuvettePathLength
+  nameWithType: Measurement.DefaultCuvettePathLength
 - uid: Hse.EviDense.Measurement.Factors
   name: Factors()
   href: api/Hse.EviDense.Measurement.html#Hse_EviDense_Measurement_Factors
@@ -1884,12 +1890,15 @@ references:
   isSpec: "True"
   fullName: Hse.EviDense.Measurement.FromJson
   nameWithType: Measurement.FromJson
-- uid: Hse.EviDense.Measurement.Results(Hse.EviDense.Factors)
-  name: Results(Factors)
-  href: api/Hse.EviDense.Measurement.html#Hse_EviDense_Measurement_Results_Hse_EviDense_Factors_
-  commentId: M:Hse.EviDense.Measurement.Results(Hse.EviDense.Factors)
-  fullName: Hse.EviDense.Measurement.Results(Hse.EviDense.Factors)
-  nameWithType: Measurement.Results(Factors)
+- uid: Hse.EviDense.Measurement.Results(Hse.EviDense.Factors,System.Double)
+  name: Results(Factors, double)
+  href: api/Hse.EviDense.Measurement.html#Hse_EviDense_Measurement_Results_Hse_EviDense_Factors_System_Double_
+  commentId: M:Hse.EviDense.Measurement.Results(Hse.EviDense.Factors,System.Double)
+  name.vb: Results(Factors, Double)
+  fullName: Hse.EviDense.Measurement.Results(Hse.EviDense.Factors, double)
+  fullName.vb: Hse.EviDense.Measurement.Results(Hse.EviDense.Factors, Double)
+  nameWithType: Measurement.Results(Factors, double)
+  nameWithType.vb: Measurement.Results(Factors, Double)
 - uid: Hse.EviDense.Measurement.Results*
   name: Results
   href: api/Hse.EviDense.Measurement.html#Hse_EviDense_Measurement_Results_

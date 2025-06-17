@@ -375,16 +375,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docs/getting-started.md",
-      "output": {
-        ".html": {
-          "relative_path": "docs/getting-started.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "docs/introduction.md",
       "output": {
         ".html": {
@@ -432,6 +422,36 @@
       "output": {
         "resource": {
           "relative_path": "images/hseagohnesubzeile_cmyk_150px.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/step1.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/step1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/step2.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/step2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/step3.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/step3.png"
         }
       },
       "version": ""

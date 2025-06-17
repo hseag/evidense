@@ -129,6 +129,11 @@ public class StorageMeasurement
         return ret;
     }
 
+    /// <summary>
+    /// Gets the measurement at the specified index.
+    /// </summary>
+    /// <param name="index">The index of the measurement.</param>
+    /// <returns>The <see cref="Measurement"/> at the specified index.</returns>
     public Measurement this[int index]
     {
         get

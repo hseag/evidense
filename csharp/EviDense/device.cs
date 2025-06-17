@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Management;
+using System.Runtime.InteropServices;
 using System.Text.Json.Nodes;
 
 namespace Hse.EviDense;
@@ -34,6 +35,13 @@ public class AdcResult
     /// </summary>
     public int Current { get; set; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AdcResult"/> class.
+    /// </summary>
+    /// <param name="sampleValue">Voltage of sample detector in uV.</param>
+    /// <param name="referenceValue">Voltage of reference detector in uV.</param>
+    /// <param name="vref">Voltage of internal 5V reference in uV.</param>
+    /// <param name="current">LED current in uA.</param>
     public AdcResult(int sampleValue, int referenceValue, int vref, int current)
     {
         SampleValue = sampleValue;
@@ -314,6 +322,9 @@ public class Device : IDisposable
     private string serialNumber_ = "?";
     private string firmwareVersion_ = "?";
 
+    /// <summary>
+    /// Releases all resources used by the <see cref="Device"/>.
+    /// </summary>
     public void Dispose()
     {
         if (serialPort_ != null && serialPort_.IsOpen)
@@ -338,7 +349,7 @@ public class Device : IDisposable
     /// </param>
     /// <exception cref="Exception">
     /// Thrown when:
-    /// - No device is found during auto-detection (if <paramref name="serialPortName"/> is null or empty).
+    /// - No device is found during auto-detection (if <paramref name="serialNumber"/> is null or empty).
     /// - The provided serial port does not correspond to an EviDense device.
     /// </exception>
     public Device(string? serialNumber = null)
@@ -368,11 +379,18 @@ public class Device : IDisposable
         }
     }
 
+    /// <summary>
+    /// Finalizer for <see cref="Device"/>.
+    /// Ensures the device is properly disposed.
+    /// </summary>
     ~Device()
     {
         Dispose();
     }
 
+    /// <summary>
+    /// Gets the version of the eviDense library.
+    /// </summary>
     public string LibraryVersion
     {
         get
@@ -547,7 +565,7 @@ public class Device : IDisposable
     /// Sends a command to the device to fetch the value and parses the response.
     /// </summary>
     /// <typeparam name="T">
-    /// The type to which the retrieved value will be converted. Must be compatible with <see cref="Convert.ChangeType"/>.
+    /// The type to which the retrieved value will be converted. Must be compatible with <see cref="Convert.ChangeType(object, Type)"/>.
     /// </typeparam>
     /// <param name="index">
     /// The index from which the value should be retrieved.
@@ -846,6 +864,8 @@ public class Device : IDisposable
     public void FwUpdate(string filename)
     {
         string[] fileLines = System.IO.File.ReadAllLines(filename);
+        var serialNumber = SerialNumber();
+        
         erase();
         foreach (string line in fileLines)
         {
@@ -856,13 +876,13 @@ public class Device : IDisposable
         {
             throw new Exception($"Firmware update failed. Image not valid!");
         }
-
+        
         reboot();
         serialPort_.Close();
-        serialPort_.Dispose();
+        System.Threading.Thread.Sleep(30000);
 
-        System.Threading.Thread.Sleep(30000); // Wait for 30 seconds
-
+        //In some cases the device has after the reboot an other COM port...
+        serialPort_.PortName = FindDevice(serialNumber);
         serialPort_.Open();
         serialPort_.DiscardInBuffer();
         serialPort_.DiscardOutBuffer();
