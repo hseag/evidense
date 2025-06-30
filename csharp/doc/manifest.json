@@ -12,34 +12,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/DeviceTests.TestDevice.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/DeviceTests.TestDevice.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "DeviceTests.TestDevice",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/DeviceTests.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/DeviceTests.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "DeviceTests",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Hse.EviDense.AdcResult.yml",
       "output": {
         ".html": {
@@ -408,50 +380,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "images/hseagmitsubzeile_weissaufrot_150x30.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/hseagmitsubzeile_weissaufrot_150x30.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "images/hseagohnesubzeile_cmyk_150px.png",
       "output": {
         "resource": {
           "relative_path": "images/hseagohnesubzeile_cmyk_150px.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/step1.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/step1.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/step2.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/step2.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/step3.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/step3.png"
         }
       },
       "version": ""

@@ -133,15 +133,15 @@ public class Factors
     /// <summary>
     /// Gets or sets the correction absorbance for air to blank measurements.
     /// </summary>
-    public Quadruple AbsobanceBufferBlank { get; set; }
+    public Quadruple AbsorbanceBufferBlank { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Factors"/> class with optional correction factors.
     /// </summary>
-    /// <param name="fAbsobanceBufferBlank">Correction absorbance for air to blank measurements.</param>
-    public Factors(Quadruple? fAbsobanceBufferBlank = null)
+    /// <param name="fAbsorbanceBufferBlank">Correction absorbance for air to blank measurements.</param>
+    public Factors(Quadruple? fAbsorbanceBufferBlank = null)
     {
-        AbsobanceBufferBlank = fAbsobanceBufferBlank ?? new Quadruple(0.0);
+        AbsorbanceBufferBlank = fAbsorbanceBufferBlank ?? new Quadruple(0.0);
     }
 
     /// <summary>
@@ -150,7 +150,7 @@ public class Factors
     /// <returns>A formatted string displaying the correction factors.</returns>
     public override string ToString()
     {
-        return $"absobanceBufferBlank:{AbsobanceBufferBlank}";
+        return $"absorbanceBufferBlank:{AbsorbanceBufferBlank}";
     }
 
     /// <summary>
@@ -163,7 +163,7 @@ public class Factors
     {
         return new Factors
         {
-            AbsobanceBufferBlank = left.AbsobanceBufferBlank + right.AbsobanceBufferBlank,
+            AbsorbanceBufferBlank = left.AbsorbanceBufferBlank + right.AbsorbanceBufferBlank,
         };
     }
 
@@ -177,7 +177,7 @@ public class Factors
     {
         return new Factors
         {
-            AbsobanceBufferBlank = left.AbsobanceBufferBlank / right.AbsobanceBufferBlank,
+            AbsorbanceBufferBlank = left.AbsorbanceBufferBlank / right.AbsorbanceBufferBlank,
         };
     }
 
@@ -191,7 +191,7 @@ public class Factors
     {
         return new Factors
         {
-            AbsobanceBufferBlank = left.AbsobanceBufferBlank / scalar,
+            AbsorbanceBufferBlank = left.AbsorbanceBufferBlank / scalar,
         };
     }
 }
@@ -288,44 +288,44 @@ public class Measurement
     public Results Results(Factors factors, double cuvettePathLength = DefaultCuvettePathLength)
     {
         return new Results(
-            DsDNA(factors.AbsobanceBufferBlank, cuvettePathLength),
-            SsDNA(factors.AbsobanceBufferBlank, cuvettePathLength),
-            SsRNA(factors.AbsobanceBufferBlank, cuvettePathLength),
-            PurityRatio260_230(factors.AbsobanceBufferBlank),
-            PurityRatio260_280(factors.AbsobanceBufferBlank)
+            DsDNA(factors.AbsorbanceBufferBlank, cuvettePathLength),
+            SsDNA(factors.AbsorbanceBufferBlank, cuvettePathLength),
+            SsRNA(factors.AbsorbanceBufferBlank, cuvettePathLength),
+            PurityRatio260_230(factors.AbsorbanceBufferBlank),
+            PurityRatio260_280(factors.AbsorbanceBufferBlank)
         );
     }
 
-    private double DsDNA(Quadruple fAbsobanceBufferBlank, double cuvettePathLength)
+    private double DsDNA(Quadruple fAbsorbanceBufferBlank, double cuvettePathLength)
     {
-        return AlgorithmV9(fAbsobanceBufferBlank).Value260 * 50 * 10 / cuvettePathLength;
+        return AlgorithmV9(fAbsorbanceBufferBlank).Value260 * 50 * 10 / cuvettePathLength;
     }
 
-    private double SsDNA(Quadruple fAbsobanceBufferBlank, double cuvettePathLength)
+    private double SsDNA(Quadruple fAbsorbanceBufferBlank, double cuvettePathLength)
     {
-        return AlgorithmV9(fAbsobanceBufferBlank).Value260 * 33 * 10 / cuvettePathLength;
+        return AlgorithmV9(fAbsorbanceBufferBlank).Value260 * 33 * 10 / cuvettePathLength;
     }
 
-    private double SsRNA(Quadruple fAbsobanceBufferBlank, double cuvettePathLength)
+    private double SsRNA(Quadruple fAbsorbanceBufferBlank, double cuvettePathLength)
     {
-        return AlgorithmV9(fAbsobanceBufferBlank).Value260 * 40 * 10 / cuvettePathLength;
+        return AlgorithmV9(fAbsorbanceBufferBlank).Value260 * 40 * 10 / cuvettePathLength;
     }
 
-    private double PurityRatio260_280(Quadruple fAbsobanceBufferBlank)
+    private double PurityRatio260_280(Quadruple fAbsorbanceBufferBlank)
     {
-        Quadruple aNNN = AlgorithmV9(fAbsobanceBufferBlank);
+        Quadruple aNNN = AlgorithmV9(fAbsorbanceBufferBlank);
         return aNNN.Value280 == 0 ? double.NaN : aNNN.Value260 / aNNN.Value280;
     }
 
-    private double PurityRatio260_230(Quadruple fAbsobanceBufferBlank)
+    private double PurityRatio260_230(Quadruple fAbsorbanceBufferBlank)
     {
-        Quadruple aNNN = AlgorithmV9(fAbsobanceBufferBlank);
+        Quadruple aNNN = AlgorithmV9(fAbsorbanceBufferBlank);
         return aNNN.Value230 == 0 ? double.NaN : aNNN.Value260 / aNNN.Value230;
     }
 
-    private Quadruple AlgorithmV9(Quadruple fAbsobanceBufferBlank)
+    private Quadruple AlgorithmV9(Quadruple fAbsorbanceBufferBlank)
     {
-        Quadruple aSampleMinusBlank = CalculateAbsorbance(air, sample) - fAbsobanceBufferBlank;
+        Quadruple aSampleMinusBlank = CalculateAbsorbance(air, sample) - fAbsorbanceBufferBlank;
         return aSampleMinusBlank - new Quadruple(aSampleMinusBlank.Value340);
     }
 
