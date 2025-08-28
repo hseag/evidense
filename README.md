@@ -17,4 +17,4 @@ For more information see https://www.on-deck-photometer.com. To control the eviD
 11. Move the cuvette out off the eviDense UV module
 12. Dispose the tip with the attached cuvette
 
-The C# documentation can be found [here](csharp/doc/api/Hse.EviDense.html).
+The C# documentation can be found [here](https://hseag.github.io/evidense/).
