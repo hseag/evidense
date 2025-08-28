@@ -1,7 +1,7 @@
 # eviDense UV Photometer
 
 The eviDense UV module is an ultra-compact 4-color UV absorbance-based photometer which enables full Quality Control on liquid handlers. 
-For more information see https://www.on-deck-photometer.com. To control the eviDense UV module, HSE AG provides software interfaces in C or C#.
+For more information see www.on-deck-photometer.com. To control the eviDense UV module, HSE AG provides software interfaces in C or C#.
 
 ## Measuring procedure in short
 1. Pick up a tip with your liquid handler
