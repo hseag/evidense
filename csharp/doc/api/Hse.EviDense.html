@@ -110,6 +110,11 @@ Classes
 </dd>
     </dl>
     <dl class="jumplist">
+      <dt><a class="xref" href="Hse.EviDense.DeviceFinder.html">DeviceFinder</a></dt>
+      <dd><p>Helper class to get eviFluor devices on Windows and Linux</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="Hse.EviDense.Dict.html">Dict</a></dt>
       <dd><p>Defines constant dictionary keys used in measurement processing.</p>
 </dd>
@@ -146,6 +151,12 @@ This class performs mathematical operations (plus, minus, ...) on all four wavel
 </dd>
     </dl>
     <dl class="jumplist">
+      <dt><a class="xref" href="Hse.EviDense.Run.html">Run</a></dt>
+      <dd><p>Coordinates a guided measurement run: initial air/sample setup, repeated air+sample pairs,
+verification, logging, on-the-fly factor calculation, and JSON persistence.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="Hse.EviDense.SelfTestResult.html">SelfTestResult</a></dt>
       <dd><p>Represents the result of a self-test, containing various checks and problem indicators.</p>
 </dd>
@@ -158,6 +169,12 @@ This class performs mathematical operations (plus, minus, ...) on all four wavel
     <dl class="jumplist">
       <dt><a class="xref" href="Hse.EviDense.StorageMeasurement.html">StorageMeasurement</a></dt>
       <dd><p>Handles storage and retrieval of measurements using JSON serialization.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Hse.EviDense.StorageMeasurementEntry.html">StorageMeasurementEntry</a></dt>
+      <dd><p>Represents an entry in the storage measurement system.
+Contains a measurement, an optional comment, results, and raw JSON data.</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -206,6 +223,19 @@ Enums
     <dl class="jumplist">
       <dt><a class="xref" href="Hse.EviDense.TypeOf.html">TypeOf</a></dt>
       <dd><p>Enumeration representing different data types.</p>
+</dd>
+    </dl>
+    <h3 id="delegates">
+Delegates
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Hse.EviDense.Device.Rebooting.html">Device.Rebooting</a></dt>
+      <dd><p>Callback signature to report rebooting.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Hse.EviDense.Device.UpdateProgress.html">Device.UpdateProgress</a></dt>
+      <dd><p>Callback signature to report firmware update progress.</p>
 </dd>
     </dl>
 

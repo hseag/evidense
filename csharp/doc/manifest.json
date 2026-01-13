@@ -68,6 +68,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Device.Rebooting.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Device.Rebooting.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Device.Rebooting",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Device.Rebooting.yml\" sourcestartlinenumber=\"1\">Callback signature to report rebooting.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Device.UpdateProgress.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Device.UpdateProgress.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Device.UpdateProgress",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Device.UpdateProgress.yml\" sourcestartlinenumber=\"1\">Callback signature to report firmware update progress.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Hse.EviDense.Device.yml",
       "output": {
         ".html": {
@@ -79,6 +107,20 @@
       "IsMRef": true,
       "Title": "Hse.EviDense.Device",
       "Summary": "<p sourcefile=\"api/Hse.EviDense.Device.yml\" sourcestartlinenumber=\"1\">This class represents the eviDense module.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.DeviceFinder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.DeviceFinder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.DeviceFinder",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.DeviceFinder.yml\" sourcestartlinenumber=\"1\">Helper class to get eviFluor devices on Windows and Linux</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -222,6 +264,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.Run.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.Run.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.Run",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.Run.yml\" sourcestartlinenumber=\"1\">Coordinates a guided measurement run: initial air/sample setup, repeated air+sample pairs,\nverification, logging, on-the-fly factor calculation, and JSON persistence.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Hse.EviDense.SelfTestResult.yml",
       "output": {
         ".html": {
@@ -289,6 +345,20 @@
       "IsMRef": true,
       "Title": "Hse.EviDense.StorageMeasurement",
       "Summary": "<p sourcefile=\"api/Hse.EviDense.StorageMeasurement.yml\" sourcestartlinenumber=\"1\">Handles storage and retrieval of measurements using JSON serialization.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Hse.EviDense.StorageMeasurementEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hse.EviDense.StorageMeasurementEntry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Hse.EviDense.StorageMeasurementEntry",
+      "Summary": "<p sourcefile=\"api/Hse.EviDense.StorageMeasurementEntry.yml\" sourcestartlinenumber=\"1\">Represents an entry in the storage measurement system.\nContains a measurement, an optional comment, results, and raw JSON data.</p>\n"
     },
     {
       "type": "ManagedReference",

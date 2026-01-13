@@ -7,12 +7,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-cJSON* jsonLoad(char * file)
+cJSON* json_loadFromFile(const char * file)
 {
     FILE*  fin    = 0;
     char*  buffer = NULL;
     cJSON* json   = NULL;
-    
+
     fin = fopen(file, "rb");
 
     if (fin)
@@ -20,7 +20,7 @@ cJSON* jsonLoad(char * file)
         struct stat st;
         stat(file, &st);
 
-        buffer = malloc(st.st_size);
+        buffer = calloc(st.st_size+1, 1);
 
         size_t ret = fread(buffer, 1, st.st_size, fin);
 
@@ -35,7 +35,7 @@ cJSON* jsonLoad(char * file)
     return json;
 }
 
-void jsonSave(char* file, cJSON* json)
+void json_saveToFile(const char* file, cJSON* json)
 {
     FILE* fout   = 0;
     char* buffer = NULL;

@@ -230,6 +230,20 @@ public class Dict
     /// JSON key 'reference'.
     /// </summary>
     public const string SELFTEST_REFERENCE = "reference";
+    /// <summary>
+    /// JSON key 'logging'.
+    /// </summary>
+    public const string LOGGING = "logging";
+
+    /// <summary>
+    /// JSON key 'data_time'.
+    /// </summary>
+    public const string DATE_TIME = "date_time";
+
+    /// <summary>
+    /// JSON key 'errors'.
+    /// </summary>
+    public const string ERRORS = "errors";
 }
 
 /// <summary>

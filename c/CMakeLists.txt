@@ -11,7 +11,6 @@ if(EXISTS "${PROJECT_SOURCE_DIR}/.isrepo.txt")
   set(COMMOM        ${TOP}/../../common/module/commandline)
   set(COMMOM_LIB    ${COMMOM}/lib)
   set(COMMOM_CMD    ${COMMOM}/cmd)
-  set(COMMOM_3PARTY ${COMMOM}/3party)
   set(FW_COMMON     ${TOP}/../../common/module/firmware/application)
   set(FW            ${TOP}/../firmware/application/src)
 else()
@@ -23,6 +22,7 @@ else()
   set(FW            ${TOP}/src)
 endif()
 
+message("EXTRA_C_FLAGS : ${EXTRA_C_FLAGS}")
 message("TOP DIR    : ${TOP}")
 message("COMMOM DIR : ${COMMOM}")
 
@@ -31,13 +31,15 @@ set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON")
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
 
-add_library(libevidense SHARED)
-target_include_directories(libevidense PRIVATE "${COMMOM_LIB}" "${PROJECT_SOURCE_DIR}/src" "${FW_COMMON}" "${FW}")
+add_library(evidense SHARED)
 
-target_sources(libevidense PRIVATE
+target_include_directories(evidense PRIVATE "${COMMOM_LIB}" "${PROJECT_SOURCE_DIR}/src" "${FW_COMMON}" "${FW}")
+
+target_sources(evidense PRIVATE
   ${COMMOM_LIB}/evibase.h
   ${COMMOM_LIB}/evibase.c
   ${COMMOM_LIB}/crc-16-ccitt.c
+  ${COMMOM_LIB}/helpers.c
   src/quadruple.c
   src/quadruple.h
   src/channel.c
@@ -49,32 +51,46 @@ target_sources(libevidense PRIVATE
   src/evidense.c
 )
 
+FetchContent_Declare(
+    cJSON
+    GIT_REPOSITORY "https://github.com/DaveGamble/cJSON.git"
+    GIT_TAG "v1.7.18"
+    GIT_PROGRESS TRUE
+    GIT_SHALLOW TRUE
+)
+set(ENABLE_CJSON_TEST OFF CACHE BOOL "cJSON: Build with unit testing" FORCE)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5 CACHE STRING "Fixes a compatibility problem" FORCE)
+FetchContent_MakeAvailable(cJSON)
+
+message("cJSON_SOURCE_DIR    : ${cJSON_SOURCE_DIR}")
+
 # Stuff only for WIN32
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-    target_sources(libevidense PRIVATE ${COMMOM_LIB}/evi_win.c)
-    target_link_libraries(libevidense setupapi)
+    target_sources(evidense PRIVATE ${COMMOM_LIB}/evi_win.c)
+    target_link_libraries(evidense setupapi ws2_32 cjson)
 endif()
 
 if (UNIX)
     set (CMAKE_C_FLAGS "-Wall")
-    target_sources(libevidense PRIVATE ${COMMOM_LIB}/evi_unix.c)
-    target_link_libraries(libevidense m)
+    target_sources(evidense PRIVATE ${COMMOM_LIB}/evi_unix.c)
+    target_link_libraries(evidense m)
     find_path(LIBUSB_INCLUDE_DIR NAMES libusb.h PATH_SUFFIXES "include" "libusb" "libusb-1.0")
     find_library(LIBUSB_LIBRARY NAMES usb PATH_SUFFIXES "lib" "lib32" "lib64")    
-    target_link_libraries(libevidense usb-1.0)
+    target_link_libraries(evidense usb-1.0 cjson)
 endif()
 
-set_target_properties(libevidense PROPERTIES PUBLIC_HEADER "src/channel.h;src/measurement.h;src/singlemeasurement.h;src/quadruple.h;src/evidense.h;${FW}/evidenseerror.h;${FW}/evidenseindex.h;${FW_COMMON}/commonerror.h;${FW_COMMON}/commonindex.h;${COMMOM_LIB}/evibase.h")
+set_target_properties(evidense PROPERTIES PUBLIC_HEADER "src/channel.h;src/measurement.h;src/singlemeasurement.h;src/quadruple.h;src/evidense.h;${FW}/evidenseerror.h;${FW}/evidenseindex.h;${FW_COMMON}/commonerror.h;${FW_COMMON}/commonindex.h;${COMMOM_LIB}/evibase.h")
 
-add_executable(evidense)
-target_sources(evidense PRIVATE src/main.c
+add_executable(evidense-cli)
+target_sources(evidense-cli PRIVATE src/main.c
 src/cmdmeasure.c
 src/cmdbaseline.c
 src/cmddata.c
 src/cmdsave.c
 src/cmdexport.c
 src/cmdempty.c
+src/cmdrun.c
 src/json.c
 src/cmdselftest.c
 src/eviconfig.h
@@ -84,23 +100,12 @@ ${COMMOM_CMD}/cmdfwupdate.c
 ${COMMOM_CMD}/cmdget.c
 ${COMMOM_CMD}/cmdset.c)
 
-FetchContent_Declare(
-    cJSON
-    GIT_REPOSITORY "https://github.com/DaveGamble/cJSON.git"
-    GIT_TAG "v1.7.18"
-    GIT_PROGRESS TRUE
-    GIT_SHALLOW TRUE
-)
-set(ENABLE_CJSON_TEST OFF CACHE BOOL "cJSON: Build with unit testing" FORCE)
-FetchContent_MakeAvailable(cJSON)
-
-message("cJSON_SOURCE_DIR    : ${cJSON_SOURCE_DIR}")
-
 target_include_directories(evidense PRIVATE ${cJSON_SOURCE_DIR})
-target_include_directories(evidense PRIVATE ${COMMOM_CMD})
-target_include_directories(evidense PRIVATE ${COMMOM_LIB})
-target_include_directories(evidense PRIVATE "${PROJECT_SOURCE_DIR}/src" "${FW}" "${FW_COMMON}")
-target_link_libraries(evidense PRIVATE libevidense cjson)
+target_include_directories(evidense-cli PRIVATE ${cJSON_SOURCE_DIR})
+target_include_directories(evidense-cli PRIVATE ${COMMOM_CMD})
+target_include_directories(evidense-cli PRIVATE ${COMMOM_LIB})
+target_include_directories(evidense-cli PRIVATE "${PROJECT_SOURCE_DIR}/src" "${FW}" "${FW_COMMON}")
+target_link_libraries(evidense-cli PRIVATE evidense cjson)
 
-install(TARGETS libevidense PUBLIC_HEADER)
-install(TARGETS evidense)
+install(TARGETS evidense PUBLIC_HEADER)
+install(TARGETS evidense-cli)

@@ -4,133 +4,11 @@
 #include "cmddata.h"
 #include "printerror.h"
 #include "json.h"
+#include "dict.h"
 #include "measurement.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-typedef struct
-{
-    uint32_t blanksStart;
-    uint32_t blanksEnd;
-    double   cuvettePathLength;
-
-} Parameters_t;
-
-Parameters_t parametersCreate()
-{
-    Parameters_t ret;
-
-    ret.blanksStart       = 1;
-    ret.blanksEnd         = 0;
-    ret.cuvettePathLength = 1.1; //mm
-
-    return ret;
-}
-
-typedef struct
-{
-    Quadruple_t fAbsorbanceBufferBlank;
-} Factors_t;
-
-static Channel_t channel_fromJson(cJSON * node, const char * key)
-{
-    Channel_t ret = {0};
-
-    cJSON *oChannel = cJSON_GetObjectItem(node, key);
-
-    if(oChannel)
-    {
-        cJSON *oSample = cJSON_GetObjectItem(oChannel, DICT_SAMPLE);
-        if(oSample)
-        {
-            ret.sample = cJSON_GetNumberValue(oSample);
-        }
-
-        cJSON *oReference = cJSON_GetObjectItem(oChannel, DICT_REFERENCE);
-        if(oReference)
-        {
-            ret.reference = cJSON_GetNumberValue(oReference);
-        }
-    }
-
-    return ret;
-}
-
-static SingleMeasurement_t singleMeasurement_fromJson(cJSON * node, const char * key)
-{
-    cJSON *o = cJSON_GetObjectItem(node, key);
-
-    Channel_t channel230 = channel_fromJson(o, DICT_230);
-    Channel_t channel260 = channel_fromJson(o, DICT_260);
-    Channel_t channel280 = channel_fromJson(o, DICT_280);
-    Channel_t channel340 = channel_fromJson(o, DICT_340);
-
-    SingleMeasurement_t s = singleMeasurement_init(channel230, channel260, channel280, channel340);
-    return s;
-}
-
-static Measurement_t measurement_fromJson(cJSON * node)
-{
-    SingleMeasurement_t baseline = singleMeasurement_fromJson(node, DICT_BASELINE);
-    SingleMeasurement_t air      = singleMeasurement_fromJson(node, DICT_AIR);
-    SingleMeasurement_t sample   = singleMeasurement_fromJson(node, DICT_SAMPLE);
-
-    Measurement_t m = measurement_init(baseline, air, sample, NULL);
-    return m;
-}
-
-static Factors_t calculateFactors(cJSON *oMeasurments, const Parameters_t * parameters)
-{
-    Factors_t factors;
-    cJSON *iterator = NULL;
-    uint32_t index = 0;
-    uint32_t count = 0;
-
-    uint32_t length = cJSON_GetArraySize(oMeasurments);
-
-    factors.fAbsorbanceBufferBlank = quadruple_initAllTheSame(0.0);
-
-    cJSON_ArrayForEach(iterator, oMeasurments)
-    {
-        if ((index < parameters->blanksStart) || (index >= (length - parameters->blanksEnd)))
-        {
-            Measurement_t m = measurement_fromJson(iterator);
-            Quadruple_t f1  = measurement_factorAbsorbanceBufferBlank(&m);
-            factors.fAbsorbanceBufferBlank = quadruple_add(&factors.fAbsorbanceBufferBlank, &f1);
-            count++;
-        }
-        index++;
-    }
-
-    if (count == 0)
-    {
-        factors.fAbsorbanceBufferBlank = quadruple_initAllTheSame(1.0);
-    }
-    else
-    {
-        Quadruple_t qCount       = quadruple_initAllTheSame(count);
-
-        factors.fAbsorbanceBufferBlank = quadruple_div(&factors.fAbsorbanceBufferBlank, &qCount);
-    }
-    return factors;
-}
-
-static cJSON *calculate(cJSON *measurement, const Factors_t * factors, const Parameters_t * parameters)
-{
-    cJSON *obj = cJSON_CreateObject();
-
-    Measurement_t m = measurement_fromJson(measurement);
-
-    cJSON_AddNumberToObject(obj, DICT_DS_DNA, measurement_dsDNA(&m, &factors->fAbsorbanceBufferBlank, &parameters->cuvettePathLength));
-    cJSON_AddNumberToObject(obj, DICT_SS_DNA, measurement_ssDNA(&m, &factors->fAbsorbanceBufferBlank, &parameters->cuvettePathLength));
-    cJSON_AddNumberToObject(obj, DICT_SS_RNA, measurement_ssRNA(&m, &factors->fAbsorbanceBufferBlank, &parameters->cuvettePathLength));
-
-    cJSON_AddNumberToObject(obj, DICT_PURITY_260_230, measurement_purityRatio260_230(&m, &factors->fAbsorbanceBufferBlank));
-    cJSON_AddNumberToObject(obj, DICT_PURITY_260_280, measurement_purityRatio260_280(&m, &factors->fAbsorbanceBufferBlank));
-
-    return obj;
-}
 
 static Error_t cmdCalculate(Evi_t *self, int argcCmd, char **argvCmd)
 {
@@ -174,24 +52,17 @@ static Error_t cmdCalculate(Evi_t *self, int argcCmd, char **argvCmd)
     {
         char *file = argvCmd[i];
 
-        cJSON *json = jsonLoad(file);
+        cJSON *json = json_loadFromFile(file);
 
         if (json != NULL)
         {
-            cJSON *oMeasurments = cJSON_GetObjectItem(json, DICT_MEASUREMENTS);
+            cJSON *oMeasurements = cJSON_GetObjectItem(json, DICT_MEASUREMENTS);
 
-            if (oMeasurments)
+            if (oMeasurements)
             {
-                Factors_t factors = calculateFactors(oMeasurments, &parameters);
-                cJSON *iterator = NULL;
-                cJSON_ArrayForEach(iterator, oMeasurments)
-                {
-                    cJSON_DeleteItemFromObject(iterator, DICT_RESULTS);
-                    cJSON_AddItemToObject(iterator, DICT_RESULTS, calculate(iterator, &factors, &parameters));
-                }
+                measurement_calculate(oMeasurements, &parameters);
+                json_saveToFile(file, json);
             }
-
-            jsonSave(file, json);
 
             cJSON_Delete(json);
         }
@@ -206,7 +77,7 @@ static Error_t cmdCalculate(Evi_t *self, int argcCmd, char **argvCmd)
 
 static Error_t cmdDataPrint(Evi_t *self, char *file)
 {
-    cJSON *json = jsonLoad(file);
+    cJSON *json = json_loadFromFile(file);
 
     if (json != NULL)
     {

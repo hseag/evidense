@@ -2,39 +2,20 @@
 // SPDX-FileCopyrightText: © 2024 HSE AG, <opensource@hseag.com>
 
 #include "cJSON.h"
+#include "evidense.h"
 
-#define DICT_MEASUREMENTS "measurements"
-#define DICT_SERIALNUMBER "serialnumber"
-#define DICT_FIRMWAREVERSION "firmwareVersion"
+/**
+ * @brief Loads JSON content from a file path into a cJSON structure.
+ *
+ * @param file Null-terminated path to the file that should be parsed.
+ * @return Pointer to the parsed cJSON document, or NULL on I/O or parse errors.
+ */
+DLLEXPORT cJSON *json_loadFromFile(const char *file);
 
-#define DICT_SAMPLE "sample"
-#define DICT_REFERENCE "reference"
-
-#define DICT_AMPLIFICATION_SAMPLE "amplificationSample"
-#define DICT_AMPLIFICATION_REFERENCE "amplificationReference"
-#define DICT_CURRENT "current"
-#define DICT_RESULT "result"
-#define DICT_RESULT_TEXT "resultText"
-
-#define DICT_VALUES "values"
-#define DICT_LEVELLING "levelling"
-#define DICT_BASELINE "baseline"
-#define DICT_AIR "air"
-#define DICT_COMMENT "comment"
-
-#define DICT_230 "230"
-#define DICT_260 "260"
-#define DICT_280 "280"
-#define DICT_340 "340"
-
-#define DICT_RESULTS "results"
-#define DICT_DS_DNA "dsDNA"
-#define DICT_SS_DNA "ssDNA"
-#define DICT_SS_RNA "ssRNA"
-#define DICT_PURITY_260_230 "purity260/230"
-#define DICT_PURITY_260_280 "purity260/280"
-
-#define DICT_CONCENTRATION "concentration"
-
-cJSON *jsonLoad(char *file);
-void jsonSave(char* file, cJSON* json);
+/**
+ * @brief Writes a cJSON document to a file path.
+ *
+ * @param file Null-terminated path where the JSON data should be saved.
+ * @param json Pointer to the cJSON document that will be serialized.
+ */
+DLLEXPORT void json_saveToFile(const char* file, cJSON* json);

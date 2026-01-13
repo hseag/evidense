@@ -351,6 +351,58 @@ if needed and starts after wards a measurement.</p>
 
 
 
+  <a id="Hse_EviDense_Device_Command_" data-uid="Hse.EviDense.Device.Command*"></a>
+
+  <h3 id="Hse_EviDense_Device_Command_System_String_" data-uid="Hse.EviDense.Device.Command(System.String)">
+  Command(string)
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sends a command string to the device over the serial interface and waits for a valid response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] Command(string tx)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>tx</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The command string to transmit (without prefix or newline, e.g., &quot;V 1&quot;).</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</dt>
+    <dd><p>A list of response string tokens received from the device after processing the command.
+Each token represents a space- or quote-delimited component of the response.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Hse_EviDense_Device_Command_System_String__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method prepends a ':' to the transmitted command, sends it via the serial port,
+then reads and validates the response. If an error is indicated by the device (response starting with &quot;E&quot;),
+a corresponding error message is thrown based on the error code.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown in the following cases:</p>
+<ul><li>No response within the timeout period.</li><li>Response does not start with ':' (invalid format).</li><li>Response indicates an error code (e.g., unknown command, invalid parameter).</li></ul>
+</dd>
+  </dl>
+
+
+
   <a id="Hse_EviDense_Device_Dispose_" data-uid="Hse.EviDense.Device.Dispose*"></a>
 
   <h3 id="Hse_EviDense_Device_Dispose" data-uid="Hse.EviDense.Device.Dispose">
@@ -452,25 +504,31 @@ from the device at the predefined index for firmware versions.</p>
 
   <a id="Hse_EviDense_Device_FwUpdate_" data-uid="Hse.EviDense.Device.FwUpdate*"></a>
 
-  <h3 id="Hse_EviDense_Device_FwUpdate_System_String_" data-uid="Hse.EviDense.Device.FwUpdate(System.String)">
-  FwUpdate(string)
+  <h3 id="Hse_EviDense_Device_FwUpdate_System_String_Hse_EviDense_Device_UpdateProgress_Hse_EviDense_Device_Rebooting_" data-uid="Hse.EviDense.Device.FwUpdate(System.String,Hse.EviDense.Device.UpdateProgress,Hse.EviDense.Device.Rebooting)">
+  FwUpdate(string, UpdateProgress?, Rebooting?)
   
   </h3>
 
-  <div class="markdown level1 summary"><p>Performs a firmware update on the device.
-The method reads the firmware file, erases the existing firmware, writes the new firmware line by line,
-and then verifies its validity. If the update fails at any stage, an exception is thrown.</p>
+  <div class="markdown level1 summary"><p>Performs a firmware update on the device using a firmware image file.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void FwUpdate(string filename)</code></pre>
+    <pre><code class="lang-csharp hljs">public void FwUpdate(string filename, Device.UpdateProgress? progress = null, Device.Rebooting? rebooting = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>filename</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The path to the firmware file that contains the new firmware image.</p>
+    <dd><p>Path to the firmware file that contains the new firmware image. The file is read entirely
+and each line is transmitted to the device.</p>
+</dd>
+    <dt><code>progress</code> <a class="xref" href="Hse.EviDense.Device.html">Device</a>.<a class="xref" href="Hse.EviDense.Device.UpdateProgress.html">UpdateProgress</a></dt>
+    <dd><p>Optional callback that receives periodic progress updates (0–100). Progress is reported
+after an initial calibration period and during the post-reboot wait.</p>
+</dd>
+    <dt><code>rebooting</code> <a class="xref" href="Hse.EviDense.Device.html">Device</a>.<a class="xref" href="Hse.EviDense.Device.Rebooting.html">Rebooting</a></dt>
+    <dd><p>Optional callback that singals when the device reboots.</p>
 </dd>
   </dl>
 
@@ -481,19 +539,60 @@ and then verifies its validity. If the update fails at any stage, an exception i
 
 
 
-  <h4 class="section" id="Hse_EviDense_Device_FwUpdate_System_String__remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>The update process follows these steps:</p>
-<ol>
-<li>Read all lines from the specified firmware file.</li>
-<li>Erase the existing firmware using <span class="xref">Hse.EviDense.Device.erase()</span>.</li>
-<li>Send each line of the new firmware to the device using the &quot;S {line}&quot; command.</li>
-<li>Verify the firmware using <a class="xref" href="Hse.EviDense.Device.html#Hse_EviDense_Device_verify">verify()</a>; if verification fails, throw an exception.</li>
-<li>Reboot the device and close the serial port.</li>
-<li>Wait for 30 seconds to allow the device to restart.</li>
-<li>Reopen the serial port and clear its buffers.</li>
-<li>Verify the firmware again; if verification still passes, throw an exception indicating the update failed.</li>
-</ol>
+  <h4 class="section" id="Hse_EviDense_Device_FwUpdate_System_String_Hse_EviDense_Device_UpdateProgress_Hse_EviDense_Device_Rebooting__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This overload loads all lines from <code class="paramref">filename</code> and delegates to
+<a class="xref" href="Hse.EviDense.Device.html#Hse_EviDense_Device_FwUpdate_System_String___Hse_EviDense_Device_UpdateProgress_Hse_EviDense_Device_Rebooting_">FwUpdate(string[], UpdateProgress?, Rebooting?)</a> for the actual update logic.</p>
 </div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.ioexception">IOException</a></dt>
+    <dd><p>Thrown if the firmware file cannot be read.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if the firmware update fails at any stage (e.g., verification fails before or after reboot).</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Hse_EviDense_Device_FwUpdate_" data-uid="Hse.EviDense.Device.FwUpdate*"></a>
+
+  <h3 id="Hse_EviDense_Device_FwUpdate_System_String___Hse_EviDense_Device_UpdateProgress_Hse_EviDense_Device_Rebooting_" data-uid="Hse.EviDense.Device.FwUpdate(System.String[],Hse.EviDense.Device.UpdateProgress,Hse.EviDense.Device.Rebooting)">
+  FwUpdate(string[], UpdateProgress?, Rebooting?)
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a firmware update on the device using a string array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void FwUpdate(string[] lines, Device.UpdateProgress? progress = null, Device.Rebooting? rebooting = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>lines</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</dt>
+    <dd><p>The firmware image split into lines. Each line is sent to the device using the
+<code>&quot;S {line}&quot;</code> command.</p>
+</dd>
+    <dt><code>progress</code> <a class="xref" href="Hse.EviDense.Device.html">Device</a>.<a class="xref" href="Hse.EviDense.Device.UpdateProgress.html">UpdateProgress</a></dt>
+    <dd><p>Optional callback that receives periodic progress updates (0–100). Progress is reported
+after an initial calibration period and during the post-reboot wait.</p>
+</dd>
+    <dt><code>rebooting</code> <a class="xref" href="Hse.EviDense.Device.html">Device</a>.<a class="xref" href="Hse.EviDense.Device.Rebooting.html">Rebooting</a></dt>
+    <dd><p>Optional callback that singals when the device reboots.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
 
   <h4 class="section">Exceptions</h4>
   <dl class="parameters">
@@ -710,6 +809,44 @@ Each LED channel current is set so that the detector measures 90% of the maximum
 </dd>
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
     <dd><p>Thrown if the device response is invalid or does not contain the expected number of values.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Hse_EviDense_Device_Logging_" data-uid="Hse.EviDense.Device.Logging*"></a>
+
+  <h3 id="Hse_EviDense_Device_Logging" data-uid="Hse.EviDense.Device.Logging">
+  Logging()
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the status led color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; Logging()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.indexoutofrangeexception">IndexOutOfRangeException</a></dt>
+    <dd><p>Thrown if the device response does not contain the expected number of values.</p>
 </dd>
   </dl>
 
@@ -1178,10 +1315,10 @@ Example output:
 
 
 
-  <a id="Hse_EviDense_Device_verify_" data-uid="Hse.EviDense.Device.verify*"></a>
+  <a id="Hse_EviDense_Device_Verify_" data-uid="Hse.EviDense.Device.Verify*"></a>
 
-  <h3 id="Hse_EviDense_Device_verify" data-uid="Hse.EviDense.Device.verify">
-  verify()
+  <h3 id="Hse_EviDense_Device_Verify" data-uid="Hse.EviDense.Device.Verify">
+  Verify()
   
   </h3>
 
@@ -1190,7 +1327,7 @@ Example output:
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool verify()</code></pre>
+    <pre><code class="lang-csharp hljs">public bool Verify()</code></pre>
   </div>
 
 

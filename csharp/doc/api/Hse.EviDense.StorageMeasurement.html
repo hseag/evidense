@@ -234,7 +234,7 @@ Class StorageMeasurement
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Measurement this[int index] { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public StorageMeasurementEntry this[int index] { get; }</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -249,9 +249,42 @@ Class StorageMeasurement
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="Hse.EviDense.Measurement.html">Measurement</a></dt>
+    <dt><a class="xref" href="Hse.EviDense.StorageMeasurementEntry.html">StorageMeasurementEntry</a></dt>
     <dd><p>The <a class="xref" href="Hse.EviDense.Measurement.html">Measurement</a> at the specified index.</p>
 </dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Hse_EviDense_StorageMeasurement_data_" data-uid="Hse.EviDense.StorageMeasurement.data*"></a>
+
+  <h3 id="Hse_EviDense_StorageMeasurement_data" data-uid="Hse.EviDense.StorageMeasurement.data">
+  data
+  
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raw JSON structure representing all stored measurement data.
+This node may contain measurements, results, metadata, logging, and other associated entries.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public JsonNode data { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.json.nodes.jsonnode">JsonNode</a></dt>
+    <dd></dd>
   </dl>
 
 
@@ -267,8 +300,8 @@ Class StorageMeasurement
 
   <a id="Hse_EviDense_StorageMeasurement_Append_" data-uid="Hse.EviDense.StorageMeasurement.Append*"></a>
 
-  <h3 id="Hse_EviDense_StorageMeasurement_Append_Hse_EviDense_Measurement_System_String_" data-uid="Hse.EviDense.StorageMeasurement.Append(Hse.EviDense.Measurement,System.String)">
-  Append(Measurement, string)
+  <h3 id="Hse_EviDense_StorageMeasurement_Append_Hse_EviDense_Measurement_System_String_System_Collections_Generic_List_System_String__" data-uid="Hse.EviDense.StorageMeasurement.Append(Hse.EviDense.Measurement,System.String,System.Collections.Generic.List{System.String})">
+  Append(Measurement, string, List&lt;string&gt;?)
   
   </h3>
 
@@ -277,7 +310,7 @@ Class StorageMeasurement
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Append(Measurement measurement, string comment = &quot;&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Append(Measurement measurement, string comment = &quot;&quot;, List&lt;string&gt;? logging = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -287,6 +320,9 @@ Class StorageMeasurement
 </dd>
     <dt><code>comment</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>An optional comment for the measurement.</p>
+</dd>
+    <dt><code>logging</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>Optional logging information.</p>
 </dd>
   </dl>
 
@@ -303,8 +339,8 @@ Class StorageMeasurement
 
   <a id="Hse_EviDense_StorageMeasurement_AppendWithResults_" data-uid="Hse.EviDense.StorageMeasurement.AppendWithResults*"></a>
 
-  <h3 id="Hse_EviDense_StorageMeasurement_AppendWithResults_Hse_EviDense_Measurement_Hse_EviDense_Results_System_String_" data-uid="Hse.EviDense.StorageMeasurement.AppendWithResults(Hse.EviDense.Measurement,Hse.EviDense.Results,System.String)">
-  AppendWithResults(Measurement, Results, string)
+  <h3 id="Hse_EviDense_StorageMeasurement_AppendWithResults_Hse_EviDense_Measurement_Hse_EviDense_Results_System_String_System_Collections_Generic_List_System_String__" data-uid="Hse.EviDense.StorageMeasurement.AppendWithResults(Hse.EviDense.Measurement,Hse.EviDense.Results,System.String,System.Collections.Generic.List{System.String})">
+  AppendWithResults(Measurement, Results, string, List&lt;string&gt;?)
   
   </h3>
 
@@ -313,7 +349,7 @@ Class StorageMeasurement
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AppendWithResults(Measurement measurement, Results results, string comment = &quot;&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">public void AppendWithResults(Measurement measurement, Results results, string comment = &quot;&quot;, List&lt;string&gt;? logging = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -326,6 +362,9 @@ Class StorageMeasurement
 </dd>
     <dt><code>comment</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>An optional comment for the measurement.</p>
+</dd>
+    <dt><code>logging</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>Optional logging information.</p>
 </dd>
   </dl>
 

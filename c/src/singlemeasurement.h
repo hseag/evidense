@@ -6,6 +6,7 @@
 #include "channel.h"
 #include "quadruple.h"
 #include <stdbool.h>
+#include "cJSON.h"
 
 #if defined(_WIN64) || defined(_WIN32)
 #include <windows.h>
@@ -64,3 +65,20 @@ DLLEXPORT Quadruple_t singleMeasurement_reference(const SingleMeasurement_t * se
  * @param newLine Whether to add a newline at the end of the output.
  */
 DLLEXPORT void singleMeasurement_print(const SingleMeasurement_t * self, FILE * stream, bool newLine);
+
+/**
+ * @brief Converts a SingleMeasurement_t structure to its JSON representation.
+ *
+ * @param measurement Pointer to the measurement to serialize.
+ * @return Newly allocated cJSON object describing the measurement, or NULL on failure.
+ */
+DLLEXPORT cJSON* singleMeasurement_toJson(const SingleMeasurement_t * measurement);
+
+/**
+ * @brief Populates a SingleMeasurement_t structure from a JSON object.
+ *
+ * @param obj JSON object containing the serialized measurement fields.
+ * @param measurement Pointer to the structure that will receive the parsed values.
+ * @return true if the JSON data could be parsed successfully; false otherwise.
+ */
+DLLEXPORT bool singleMeasurement_fromJson(cJSON* obj, SingleMeasurement_t * measurement);

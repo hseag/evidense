@@ -6,6 +6,7 @@
 #include "singlemeasurement.h"
 #include "quadruple.h"
 #include <stdbool.h>
+#include <cJSON.h>
 
 #if defined(_WIN64) || defined(_WIN32)
 #include <windows.h>
@@ -118,3 +119,51 @@ DLLEXPORT void measurement_print(const Measurement_t * self, FILE * stream, bool
  * @return The computed absorbance value as a Quadruple_t.
  */
 DLLEXPORT Quadruple_t measurement_calculateAbsorbance(const SingleMeasurement_t * baseline, const SingleMeasurement_t * measurement, const Quadruple_t * correctionFactor);
+
+/**
+ * @brief Populates a Measurement_t structure from a JSON node.
+ *
+ * @param node JSON object containing the serialized measurement data.
+ * @param measurement Pointer to the structure that will receive the parsed values.
+ * @return true when parsing succeeds; false if required fields are missing or invalid.
+ */
+DLLEXPORT bool measurement_fromJson(cJSON * node, Measurement_t * measurement);
+
+typedef struct
+{
+    Quadruple_t fAbsorbanceBufferBlank;
+} Factors_t;
+
+typedef struct
+{
+    uint32_t blanksStart;
+    uint32_t blanksEnd;
+    double   cuvettePathLength;
+
+} Parameters_t;
+
+/**
+ * @brief Creates a Parameters_t structure with default initialization values.
+ *
+ * @return Parameters_t instance containing the default calculation parameters.
+ */
+DLLEXPORT Parameters_t parametersCreate();
+
+/**
+ * @brief Calculates measurement factors using the provided parameters.
+ *
+ * @param oMeasurments JSON array of measurement entries.
+ * @param parameters Pointer to the calculation parameters.
+ * @param factors Pointer to the structure that receives the computed factors.
+ * @return true if the factors were computed successfully; false otherwise.
+ */
+DLLEXPORT bool measurement_calculateFactors(cJSON *oMeasurments, const Parameters_t * parameters, Factors_t * factors);
+
+/**
+ * @brief Calculates derived measurement values from the provided JSON data.
+ *
+ * @param oMeasurements JSON array containing the measurement entries to process.
+ * @param parameters Pointer to the calculation parameters.
+ * @return true if all derived values were computed successfully; false otherwise.
+ */
+DLLEXPORT bool measurement_calculate(cJSON * oMeasurements, const Parameters_t * parameters);

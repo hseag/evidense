@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: © 2024 HSE AG, <opensource@hseag.com>
 
-#include "measurement.h"
 #include "evibase.h"
+#include "dict.h"
+#include "measurement.h"
 #include <string.h>
 #include <math.h>
 
@@ -111,3 +112,112 @@ double measurement_purityRatio260_230(const Measurement_t * self, const Quadrupl
     return  aNNN.value260 / aNNN.value230;
 }
 
+bool measurement_fromJson(cJSON * node, Measurement_t * measurement)
+{
+    bool ret = false;
+    cJSON * oBaseline = cJSON_GetObjectItem(node, DICT_BASELINE);
+    cJSON * oAir      = cJSON_GetObjectItem(node, DICT_AIR);
+    cJSON * oSample   = cJSON_GetObjectItem(node, DICT_SAMPLE);
+    if(oBaseline && oAir && oSample)
+    {
+        SingleMeasurement_t baseline = {};
+        SingleMeasurement_t air = {};
+        SingleMeasurement_t sample = {};
+        if(singleMeasurement_fromJson(oBaseline, &baseline) && singleMeasurement_fromJson(oAir, &air) && singleMeasurement_fromJson(oSample, &sample))
+        {
+            *measurement = measurement_init(baseline, air, sample, NULL);
+            ret = true;
+        }
+    }
+
+    return ret;
+}
+
+Parameters_t parametersCreate()
+{
+    Parameters_t ret;
+
+    ret.blanksStart       = 1;
+    ret.blanksEnd         = 0;
+    ret.cuvettePathLength = 1.1; //mm
+
+    return ret;
+}
+
+bool measurement_calculateFactors(cJSON *oMeasurments, const Parameters_t * parameters, Factors_t * factors)
+{
+    bool ret = false;
+    cJSON *iterator = NULL;
+    uint32_t index = 0;
+    uint32_t count = 0;
+
+    uint32_t length = cJSON_GetArraySize(oMeasurments);
+
+    factors->fAbsorbanceBufferBlank = quadruple_initAllTheSame(0.0);
+
+    cJSON_ArrayForEach(iterator, oMeasurments)
+    {
+        if ((index < parameters->blanksStart) || (index >= (length - parameters->blanksEnd)))
+        {
+            Measurement_t m = {};
+            measurement_fromJson(iterator, &m);
+            Quadruple_t f1  = measurement_factorAbsorbanceBufferBlank(&m);
+            factors->fAbsorbanceBufferBlank = quadruple_add(&factors->fAbsorbanceBufferBlank, &f1);
+            count++;
+        }
+        index++;
+    }
+
+    if (count == 0)
+    {
+        factors->fAbsorbanceBufferBlank = quadruple_initAllTheSame(1.0);
+    }
+    else
+    {
+        Quadruple_t qCount       = quadruple_initAllTheSame(count);
+
+        factors->fAbsorbanceBufferBlank = quadruple_div(&factors->fAbsorbanceBufferBlank, &qCount);
+        ret = count == (parameters->blanksStart + parameters->blanksEnd);
+    }
+    return ret;
+}
+
+static cJSON *calculate(cJSON *measurement, const Factors_t * factors, const Parameters_t * parameters)
+{
+    cJSON *obj = cJSON_CreateObject();
+
+    Measurement_t m = {};
+
+    measurement_fromJson(measurement, &m);
+
+    cJSON_AddNumberToObject(obj, DICT_DS_DNA, measurement_dsDNA(&m, &factors->fAbsorbanceBufferBlank, &parameters->cuvettePathLength));
+    cJSON_AddNumberToObject(obj, DICT_SS_DNA, measurement_ssDNA(&m, &factors->fAbsorbanceBufferBlank, &parameters->cuvettePathLength));
+    cJSON_AddNumberToObject(obj, DICT_SS_RNA, measurement_ssRNA(&m, &factors->fAbsorbanceBufferBlank, &parameters->cuvettePathLength));
+
+    cJSON_AddNumberToObject(obj, DICT_PURITY_260_230, measurement_purityRatio260_230(&m, &factors->fAbsorbanceBufferBlank));
+    cJSON_AddNumberToObject(obj, DICT_PURITY_260_280, measurement_purityRatio260_280(&m, &factors->fAbsorbanceBufferBlank));
+
+    return obj;
+}
+
+bool measurement_calculate(cJSON * oMeasurements, const Parameters_t * parameters)
+{
+    bool ret = false;
+
+    if (oMeasurements)
+    {
+        Factors_t factors = {};
+
+        if(measurement_calculateFactors(oMeasurements, parameters, &factors))
+        {
+            cJSON *iterator = NULL;
+            cJSON_ArrayForEach(iterator, oMeasurements)
+            {
+                cJSON_DeleteItemFromObject(iterator, DICT_CALCULATED);
+                cJSON_AddItemToObject(iterator, DICT_CALCULATED, calculate(iterator, &factors, parameters));
+            }
+            ret = true;
+        }
+    }
+    return ret;
+}

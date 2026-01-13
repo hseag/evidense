@@ -3,6 +3,7 @@
 
 #include "cmdsave.h"
 #include "json.h"
+#include "dict.h"
 #include "evidense.h"
 #include "commonindex.h"
 #include "evidenseindex.h"
@@ -212,13 +213,13 @@ static Error_t addMeasurement(Evi_t* self, Options_t * options, cJSON* json)
     return ERROR_EVI_OK;
 }
 
-static cJSON* loadJson(Evi_t* self, Options_t * options)
+cJSON* dataLoadJson(Evi_t* self, const char * filename, bool append)
 {
     cJSON* json = NULL;
 
-    if(options->append == true)
+    if(append == true)
     {
-        json = jsonLoad(options->filename);
+        json = json_loadFromFile(filename);
     }
 
     // create new JSON file
@@ -311,11 +312,11 @@ Error_t cmdSave(Evi_t* self, int argcCmd, char** argvCmd)
         goto exit;
     }
 
-    json = loadJson(self, &options);
+    json = dataLoadJson(self, options.filename, options.append);
     ret  = addMeasurement(self, &options, json);
     if (ret == ERROR_EVI_OK)
     {
-        jsonSave(options.filename, json);
+        json_saveToFile(options.filename, json);
     }
 exit:
     if (json)

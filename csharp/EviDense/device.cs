@@ -1,12 +1,18 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: © 2025 HSE AG, <opensource@hseag.com>
 
+using Hse.EviDense;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.IO.Ports;
 using System.Management;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 
 namespace Hse.EviDense;
 
@@ -318,9 +324,10 @@ public class SelfTestResult
 /// </summary>
 public class Device : IDisposable
 {
-    private SerialPort serialPort_;
+    private SerialPort ? serialPort_;
     private string serialNumber_ = "?";
     private string firmwareVersion_ = "?";
+    private bool isSimulation_;
 
     /// <summary>
     /// Releases all resources used by the <see cref="Device"/>.
@@ -354,28 +361,37 @@ public class Device : IDisposable
     /// </exception>
     public Device(string? serialNumber = null)
     {
-        var serialPortName = FindDevice(serialNumber);
-        if (serialPortName == null)
+        if ((serialNumber != null) && (serialNumber == "SIMULATION"))
         {
-            throw new Exception($"EviDense ({serialNumber}) module not found");
+            isSimulation_ = true;
         }
+        else
+        {
+            isSimulation_ = false;
 
-        serialPort_ = new SerialPort(serialPortName, 115200, Parity.None, 8, StopBits.One)
-        {
-            ReadTimeout = 30000
-        };
-        serialPort_.Open();
-        serialPort_.DiscardInBuffer();
-        serialPort_.DiscardOutBuffer();
+            var serialPortName = DeviceFinder.FindDevice(serialNumber);
+            if (serialPortName == null)
+            {
+                throw new Exception($"EviDense ({serialNumber}) module not found");
+            }
 
-        try
-        {
-            SerialNumber();
-            FirmwareVersion();
-        }
-        catch (Exception)
-        {
-            // silent fail
+            serialPort_ = new SerialPort(serialPortName, 115200, Parity.None, 8, StopBits.One)
+            {
+                ReadTimeout = 30000
+            };
+            serialPort_.Open();
+            serialPort_.DiscardInBuffer();
+            serialPort_.DiscardOutBuffer();
+
+            try
+            {
+                SerialNumber();
+                FirmwareVersion();
+            }
+            catch (Exception)
+            {
+                // silent fail
+            }
         }
     }
 
@@ -407,104 +423,69 @@ public class Device : IDisposable
     /// <returns>A list of serial numbers of available matching devices.</returns>
     public static List<string> GetAvailableDevices()
     {
-        List<string> serialnumbers = new List<string>() { };
-
-        foreach (var port in SerialPort.GetPortNames())
-        {
-            string serialNumber = "";
-
-            if (IsSerialPortMatchingVidAndPid(port, USB.VID, USB.PID, ref serialNumber))
-            {
-                serialnumbers.Add(serialNumber);
-            }
-        }
-        return serialnumbers;
+        return DeviceFinder.GetAvailableDevices();
     }
 
-    private static string? FindDevice(string? serialNumber)
+    /// <summary>
+    /// Splits a device response into tokens, preserving quoted substrings.
+    /// </summary>
+    /// <param name="input">Raw line as returned by the device (without leading ':').</param>
+    /// <returns>Array of tokens; quoted segments are returned without quotes.</returns>
+    private static string[] Split(string input)
     {
-        foreach (var port in SerialPort.GetPortNames())
+        var pattern = @"(?:""(?<q>[^""]*)"")|(?:'(?<q>[^']*)')|(?<q>\S+)";
+        var matches = Regex.Matches(input, pattern);
+
+        string[] tokens = new string[matches.Count];
+        for (int i = 0; i < matches.Count; i++)
         {
-            string sn = "";
-            if (IsSerialPortMatchingVidAndPid(port, USB.VID, USB.PID, ref sn))
-            {
-                if (serialNumber == null || sn == serialNumber)
-                {
-                    return port;
-                }
-            }
+            tokens[i] = matches[i].Groups["q"].Value;
         }
 
-        return null;
+        return tokens;
     }
 
-    private static bool IsSerialPortMatchingVidAndPid(string portName, int vid, int pid, ref string serialNumber)
+    /// <summary>
+    /// Sends a command string to the device over the serial interface and waits for a valid response.
+    /// </summary>
+    /// <param name="tx">The command string to transmit (without prefix or newline, e.g., "V 1").</param>
+    /// <returns>
+    /// A list of response string tokens received from the device after processing the command. 
+    /// Each token represents a space- or quote-delimited component of the response.
+    /// </returns>
+    /// <exception cref="Exception">
+    /// Thrown in the following cases:
+    /// <list type="bullet">
+    /// <item><description>No response within the timeout period.</description></item>
+    /// <item><description>Response does not start with ':' (invalid format).</description></item>
+    /// <item><description>Response indicates an error code (e.g., unknown command, invalid parameter).</description></item>
+    /// </list>
+    /// </exception>
+    /// <remarks>
+    /// This method prepends a ':' to the transmitted command, sends it via the serial port,
+    /// then reads and validates the response. If an error is indicated by the device (response starting with "E"),
+    /// a corresponding error message is thrown based on the error code.
+    /// </remarks>
+    public string[] Command(string tx)
     {
-        if (!OperatingSystem.IsWindows())
-        {
-            throw new PlatformNotSupportedException("This functionality is only supported on Windows.");
-        }
-
-        string vidAsHex = vid.ToString("X4");
-        string pidAsHex = pid.ToString("X4");
-
-        // Query WMI for serial port devices
-        using var searcher = new ManagementObjectSearcher(@"SELECT * FROM Win32_PnPEntity WHERE Name LIKE '%(COM%'");
-        foreach (var device in searcher.Get())
-        {
-            var name = device["Name"]?.ToString(); // Friendly name (e.g., "USB Serial Device (COM3)")
-            var deviceId = device["DeviceID"]?.ToString(); // Device ID containing VID and PID
-            var pnpDeviceId = device["PNPDeviceID"]?.ToString(); // Full PNPDeviceID (useful for extracting serial number)
-
-            if (name != null && name.Contains($"({portName})") && deviceId != null && pnpDeviceId != null)
-            {
-                // Check if VID and PID match
-                var foundVid = ExtractValue(deviceId, "VID_");
-                var foundPid = ExtractValue(deviceId, "PID_");
-                serialNumber = ExtractSerialNumber(pnpDeviceId);
-
-                if (foundVid == vidAsHex && foundPid == pidAsHex)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private static string ExtractValue(string deviceId, string key)
-    {
-        var startIndex = deviceId.IndexOf(key) + key.Length;
-        return deviceId.Substring(startIndex, 4); // VID and PID are 4 characters long
-    }
-
-    private static string ExtractSerialNumber(string pnpDeviceId)
-    {
-        var parts = pnpDeviceId.Split('\\');
-        if (parts.Length > 2)
-        {
-            return parts[^1]; // Letztes Segment enthält die Seriennummer
-        }
-        return string.Empty;
-    }
-
-    private string[] Command(string tx)
-    {
-        serialPort_.DiscardInBuffer();
-        serialPort_.DiscardOutBuffer();
-
         tx = $":{tx}";
-        serialPort_.WriteLine(tx);
+        var rx = "";
+        if (isSimulation_)
+        {
+            rx = XferSocket(tx);
+        }
+        else
+        {
+            rx = XferSerial(tx);
+        }
 
-        string rx = serialPort_.ReadLine();
         if (string.IsNullOrEmpty(rx))
             throw new Exception("No response within time!");
 
         if (!rx.StartsWith(":"))
             throw new Exception($"Response did not start with ':' {rx}");
 
-        string[] parts = rx.Remove(0, 1).Split();
+        string[] parts = Split(rx.Remove(0, 1));
 
         if (parts[0] == "E")
         {
@@ -525,6 +506,50 @@ public class Device : IDisposable
         }
 
         return parts;
+    }
+
+    /// <summary>
+    /// Transmits a single command over TCP loopback to a simulator and returns the first response line.
+    /// </summary>
+    /// <param name="tx">Command with leading ':' (as prepared by <see cref="Command(string)"/>).</param>
+    /// <returns>The raw response line, or <c>null</c> if the connection is closed.</returns>
+    private string? XferSocket(string tx)
+    {
+        using var client = new TcpClient();
+        client.Connect("127.0.0.1", 5000);
+
+        using NetworkStream stream = client.GetStream();
+        using var reader = new StreamReader(stream, Encoding.UTF8);
+        using var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
+
+        var outBytes = Encoding.UTF8.GetBytes(":" + tx + "\n");
+        writer.WriteLineAsync(tx);
+
+        var ret = reader.ReadLine();
+
+        client.Close();
+
+        return ret;
+    }
+
+    /// <summary>
+    /// Transmits a single command over the configured serial port and reads the response line.
+    /// </summary>
+    /// <param name="tx">Command with leading ':' (as prepared by <see cref="Command(string)"/>).</param>
+    /// <returns>The raw response line from the device.</returns>
+    /// <exception cref="InvalidOperationException">If the serial port is not initialized.</exception>
+    private string? XferSerial(string tx)
+    {
+        if (serialPort_ == null)
+        {
+            throw new Exception("SerialPort cant be null!");
+        }
+        serialPort_.DiscardInBuffer();
+        serialPort_.DiscardOutBuffer();
+
+        serialPort_.WriteLine(tx);
+
+        return serialPort_.ReadLine();
     }
 
     private string ErrorToText(int error)
@@ -810,11 +835,20 @@ public class Device : IDisposable
     /// <exception cref="IndexOutOfRangeException">
     /// Thrown if the device response does not contain the expected number of values.
     /// </exception>
-    public bool verify()
+    public bool Verify()
     {
         string[] response = Command("T");
         return int.Parse(response[1]) == 1;
     }
+
+    /// <summary>
+    /// Callback signature to report rebooting.
+    /// </summary>
+    /// <param name="ongoing">
+    /// True if a rebooting process is active.
+    /// This can be usefull because during rebooting the USB device disapears for a few seconds.
+    /// </param>
+    public delegate void Rebooting(bool ongoing);
 
     /// <summary>
     /// Reboots the device.
@@ -837,57 +871,155 @@ public class Device : IDisposable
     }
 
     /// <summary>
-    /// Performs a firmware update on the device.
-    /// The method reads the firmware file, erases the existing firmware, writes the new firmware line by line,
-    /// and then verifies its validity. If the update fails at any stage, an exception is thrown.
+    /// Callback signature to report firmware update progress.
+    /// </summary>
+    /// <param name="percent">
+    /// The overall progress percentage of the update operation, as an integer in the range 0–100.
+    /// Values are best-effort estimates and may advance non-linearly.
+    /// </param>
+    public delegate void UpdateProgress(int percent);
+
+    /// <summary>
+    /// Performs a firmware update on the device using a firmware image file.
     /// </summary>
     /// <param name="filename">
-    /// The path to the firmware file that contains the new firmware image.
+    /// Path to the firmware file that contains the new firmware image. The file is read entirely
+    /// and each line is transmitted to the device.
+    /// </param>
+    /// <param name="progress">
+    /// Optional callback that receives periodic progress updates (0–100). Progress is reported
+    /// after an initial calibration period and during the post-reboot wait.
+    /// </param>
+    /// <param name="rebooting">
+    /// Optional callback that singals when the device reboots.
     /// </param>
     /// <exception cref="System.IO.IOException">
     /// Thrown if the firmware file cannot be read.
     /// </exception>
-    /// <exception cref="Exception">
+    /// <exception cref="System.Exception">
     /// Thrown if the firmware update fails at any stage (e.g., verification fails before or after reboot).
     /// </exception>
     /// <remarks>
-    /// The update process follows these steps:
-    /// 1. Read all lines from the specified firmware file.
-    /// 2. Erase the existing firmware using <see cref="erase()"/>.
-    /// 3. Send each line of the new firmware to the device using the "S {line}" command.
-    /// 4. Verify the firmware using <see cref="verify()"/>; if verification fails, throw an exception.
-    /// 5. Reboot the device and close the serial port.
-    /// 6. Wait for 30 seconds to allow the device to restart.
-    /// 7. Reopen the serial port and clear its buffers.
-    /// 8. Verify the firmware again; if verification still passes, throw an exception indicating the update failed.
+    /// This overload loads all lines from <paramref name="filename"/> and delegates to
+    /// <see cref="FwUpdate(string[], UpdateProgress?, Rebooting ?)"/> for the actual update logic.
     /// </remarks>
-    public void FwUpdate(string filename)
+    public void FwUpdate(string filename, UpdateProgress? progress = null, Rebooting? rebooting = null)
     {
-        string[] fileLines = System.IO.File.ReadAllLines(filename);
+        string[] lines = System.IO.File.ReadAllLines(filename);
+        FwUpdate(lines, progress, rebooting);
+    }
+
+    /// <summary>
+    /// Performs a firmware update on the device using a string array.
+    /// </summary>
+    /// <param name="lines">
+    /// The firmware image split into lines. Each line is sent to the device using the
+    /// <c>"S {line}"</c> command.
+    /// </param>
+    /// <param name="progress">
+    /// Optional callback that receives periodic progress updates (0–100). Progress is reported
+    /// after an initial calibration period and during the post-reboot wait.
+    /// </param>
+    /// <param name="rebooting">
+    /// Optional callback that singals when the device reboots.
+    /// </param>
+    /// <exception cref="System.IO.IOException">
+    /// Thrown if the firmware file cannot be read.
+    /// </exception>
+    /// <exception cref="System.Exception">
+    /// Thrown if the firmware update fails at any stage (e.g., verification fails before or after reboot).
+    /// </exception>
+    public void FwUpdate(string[] lines, UpdateProgress? progress = null, Rebooting? rebooting = null)
+    {
         var serialNumber = SerialNumber();
-        
-        erase();
-        foreach (string line in fileLines)
+        int delayTime = 30000;
+        long duration = 0;
+        bool first = true;
+        bool valid = false;
+        Stopwatch stopWatch = new Stopwatch();
+
+        void UpdateProgress()
         {
-            Command($"S {line}");
+            if (progress != null && valid)
+            {
+                double percent = (double)stopWatch.ElapsedMilliseconds / (double)duration * 100.0;
+                if (percent > 100.0)
+                {
+                    percent = 100.0;
+                }
+                progress((int)percent);
+            }
         }
 
-        if (!verify())
+        erase();
+
+        stopWatch.Start();
+        for (int i = 0; i < lines.Length; i++)
+        {
+            Command($"S {lines[i]}");
+            if (first && stopWatch.ElapsedMilliseconds >= 1000)
+            {
+                first = false;
+                if (i > 0)
+                {
+                    duration = (lines.Length / i) * 1000 + delayTime;
+                    valid = true;
+                }
+            }
+            if (valid && (i % 50 == 0))
+            {
+                UpdateProgress();
+            }
+        }
+
+        if (!Verify())
         {
             throw new Exception($"Firmware update failed. Image not valid!");
         }
-        
+
+        if (rebooting != null)
+        {
+            rebooting(true);
+        }
         reboot();
-        serialPort_.Close();
-        System.Threading.Thread.Sleep(30000);
+        if (serialPort_ != null)
+        {
+            serialPort_.Close();
+        }
+
+        Stopwatch stopWatchDelay = new Stopwatch();
+        stopWatchDelay.Start();
+
+        while (true)
+        {
+            UpdateProgress();
+
+            if (stopWatchDelay.ElapsedMilliseconds >= delayTime)
+            {
+                break;
+            }
+            System.Threading.Thread.Sleep(500);
+        }
 
         //In some cases the device has after the reboot an other COM port...
-        serialPort_.PortName = FindDevice(serialNumber);
-        serialPort_.Open();
-        serialPort_.DiscardInBuffer();
-        serialPort_.DiscardOutBuffer();
+        if (serialPort_ != null)
+        {
+            var newPortName = DeviceFinder.FindDevice(serialNumber);
+            if (newPortName != null)
+            {
+                serialPort_.PortName = newPortName;
+            }
+            serialPort_.Open();
+            serialPort_.DiscardInBuffer();
+            serialPort_.DiscardOutBuffer();
+        }
 
-        if (verify())
+        if (rebooting != null)
+        {
+            rebooting(false);
+        }
+
+        if (Verify())
         {
             throw new Exception($"Firmware update failed. Image still valid!");
         }
@@ -1029,6 +1161,31 @@ public class Device : IDisposable
     {
         string[] response = Command("A");
         return new AdcResult(int.Parse(response[1]), int.Parse(response[2]), int.Parse(response[3]), int.Parse(response[4]));
+    }
+
+    /// <summary>
+    /// Sets the status led color.
+    /// </summary>
+    /// <exception cref="IndexOutOfRangeException">
+    /// Thrown if the device response does not contain the expected number of values.
+    /// </exception>
+    public List<string> Logging()
+    {
+        List<string> messages = new List<string> { };
+        while (true)
+        {
+            try
+            {
+                string[] response = Command("Q");
+                messages.Add(response[1]);
+            }
+            catch (Exception)
+            {
+                break;
+            }
+        }
+
+        return messages;
     }
 
 }

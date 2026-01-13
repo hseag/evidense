@@ -3,6 +3,7 @@
 
 #include "cmdexport.h"
 #include "json.h"
+#include "dict.h"
 #include "printerror.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,21 +11,7 @@
 #include <sys/stat.h>
 #include <time.h>
 
-typedef enum
-{
-    MODE_RAW,
-    MODE_MEASUREMENT
-} Mode_t;
-
-typedef struct
-{
-    char delimiter;
-    char * filenameJson;
-    char * filenameCsv;
-    Mode_t mode;
-} Options_t;
-
-void exportRawMeasurement(Options_t * options, cJSON *object, FILE * csv, const char * const key, bool last)
+void exportRawMeasurement(ExportOptions_t * options, cJSON *object, FILE * csv, const char * const key, bool last)
 {
     cJSON * measurement = cJSON_GetObjectItem(object, key);
     if(measurement)
@@ -48,7 +35,7 @@ void exportRawMeasurement(Options_t * options, cJSON *object, FILE * csv, const 
     }
 }
 
-void exportRawMeasurements(Options_t * options, cJSON *object, FILE * csv, const char * const key)
+void exportRawMeasurements(ExportOptions_t * options, cJSON *object, FILE * csv, const char * const key)
 {
     cJSON * measurements = cJSON_GetObjectItem(object, key);
 
@@ -58,7 +45,7 @@ void exportRawMeasurements(Options_t * options, cJSON *object, FILE * csv, const
     exportRawMeasurement(options, measurements, csv, DICT_340, true);
 }
 
-void exportRaw(Options_t * options, cJSON *object, FILE * csv)
+void exportRaw(ExportOptions_t * options, cJSON *object, FILE * csv)
 {
     cJSON *iterator = NULL;
     cJSON *oComment = cJSON_GetObjectItem(object, DICT_COMMENT);
@@ -85,7 +72,7 @@ void exportRaw(Options_t * options, cJSON *object, FILE * csv)
     }
 }
 
-void exportMeasurement(Options_t * options, cJSON *iterator, FILE * csv)
+void exportMeasurement(ExportOptions_t * options, cJSON *iterator, FILE * csv)
 {
 
     cJSON *oComment = cJSON_GetObjectItem(iterator, DICT_COMMENT);
@@ -107,7 +94,7 @@ void exportMeasurement(Options_t * options, cJSON *iterator, FILE * csv)
     fprintf_s(csv, "\n");
 }
 
-void exportMeasurementSingleLedHeader(Options_t * options, FILE * csv, const char * const key1, const char * const key2, bool last)
+void exportMeasurementSingleLedHeader(ExportOptions_t * options, FILE * csv, const char * const key1, const char * const key2, bool last)
 {
     if(key1 == NULL)
     {
@@ -126,7 +113,7 @@ void exportMeasurementSingleLedHeader(Options_t * options, FILE * csv, const cha
     }
 }
 
-void exportRawHeader(Options_t * options, FILE * csv)
+void exportRawHeader(ExportOptions_t * options, FILE * csv)
 {
     fprintf_s(csv, "%s%c", DICT_COMMENT, options->delimiter);
     exportMeasurementSingleLedHeader(options, csv, NULL, DICT_230, false);
@@ -137,7 +124,7 @@ void exportRawHeader(Options_t * options, FILE * csv)
     fprintf_s(csv, "\n");
 }
 
-void exportMeasurementSingleHeader(Options_t * options, FILE * csv, const char * const key)
+void exportMeasurementSingleHeader(ExportOptions_t * options, FILE * csv, const char * const key)
 {
    exportMeasurementSingleLedHeader(options, csv, key, DICT_230, false);
    exportMeasurementSingleLedHeader(options, csv, key, DICT_260, false);
@@ -145,16 +132,16 @@ void exportMeasurementSingleHeader(Options_t * options, FILE * csv, const char *
    exportMeasurementSingleLedHeader(options, csv, key, DICT_340, true);
 }
 
-void exportMeasurementHeader(Options_t * options, FILE * csv)
+void exportMeasurementHeader(ExportOptions_t * options, FILE * csv)
 {
     fprintf_s(csv, "%s%c%s%c%s%c%s%c%s%c%s", DICT_COMMENT, options->delimiter, DICT_DS_DNA, options->delimiter, DICT_SS_DNA, options->delimiter, DICT_SS_RNA, options->delimiter, DICT_PURITY_260_230, options->delimiter, DICT_PURITY_260_280);
     fprintf_s(csv, "\n");
 }
 
-static Error_t export(Options_t * options)
+Error_t exportData(ExportOptions_t *options)
 {
     Error_t ret  = ERROR_EVI_OK;
-    cJSON* json = jsonLoad(options->filenameJson);
+    cJSON* json = json_loadFromFile(options->filenameJson);
 
     if(json)
     {
@@ -201,11 +188,10 @@ static Error_t export(Options_t * options)
     return ret;
 }
 
-
 Error_t cmdExport(Evi_t* self, int argcCmd, char** argvCmd)
 {
     Error_t ret  = ERROR_EVI_OK;
-    Options_t options = { 0 };
+    ExportOptions_t options = { 0 };
 
     options.delimiter = ',';
     options.mode      = MODE_MEASUREMENT;
@@ -266,7 +252,7 @@ Error_t cmdExport(Evi_t* self, int argcCmd, char** argvCmd)
         goto exit;
     }
 
-    ret = export(&options);
+    ret = exportData(&options);
 exit:
 
     free(options.filenameJson);

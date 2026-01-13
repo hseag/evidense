@@ -8,8 +8,114 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Hse.EviDense;
+
+/// <summary>
+/// Represents an entry in the storage measurement system.
+/// Contains a measurement, an optional comment, results, and raw JSON data.
+/// </summary>
+public class StorageMeasurementEntry
+{
+    /// <summary>
+    /// The stored measurement data.
+    /// </summary>
+    public Measurement Measurement { get; set; }
+
+    /// <summary>
+    /// An optional comment associated with the measurement entry.
+    /// </summary>
+    public String? Comment { get; set; }
+
+    /// <summary>
+    /// The calculated results associated with the measurement, if available.
+    /// </summary>
+    public Results? Results { get; set; }
+
+    /// <summary>
+    /// The raw JSON node representation of the measurement entry.
+    /// </summary>
+    public JsonNode? Node { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StorageMeasurementEntry"/> class.
+    /// </summary>
+    /// <param name="measurement">The measurement data.</param>
+    /// <param name="comment">An optional comment.</param>
+    /// <param name="results">The associated results, if available.</param>
+    /// <param name="node">The raw JSON node, if available.</param>
+    public StorageMeasurementEntry(Measurement measurement, String? comment = null, Results? results = null, JsonNode? node = null)
+    {
+        Measurement = measurement;
+        Comment = comment;
+        Results = results;
+        Node = node;
+    }
+
+    /// <summary>
+    /// Returns a string representation of the storage measurement entry.
+    /// </summary>
+    /// <returns>A formatted string displaying measurement details.</returns>
+    public override string ToString()
+    {
+        return $"Measurement:{Measurement} Comment:{Comment} Results:{Results}";
+    }
+
+    /// <summary>
+    /// Determines whether the entry contains calculated results.
+    /// </summary>
+    /// <returns><c>true</c> if results exist, otherwise <c>false</c>.</returns>
+    public bool HasResults()
+    {
+        return Results != null;
+    }
+
+    /// <summary>
+    /// Applies the calculated results based on given correction factors.
+    /// Updates the JSON node representation if available.
+    /// </summary>
+    /// <param name="factors">The correction factors to apply.</param>
+    /// <remarks>
+    /// When the entry was loaded from JSON (<see cref="Node"/> != <c>null</c>), the computed results are
+    /// written back into that JSON node under <c>"results"</c>.
+    /// </remarks> 
+    public void ApplyResults(Factors factors)
+    {
+        if (Node != null)
+        {
+            Node[Dict.RESULTS] = Measurement.Results(factors).ToJson();
+        }
+    }
+
+    /// <summary>
+    /// Creates a <see cref="StorageMeasurementEntry"/> instance from a JSON node.
+    /// Parses the measurement, comment, and results data.
+    /// </summary>
+    /// <param name="node">The JSON node containing the measurement entry data.</param>
+    /// <returns>A populated <see cref="StorageMeasurementEntry"/> instance.</returns>
+    public static StorageMeasurementEntry FromJson(JsonNode node)
+    {
+        Results? results = null;
+        String? comment = null;
+
+        if (node.AsObject().ContainsKey(Dict.RESULTS))
+        {
+            results = Results.FromJson(node[Dict.RESULTS]);
+        }
+
+        if (node.AsObject().ContainsKey(Dict.COMMENT))
+        {
+            if (node is JsonObject jsonObject &&
+            jsonObject.TryGetPropertyValue(Dict.COMMENT, out JsonNode? commentNode) &&
+            commentNode is not null)
+            {
+                comment = commentNode.GetValue<string>();
+            }
+        }
+        return new StorageMeasurementEntry(Measurement.FromJson(node), comment, results, node);
+    }
+}
 
 
 /// <summary>
@@ -17,8 +123,11 @@ namespace Hse.EviDense;
 /// </summary>
 public class StorageMeasurement
 {
-    private JsonNode data;
-
+    /// <summary>
+    /// Raw JSON structure representing all stored measurement data.
+    /// This node may contain measurements, results, metadata, logging, and other associated entries.
+    /// </summary>
+    public JsonNode data { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StorageMeasurement"/> class, optionally loading from a file.
@@ -46,13 +155,25 @@ public class StorageMeasurement
     /// </summary>
     /// <param name="measurement">The measurement to append.</param>
     /// <param name="comment">An optional comment for the measurement.</param>
-    public void Append(Measurement measurement, string comment = "")
+    /// <param name="logging">Optional logging information.</param>
+    public void Append(Measurement measurement, string comment = "", List<string>? logging = null)
     {
         if (measurement == null)
             throw new ArgumentException("No measurement object provided to append!");
 
         var m = measurement.ToJson();
         m[Dict.COMMENT] = comment;
+
+        if (logging != null && logging.Count > 0)
+        {
+            m[Dict.LOGGING] = new JsonArray();
+            foreach (var log in logging)
+            {
+                m[Dict.LOGGING]?.AsArray().Add(log);
+            }
+        }
+
+        m[Dict.DATE_TIME] = DateTime.UtcNow.ToString("o");
 
         data[Dict.MEASUREMENTS]?.AsArray().Add(m);
     }
@@ -61,9 +182,10 @@ public class StorageMeasurement
     /// Appends a measurement and the results to storage.
     /// </summary>
     /// <param name="measurement">The measurement to append.</param>
-    /// /// <param name="results">The results to append.</param>
+    /// <param name="results">The results to append.</param>
     /// <param name="comment">An optional comment for the measurement.</param>
-    public void AppendWithResults(Measurement measurement, Results results, string comment = "")
+    /// <param name="logging">Optional logging information.</param>
+    public void AppendWithResults(Measurement measurement, Results results, string comment = "", List<string>? logging = null)
     {
         if (measurement == null)
             throw new ArgumentException("No measurement object provided to append!");
@@ -74,6 +196,17 @@ public class StorageMeasurement
             m[Dict.RESULTS] = results.ToJson();
 
         m[Dict.COMMENT] = comment;
+
+        if (logging != null && logging.Count > 0)
+        {
+            m[Dict.LOGGING] = new JsonArray();
+            foreach (var log in logging)
+            {
+                m[Dict.LOGGING]?.AsArray().Add(log);
+            }
+        }
+
+        m[Dict.DATE_TIME] = DateTime.UtcNow.ToString("o");
 
         data[Dict.MEASUREMENTS]?.AsArray().Add(m);
     }
@@ -87,7 +220,8 @@ public class StorageMeasurement
         var options = new JsonSerializerOptions
         {
             NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.AllowNamedFloatingPointLiterals,
-            WriteIndented = true
+            WriteIndented = true,
+            TypeInfoResolver = new DefaultJsonTypeInfoResolver()
         };
 
         using (var writer = new StreamWriter(filename))
@@ -134,7 +268,7 @@ public class StorageMeasurement
     /// </summary>
     /// <param name="index">The index of the measurement.</param>
     /// <returns>The <see cref="Measurement"/> at the specified index.</returns>
-    public Measurement this[int index]
+    public StorageMeasurementEntry this[int index]
     {
         get
         {
@@ -142,7 +276,12 @@ public class StorageMeasurement
             if (measurementsArray == null || index < 0 || index >= measurementsArray.Count)
                 throw new IndexOutOfRangeException("CustomRange index out of range");
 
-            return Measurement.FromJson(measurementsArray.ElementAt(index));
+            var node = measurementsArray.ElementAt(index);
+
+            if (node == null)
+                throw new IndexOutOfRangeException("CustomRange index out of range");
+
+            return StorageMeasurementEntry.FromJson(node);
         }
     }
 

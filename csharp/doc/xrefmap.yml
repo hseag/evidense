@@ -270,6 +270,22 @@ references:
   isSpec: "True"
   fullName: Hse.EviDense.Device.Baseline
   nameWithType: Device.Baseline
+- uid: Hse.EviDense.Device.Command(System.String)
+  name: Command(string)
+  href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_Command_System_String_
+  commentId: M:Hse.EviDense.Device.Command(System.String)
+  name.vb: Command(String)
+  fullName: Hse.EviDense.Device.Command(string)
+  fullName.vb: Hse.EviDense.Device.Command(String)
+  nameWithType: Device.Command(string)
+  nameWithType.vb: Device.Command(String)
+- uid: Hse.EviDense.Device.Command*
+  name: Command
+  href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_Command_
+  commentId: Overload:Hse.EviDense.Device.Command
+  isSpec: "True"
+  fullName: Hse.EviDense.Device.Command
+  nameWithType: Device.Command
 - uid: Hse.EviDense.Device.Dispose
   name: Dispose()
   href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_Dispose
@@ -312,15 +328,24 @@ references:
   isSpec: "True"
   fullName: Hse.EviDense.Device.FirmwareVersion
   nameWithType: Device.FirmwareVersion
-- uid: Hse.EviDense.Device.FwUpdate(System.String)
-  name: FwUpdate(string)
-  href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_FwUpdate_System_String_
-  commentId: M:Hse.EviDense.Device.FwUpdate(System.String)
-  name.vb: FwUpdate(String)
-  fullName: Hse.EviDense.Device.FwUpdate(string)
-  fullName.vb: Hse.EviDense.Device.FwUpdate(String)
-  nameWithType: Device.FwUpdate(string)
-  nameWithType.vb: Device.FwUpdate(String)
+- uid: Hse.EviDense.Device.FwUpdate(System.String,Hse.EviDense.Device.UpdateProgress,Hse.EviDense.Device.Rebooting)
+  name: FwUpdate(string, UpdateProgress?, Rebooting?)
+  href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_FwUpdate_System_String_Hse_EviDense_Device_UpdateProgress_Hse_EviDense_Device_Rebooting_
+  commentId: M:Hse.EviDense.Device.FwUpdate(System.String,Hse.EviDense.Device.UpdateProgress,Hse.EviDense.Device.Rebooting)
+  name.vb: FwUpdate(String, UpdateProgress, Rebooting)
+  fullName: Hse.EviDense.Device.FwUpdate(string, Hse.EviDense.Device.UpdateProgress?, Hse.EviDense.Device.Rebooting?)
+  fullName.vb: Hse.EviDense.Device.FwUpdate(String, Hse.EviDense.Device.UpdateProgress, Hse.EviDense.Device.Rebooting)
+  nameWithType: Device.FwUpdate(string, Device.UpdateProgress?, Device.Rebooting?)
+  nameWithType.vb: Device.FwUpdate(String, Device.UpdateProgress, Device.Rebooting)
+- uid: Hse.EviDense.Device.FwUpdate(System.String[],Hse.EviDense.Device.UpdateProgress,Hse.EviDense.Device.Rebooting)
+  name: FwUpdate(string[], UpdateProgress?, Rebooting?)
+  href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_FwUpdate_System_String___Hse_EviDense_Device_UpdateProgress_Hse_EviDense_Device_Rebooting_
+  commentId: M:Hse.EviDense.Device.FwUpdate(System.String[],Hse.EviDense.Device.UpdateProgress,Hse.EviDense.Device.Rebooting)
+  name.vb: FwUpdate(String(), UpdateProgress, Rebooting)
+  fullName: Hse.EviDense.Device.FwUpdate(string[], Hse.EviDense.Device.UpdateProgress?, Hse.EviDense.Device.Rebooting?)
+  fullName.vb: Hse.EviDense.Device.FwUpdate(String(), Hse.EviDense.Device.UpdateProgress, Hse.EviDense.Device.Rebooting)
+  nameWithType: Device.FwUpdate(string[], Device.UpdateProgress?, Device.Rebooting?)
+  nameWithType.vb: Device.FwUpdate(String(), Device.UpdateProgress, Device.Rebooting)
 - uid: Hse.EviDense.Device.FwUpdate*
   name: FwUpdate
   href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_FwUpdate_
@@ -409,6 +434,19 @@ references:
   isSpec: "True"
   fullName: Hse.EviDense.Device.LibraryVersion
   nameWithType: Device.LibraryVersion
+- uid: Hse.EviDense.Device.Logging
+  name: Logging()
+  href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_Logging
+  commentId: M:Hse.EviDense.Device.Logging
+  fullName: Hse.EviDense.Device.Logging()
+  nameWithType: Device.Logging()
+- uid: Hse.EviDense.Device.Logging*
+  name: Logging
+  href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_Logging_
+  commentId: Overload:Hse.EviDense.Device.Logging
+  isSpec: "True"
+  fullName: Hse.EviDense.Device.Logging
+  nameWithType: Device.Logging
 - uid: Hse.EviDense.Device.Measure
   name: Measure()
   href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_Measure
@@ -435,6 +473,12 @@ references:
   isSpec: "True"
   fullName: Hse.EviDense.Device.ProductionNumber
   nameWithType: Device.ProductionNumber
+- uid: Hse.EviDense.Device.Rebooting
+  name: Device.Rebooting
+  href: api/Hse.EviDense.Device.Rebooting.html
+  commentId: T:Hse.EviDense.Device.Rebooting
+  fullName: Hse.EviDense.Device.Rebooting
+  nameWithType: Device.Rebooting
 - uid: Hse.EviDense.Device.SelfTest
   name: SelfTest()
   href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_SelfTest
@@ -563,19 +607,60 @@ references:
   isSpec: "True"
   fullName: Hse.EviDense.Device.ToString
   nameWithType: Device.ToString
-- uid: Hse.EviDense.Device.verify
-  name: verify()
-  href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_verify
-  commentId: M:Hse.EviDense.Device.verify
-  fullName: Hse.EviDense.Device.verify()
-  nameWithType: Device.verify()
-- uid: Hse.EviDense.Device.verify*
-  name: verify
-  href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_verify_
-  commentId: Overload:Hse.EviDense.Device.verify
+- uid: Hse.EviDense.Device.UpdateProgress
+  name: Device.UpdateProgress
+  href: api/Hse.EviDense.Device.UpdateProgress.html
+  commentId: T:Hse.EviDense.Device.UpdateProgress
+  fullName: Hse.EviDense.Device.UpdateProgress
+  nameWithType: Device.UpdateProgress
+- uid: Hse.EviDense.Device.Verify
+  name: Verify()
+  href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_Verify
+  commentId: M:Hse.EviDense.Device.Verify
+  fullName: Hse.EviDense.Device.Verify()
+  nameWithType: Device.Verify()
+- uid: Hse.EviDense.Device.Verify*
+  name: Verify
+  href: api/Hse.EviDense.Device.html#Hse_EviDense_Device_Verify_
+  commentId: Overload:Hse.EviDense.Device.Verify
   isSpec: "True"
-  fullName: Hse.EviDense.Device.verify
-  nameWithType: Device.verify
+  fullName: Hse.EviDense.Device.Verify
+  nameWithType: Device.Verify
+- uid: Hse.EviDense.DeviceFinder
+  name: DeviceFinder
+  href: api/Hse.EviDense.DeviceFinder.html
+  commentId: T:Hse.EviDense.DeviceFinder
+  fullName: Hse.EviDense.DeviceFinder
+  nameWithType: DeviceFinder
+- uid: Hse.EviDense.DeviceFinder.FindDevice(System.String)
+  name: FindDevice(string?)
+  href: api/Hse.EviDense.DeviceFinder.html#Hse_EviDense_DeviceFinder_FindDevice_System_String_
+  commentId: M:Hse.EviDense.DeviceFinder.FindDevice(System.String)
+  name.vb: FindDevice(String)
+  fullName: Hse.EviDense.DeviceFinder.FindDevice(string?)
+  fullName.vb: Hse.EviDense.DeviceFinder.FindDevice(String)
+  nameWithType: DeviceFinder.FindDevice(string?)
+  nameWithType.vb: DeviceFinder.FindDevice(String)
+- uid: Hse.EviDense.DeviceFinder.FindDevice*
+  name: FindDevice
+  href: api/Hse.EviDense.DeviceFinder.html#Hse_EviDense_DeviceFinder_FindDevice_
+  commentId: Overload:Hse.EviDense.DeviceFinder.FindDevice
+  isSpec: "True"
+  fullName: Hse.EviDense.DeviceFinder.FindDevice
+  nameWithType: DeviceFinder.FindDevice
+- uid: Hse.EviDense.DeviceFinder.GetAvailableDevices
+  name: GetAvailableDevices()
+  href: api/Hse.EviDense.DeviceFinder.html#Hse_EviDense_DeviceFinder_GetAvailableDevices
+  commentId: M:Hse.EviDense.DeviceFinder.GetAvailableDevices
+  fullName: Hse.EviDense.DeviceFinder.GetAvailableDevices()
+  nameWithType: DeviceFinder.GetAvailableDevices()
+- uid: Hse.EviDense.DeviceFinder.GetAvailableDevices*
+  name: GetAvailableDevices
+  href: api/Hse.EviDense.DeviceFinder.html#Hse_EviDense_DeviceFinder_GetAvailableDevices_
+  commentId: Overload:Hse.EviDense.DeviceFinder.GetAvailableDevices
+  isSpec: "True"
+  fullName: Hse.EviDense.DeviceFinder.GetAvailableDevices
+  nameWithType: DeviceFinder.GetAvailableDevices
 - uid: Hse.EviDense.Dict
   name: Dict
   href: api/Hse.EviDense.Dict.html
@@ -624,6 +709,18 @@ references:
   commentId: F:Hse.EviDense.Dict.COMMENT
   fullName: Hse.EviDense.Dict.COMMENT
   nameWithType: Dict.COMMENT
+- uid: Hse.EviDense.Dict.DATE_TIME
+  name: DATE_TIME
+  href: api/Hse.EviDense.Dict.html#Hse_EviDense_Dict_DATE_TIME
+  commentId: F:Hse.EviDense.Dict.DATE_TIME
+  fullName: Hse.EviDense.Dict.DATE_TIME
+  nameWithType: Dict.DATE_TIME
+- uid: Hse.EviDense.Dict.ERRORS
+  name: ERRORS
+  href: api/Hse.EviDense.Dict.html#Hse_EviDense_Dict_ERRORS
+  commentId: F:Hse.EviDense.Dict.ERRORS
+  fullName: Hse.EviDense.Dict.ERRORS
+  nameWithType: Dict.ERRORS
 - uid: Hse.EviDense.Dict.FIRMWAREVERSION
   name: FIRMWAREVERSION
   href: api/Hse.EviDense.Dict.html#Hse_EviDense_Dict_FIRMWAREVERSION
@@ -660,6 +757,12 @@ references:
   commentId: F:Hse.EviDense.Dict.LEVELLING_RESULT
   fullName: Hse.EviDense.Dict.LEVELLING_RESULT
   nameWithType: Dict.LEVELLING_RESULT
+- uid: Hse.EviDense.Dict.LOGGING
+  name: LOGGING
+  href: api/Hse.EviDense.Dict.html#Hse_EviDense_Dict_LOGGING
+  commentId: F:Hse.EviDense.Dict.LOGGING
+  fullName: Hse.EviDense.Dict.LOGGING
+  nameWithType: Dict.LOGGING
 - uid: Hse.EviDense.Dict.MEASUREMENTS
   name: MEASUREMENTS
   href: api/Hse.EviDense.Dict.html#Hse_EviDense_Dict_MEASUREMENTS
@@ -2087,6 +2190,102 @@ references:
   isSpec: "True"
   fullName: Hse.EviDense.Results.ToString
   nameWithType: Results.ToString
+- uid: Hse.EviDense.Run
+  name: Run
+  href: api/Hse.EviDense.Run.html
+  commentId: T:Hse.EviDense.Run
+  fullName: Hse.EviDense.Run
+  nameWithType: Run
+- uid: Hse.EviDense.Run.#ctor(System.Int32,System.String,System.String,System.String)
+  name: Run(int, string?, string?, string?)
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run__ctor_System_Int32_System_String_System_String_System_String_
+  commentId: M:Hse.EviDense.Run.#ctor(System.Int32,System.String,System.String,System.String)
+  name.vb: New(Integer, String, String, String)
+  fullName: Hse.EviDense.Run.Run(int, string?, string?, string?)
+  fullName.vb: Hse.EviDense.Run.New(Integer, String, String, String)
+  nameWithType: Run.Run(int, string?, string?, string?)
+  nameWithType.vb: Run.New(Integer, String, String, String)
+- uid: Hse.EviDense.Run.#ctor*
+  name: Run
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run__ctor_
+  commentId: Overload:Hse.EviDense.Run.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Hse.EviDense.Run.Run
+  fullName.vb: Hse.EviDense.Run.New
+  nameWithType: Run.Run
+  nameWithType.vb: Run.New
+- uid: Hse.EviDense.Run.Filename
+  name: Filename
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run_Filename
+  commentId: P:Hse.EviDense.Run.Filename
+  fullName: Hse.EviDense.Run.Filename
+  nameWithType: Run.Filename
+- uid: Hse.EviDense.Run.Filename*
+  name: Filename
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run_Filename_
+  commentId: Overload:Hse.EviDense.Run.Filename
+  isSpec: "True"
+  fullName: Hse.EviDense.Run.Filename
+  nameWithType: Run.Filename
+- uid: Hse.EviDense.Run.Finalize
+  name: ~Run()
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run_Finalize
+  commentId: M:Hse.EviDense.Run.Finalize
+  name.vb: ''
+  fullName: Hse.EviDense.Run.~Run()
+  fullName.vb: ''
+  nameWithType: Run.~Run()
+  nameWithType.vb: ''
+- uid: Hse.EviDense.Run.Finalize*
+  name: ~Run
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run_Finalize_
+  commentId: Overload:Hse.EviDense.Run.Finalize
+  isSpec: "True"
+  fullName: Hse.EviDense.Run.~Run
+  nameWithType: Run.~Run
+- uid: Hse.EviDense.Run.checkEmpty
+  name: checkEmpty()
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run_checkEmpty
+  commentId: M:Hse.EviDense.Run.checkEmpty
+  fullName: Hse.EviDense.Run.checkEmpty()
+  nameWithType: Run.checkEmpty()
+- uid: Hse.EviDense.Run.checkEmpty*
+  name: checkEmpty
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run_checkEmpty_
+  commentId: Overload:Hse.EviDense.Run.checkEmpty
+  isSpec: "True"
+  fullName: Hse.EviDense.Run.checkEmpty
+  nameWithType: Run.checkEmpty
+- uid: Hse.EviDense.Run.measure(System.String)
+  name: measure(string)
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run_measure_System_String_
+  commentId: M:Hse.EviDense.Run.measure(System.String)
+  name.vb: measure(String)
+  fullName: Hse.EviDense.Run.measure(string)
+  fullName.vb: Hse.EviDense.Run.measure(String)
+  nameWithType: Run.measure(string)
+  nameWithType.vb: Run.measure(String)
+- uid: Hse.EviDense.Run.measure*
+  name: measure
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run_measure_
+  commentId: Overload:Hse.EviDense.Run.measure
+  isSpec: "True"
+  fullName: Hse.EviDense.Run.measure
+  nameWithType: Run.measure
+- uid: Hse.EviDense.Run.reCalculate
+  name: reCalculate()
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run_reCalculate
+  commentId: M:Hse.EviDense.Run.reCalculate
+  fullName: Hse.EviDense.Run.reCalculate()
+  nameWithType: Run.reCalculate()
+- uid: Hse.EviDense.Run.reCalculate*
+  name: reCalculate
+  href: api/Hse.EviDense.Run.html#Hse_EviDense_Run_reCalculate_
+  commentId: Overload:Hse.EviDense.Run.reCalculate
+  isSpec: "True"
+  fullName: Hse.EviDense.Run.reCalculate
+  nameWithType: Run.reCalculate
 - uid: Hse.EviDense.SelfTestResult
   name: SelfTestResult
   href: api/Hse.EviDense.SelfTestResult.html
@@ -2658,15 +2857,15 @@ references:
   fullName.vb: Hse.EviDense.StorageMeasurement.New
   nameWithType: StorageMeasurement.StorageMeasurement
   nameWithType.vb: StorageMeasurement.New
-- uid: Hse.EviDense.StorageMeasurement.Append(Hse.EviDense.Measurement,System.String)
-  name: Append(Measurement, string)
-  href: api/Hse.EviDense.StorageMeasurement.html#Hse_EviDense_StorageMeasurement_Append_Hse_EviDense_Measurement_System_String_
-  commentId: M:Hse.EviDense.StorageMeasurement.Append(Hse.EviDense.Measurement,System.String)
-  name.vb: Append(Measurement, String)
-  fullName: Hse.EviDense.StorageMeasurement.Append(Hse.EviDense.Measurement, string)
-  fullName.vb: Hse.EviDense.StorageMeasurement.Append(Hse.EviDense.Measurement, String)
-  nameWithType: StorageMeasurement.Append(Measurement, string)
-  nameWithType.vb: StorageMeasurement.Append(Measurement, String)
+- uid: Hse.EviDense.StorageMeasurement.Append(Hse.EviDense.Measurement,System.String,System.Collections.Generic.List{System.String})
+  name: Append(Measurement, string, List<string>?)
+  href: api/Hse.EviDense.StorageMeasurement.html#Hse_EviDense_StorageMeasurement_Append_Hse_EviDense_Measurement_System_String_System_Collections_Generic_List_System_String__
+  commentId: M:Hse.EviDense.StorageMeasurement.Append(Hse.EviDense.Measurement,System.String,System.Collections.Generic.List{System.String})
+  name.vb: Append(Measurement, String, List(Of String))
+  fullName: Hse.EviDense.StorageMeasurement.Append(Hse.EviDense.Measurement, string, System.Collections.Generic.List<string>?)
+  fullName.vb: Hse.EviDense.StorageMeasurement.Append(Hse.EviDense.Measurement, String, System.Collections.Generic.List(Of String))
+  nameWithType: StorageMeasurement.Append(Measurement, string, List<string>?)
+  nameWithType.vb: StorageMeasurement.Append(Measurement, String, List(Of String))
 - uid: Hse.EviDense.StorageMeasurement.Append*
   name: Append
   href: api/Hse.EviDense.StorageMeasurement.html#Hse_EviDense_StorageMeasurement_Append_
@@ -2674,15 +2873,15 @@ references:
   isSpec: "True"
   fullName: Hse.EviDense.StorageMeasurement.Append
   nameWithType: StorageMeasurement.Append
-- uid: Hse.EviDense.StorageMeasurement.AppendWithResults(Hse.EviDense.Measurement,Hse.EviDense.Results,System.String)
-  name: AppendWithResults(Measurement, Results, string)
-  href: api/Hse.EviDense.StorageMeasurement.html#Hse_EviDense_StorageMeasurement_AppendWithResults_Hse_EviDense_Measurement_Hse_EviDense_Results_System_String_
-  commentId: M:Hse.EviDense.StorageMeasurement.AppendWithResults(Hse.EviDense.Measurement,Hse.EviDense.Results,System.String)
-  name.vb: AppendWithResults(Measurement, Results, String)
-  fullName: Hse.EviDense.StorageMeasurement.AppendWithResults(Hse.EviDense.Measurement, Hse.EviDense.Results, string)
-  fullName.vb: Hse.EviDense.StorageMeasurement.AppendWithResults(Hse.EviDense.Measurement, Hse.EviDense.Results, String)
-  nameWithType: StorageMeasurement.AppendWithResults(Measurement, Results, string)
-  nameWithType.vb: StorageMeasurement.AppendWithResults(Measurement, Results, String)
+- uid: Hse.EviDense.StorageMeasurement.AppendWithResults(Hse.EviDense.Measurement,Hse.EviDense.Results,System.String,System.Collections.Generic.List{System.String})
+  name: AppendWithResults(Measurement, Results, string, List<string>?)
+  href: api/Hse.EviDense.StorageMeasurement.html#Hse_EviDense_StorageMeasurement_AppendWithResults_Hse_EviDense_Measurement_Hse_EviDense_Results_System_String_System_Collections_Generic_List_System_String__
+  commentId: M:Hse.EviDense.StorageMeasurement.AppendWithResults(Hse.EviDense.Measurement,Hse.EviDense.Results,System.String,System.Collections.Generic.List{System.String})
+  name.vb: AppendWithResults(Measurement, Results, String, List(Of String))
+  fullName: Hse.EviDense.StorageMeasurement.AppendWithResults(Hse.EviDense.Measurement, Hse.EviDense.Results, string, System.Collections.Generic.List<string>?)
+  fullName.vb: Hse.EviDense.StorageMeasurement.AppendWithResults(Hse.EviDense.Measurement, Hse.EviDense.Results, String, System.Collections.Generic.List(Of String))
+  nameWithType: StorageMeasurement.AppendWithResults(Measurement, Results, string, List<string>?)
+  nameWithType.vb: StorageMeasurement.AppendWithResults(Measurement, Results, String, List(Of String))
 - uid: Hse.EviDense.StorageMeasurement.AppendWithResults*
   name: AppendWithResults
   href: api/Hse.EviDense.StorageMeasurement.html#Hse_EviDense_StorageMeasurement_AppendWithResults_
@@ -2764,6 +2963,148 @@ references:
   isSpec: "True"
   fullName: Hse.EviDense.StorageMeasurement.Save
   nameWithType: StorageMeasurement.Save
+- uid: Hse.EviDense.StorageMeasurement.data
+  name: data
+  href: api/Hse.EviDense.StorageMeasurement.html#Hse_EviDense_StorageMeasurement_data
+  commentId: P:Hse.EviDense.StorageMeasurement.data
+  fullName: Hse.EviDense.StorageMeasurement.data
+  nameWithType: StorageMeasurement.data
+- uid: Hse.EviDense.StorageMeasurement.data*
+  name: data
+  href: api/Hse.EviDense.StorageMeasurement.html#Hse_EviDense_StorageMeasurement_data_
+  commentId: Overload:Hse.EviDense.StorageMeasurement.data
+  isSpec: "True"
+  fullName: Hse.EviDense.StorageMeasurement.data
+  nameWithType: StorageMeasurement.data
+- uid: Hse.EviDense.StorageMeasurementEntry
+  name: StorageMeasurementEntry
+  href: api/Hse.EviDense.StorageMeasurementEntry.html
+  commentId: T:Hse.EviDense.StorageMeasurementEntry
+  fullName: Hse.EviDense.StorageMeasurementEntry
+  nameWithType: StorageMeasurementEntry
+- uid: Hse.EviDense.StorageMeasurementEntry.#ctor(Hse.EviDense.Measurement,System.String,Hse.EviDense.Results,System.Text.Json.Nodes.JsonNode)
+  name: StorageMeasurementEntry(Measurement, string?, Results?, JsonNode?)
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry__ctor_Hse_EviDense_Measurement_System_String_Hse_EviDense_Results_System_Text_Json_Nodes_JsonNode_
+  commentId: M:Hse.EviDense.StorageMeasurementEntry.#ctor(Hse.EviDense.Measurement,System.String,Hse.EviDense.Results,System.Text.Json.Nodes.JsonNode)
+  name.vb: New(Measurement, String, Results, JsonNode)
+  fullName: Hse.EviDense.StorageMeasurementEntry.StorageMeasurementEntry(Hse.EviDense.Measurement, string?, Hse.EviDense.Results?, System.Text.Json.Nodes.JsonNode?)
+  fullName.vb: Hse.EviDense.StorageMeasurementEntry.New(Hse.EviDense.Measurement, String, Hse.EviDense.Results, System.Text.Json.Nodes.JsonNode)
+  nameWithType: StorageMeasurementEntry.StorageMeasurementEntry(Measurement, string?, Results?, JsonNode?)
+  nameWithType.vb: StorageMeasurementEntry.New(Measurement, String, Results, JsonNode)
+- uid: Hse.EviDense.StorageMeasurementEntry.#ctor*
+  name: StorageMeasurementEntry
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry__ctor_
+  commentId: Overload:Hse.EviDense.StorageMeasurementEntry.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Hse.EviDense.StorageMeasurementEntry.StorageMeasurementEntry
+  fullName.vb: Hse.EviDense.StorageMeasurementEntry.New
+  nameWithType: StorageMeasurementEntry.StorageMeasurementEntry
+  nameWithType.vb: StorageMeasurementEntry.New
+- uid: Hse.EviDense.StorageMeasurementEntry.ApplyResults(Hse.EviDense.Factors)
+  name: ApplyResults(Factors)
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_ApplyResults_Hse_EviDense_Factors_
+  commentId: M:Hse.EviDense.StorageMeasurementEntry.ApplyResults(Hse.EviDense.Factors)
+  fullName: Hse.EviDense.StorageMeasurementEntry.ApplyResults(Hse.EviDense.Factors)
+  nameWithType: StorageMeasurementEntry.ApplyResults(Factors)
+- uid: Hse.EviDense.StorageMeasurementEntry.ApplyResults*
+  name: ApplyResults
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_ApplyResults_
+  commentId: Overload:Hse.EviDense.StorageMeasurementEntry.ApplyResults
+  isSpec: "True"
+  fullName: Hse.EviDense.StorageMeasurementEntry.ApplyResults
+  nameWithType: StorageMeasurementEntry.ApplyResults
+- uid: Hse.EviDense.StorageMeasurementEntry.Comment
+  name: Comment
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_Comment
+  commentId: P:Hse.EviDense.StorageMeasurementEntry.Comment
+  fullName: Hse.EviDense.StorageMeasurementEntry.Comment
+  nameWithType: StorageMeasurementEntry.Comment
+- uid: Hse.EviDense.StorageMeasurementEntry.Comment*
+  name: Comment
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_Comment_
+  commentId: Overload:Hse.EviDense.StorageMeasurementEntry.Comment
+  isSpec: "True"
+  fullName: Hse.EviDense.StorageMeasurementEntry.Comment
+  nameWithType: StorageMeasurementEntry.Comment
+- uid: Hse.EviDense.StorageMeasurementEntry.FromJson(System.Text.Json.Nodes.JsonNode)
+  name: FromJson(JsonNode)
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_FromJson_System_Text_Json_Nodes_JsonNode_
+  commentId: M:Hse.EviDense.StorageMeasurementEntry.FromJson(System.Text.Json.Nodes.JsonNode)
+  fullName: Hse.EviDense.StorageMeasurementEntry.FromJson(System.Text.Json.Nodes.JsonNode)
+  nameWithType: StorageMeasurementEntry.FromJson(JsonNode)
+- uid: Hse.EviDense.StorageMeasurementEntry.FromJson*
+  name: FromJson
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_FromJson_
+  commentId: Overload:Hse.EviDense.StorageMeasurementEntry.FromJson
+  isSpec: "True"
+  fullName: Hse.EviDense.StorageMeasurementEntry.FromJson
+  nameWithType: StorageMeasurementEntry.FromJson
+- uid: Hse.EviDense.StorageMeasurementEntry.HasResults
+  name: HasResults()
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_HasResults
+  commentId: M:Hse.EviDense.StorageMeasurementEntry.HasResults
+  fullName: Hse.EviDense.StorageMeasurementEntry.HasResults()
+  nameWithType: StorageMeasurementEntry.HasResults()
+- uid: Hse.EviDense.StorageMeasurementEntry.HasResults*
+  name: HasResults
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_HasResults_
+  commentId: Overload:Hse.EviDense.StorageMeasurementEntry.HasResults
+  isSpec: "True"
+  fullName: Hse.EviDense.StorageMeasurementEntry.HasResults
+  nameWithType: StorageMeasurementEntry.HasResults
+- uid: Hse.EviDense.StorageMeasurementEntry.Measurement
+  name: Measurement
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_Measurement
+  commentId: P:Hse.EviDense.StorageMeasurementEntry.Measurement
+  fullName: Hse.EviDense.StorageMeasurementEntry.Measurement
+  nameWithType: StorageMeasurementEntry.Measurement
+- uid: Hse.EviDense.StorageMeasurementEntry.Measurement*
+  name: Measurement
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_Measurement_
+  commentId: Overload:Hse.EviDense.StorageMeasurementEntry.Measurement
+  isSpec: "True"
+  fullName: Hse.EviDense.StorageMeasurementEntry.Measurement
+  nameWithType: StorageMeasurementEntry.Measurement
+- uid: Hse.EviDense.StorageMeasurementEntry.Node
+  name: Node
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_Node
+  commentId: P:Hse.EviDense.StorageMeasurementEntry.Node
+  fullName: Hse.EviDense.StorageMeasurementEntry.Node
+  nameWithType: StorageMeasurementEntry.Node
+- uid: Hse.EviDense.StorageMeasurementEntry.Node*
+  name: Node
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_Node_
+  commentId: Overload:Hse.EviDense.StorageMeasurementEntry.Node
+  isSpec: "True"
+  fullName: Hse.EviDense.StorageMeasurementEntry.Node
+  nameWithType: StorageMeasurementEntry.Node
+- uid: Hse.EviDense.StorageMeasurementEntry.Results
+  name: Results
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_Results
+  commentId: P:Hse.EviDense.StorageMeasurementEntry.Results
+  fullName: Hse.EviDense.StorageMeasurementEntry.Results
+  nameWithType: StorageMeasurementEntry.Results
+- uid: Hse.EviDense.StorageMeasurementEntry.Results*
+  name: Results
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_Results_
+  commentId: Overload:Hse.EviDense.StorageMeasurementEntry.Results
+  isSpec: "True"
+  fullName: Hse.EviDense.StorageMeasurementEntry.Results
+  nameWithType: StorageMeasurementEntry.Results
+- uid: Hse.EviDense.StorageMeasurementEntry.ToString
+  name: ToString()
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_ToString
+  commentId: M:Hse.EviDense.StorageMeasurementEntry.ToString
+  fullName: Hse.EviDense.StorageMeasurementEntry.ToString()
+  nameWithType: StorageMeasurementEntry.ToString()
+- uid: Hse.EviDense.StorageMeasurementEntry.ToString*
+  name: ToString
+  href: api/Hse.EviDense.StorageMeasurementEntry.html#Hse_EviDense_StorageMeasurementEntry_ToString_
+  commentId: Overload:Hse.EviDense.StorageMeasurementEntry.ToString
+  isSpec: "True"
+  fullName: Hse.EviDense.StorageMeasurementEntry.ToString
+  nameWithType: StorageMeasurementEntry.ToString
 - uid: Hse.EviDense.TypeOf
   name: TypeOf
   href: api/Hse.EviDense.TypeOf.html
