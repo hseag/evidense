@@ -8,6 +8,7 @@ A detailed description can be found at TBD.
 
 ## Demo Applications
 1. EviDenseDemo - a sample program how to integrate the EviDense Module into a liquid handler.
+2. EviDenseOD - a sample program which shows how to calculate the optical density of a sample.
 
 ## Installation
 Include the *.cs files in the folder EviDense directly in your project or use the published NuGet package https://www.nuget.org/packages/Hseagcom.EviDense/ .
