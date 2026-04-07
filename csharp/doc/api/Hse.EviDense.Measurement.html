@@ -238,18 +238,19 @@ Class Measurement
   
   </h3>
 
-  <div class="markdown level1 summary"><p>Calculates the absorbance based on air and sample measurements.</p>
+  <div class="markdown level1 summary"><p>It calculates the absorbance based on air and sample measurements.
+This is calculated in the same way as the concentration and purity ratio, except that A340 is not subtracted from A230, A260 or A280.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Quadruple Absorbance(Quadruple? airToBlank = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Quadruple Absorbance(Quadruple? fAbsorbanceBufferBlank = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>airToBlank</code> <a class="xref" href="Hse.EviDense.Quadruple.html">Quadruple</a></dt>
-    <dd><p>Optional air-to-blank correction factor.</p>
+    <dt><code>fAbsorbanceBufferBlank</code> <a class="xref" href="Hse.EviDense.Quadruple.html">Quadruple</a></dt>
+    <dd><p>Optional buffer absorbance correction factor.</p>
 </dd>
   </dl>
 

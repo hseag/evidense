@@ -236,14 +236,15 @@ public class Measurement
     }
 
     /// <summary>
-    /// Calculates the absorbance based on air and sample measurements.
+    /// It calculates the absorbance based on air and sample measurements.
+    /// This is calculated in the same way as the concentration and purity ratio, except that A340 is not subtracted from A230, A260 or A280.
     /// </summary>
-    /// <param name="airToBlank">Optional air-to-blank correction factor.</param>
+    /// <param name="fAbsorbanceBufferBlank">Optional buffer absorbance correction factor.</param>
     /// <returns>The absorbance value as a <see cref="Quadruple"/>.</returns>
-    public Quadruple Absorbance(Quadruple? airToBlank = null)
+    public Quadruple Absorbance(Quadruple? fAbsorbanceBufferBlank = null)
     {
-        airToBlank ??= new Quadruple(1.0);
-        return CalculateAbsorbance(air, sample, airToBlank);
+        fAbsorbanceBufferBlank ??= new Quadruple(0.0);
+        return CalculateAbsorbance(air, sample) - fAbsorbanceBufferBlank;
     }
 
     /// <summary>

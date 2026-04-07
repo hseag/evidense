@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: © 2025 HSE AG, <opensource@hseag.com>
+// SPDX-FileCopyrightText: Â© 2025 HSE AG, <opensource@hseag.com>
 
 using Hse.EviDense;
 using System;
@@ -686,7 +686,7 @@ public class Device : IDisposable
         var firmwareVersion = Get<string>(Index.VERSION);
 
         // save the firmware version for the ToString() function
-        serialNumber_ = firmwareVersion;
+        firmwareVersion_ = firmwareVersion;
         return firmwareVersion;
     }
 
@@ -874,7 +874,7 @@ public class Device : IDisposable
     /// Callback signature to report firmware update progress.
     /// </summary>
     /// <param name="percent">
-    /// The overall progress percentage of the update operation, as an integer in the range 0–100.
+    /// The overall progress percentage of the update operation, as an integer in the range 0-100.
     /// Values are best-effort estimates and may advance non-linearly.
     /// </param>
     public delegate void UpdateProgress(int percent);
@@ -887,7 +887,7 @@ public class Device : IDisposable
     /// and each line is transmitted to the device.
     /// </param>
     /// <param name="progress">
-    /// Optional callback that receives periodic progress updates (0–100). Progress is reported
+    /// Optional callback that receives periodic progress updates (0-100). Progress is reported
     /// after an initial calibration period and during the post-reboot wait.
     /// </param>
     /// <param name="rebooting">
@@ -917,7 +917,7 @@ public class Device : IDisposable
     /// <c>"S {line}"</c> command.
     /// </param>
     /// <param name="progress">
-    /// Optional callback that receives periodic progress updates (0–100). Progress is reported
+    /// Optional callback that receives periodic progress updates (0-100). Progress is reported
     /// after an initial calibration period and during the post-reboot wait.
     /// </param>
     /// <param name="rebooting">
@@ -1127,7 +1127,7 @@ public class Device : IDisposable
         if (serialPort_ != null)
             portName = this.serialPort_.PortName;
 
-        return $"eviFluor Module@{portName} SN:{serialNumber_} Version:{firmwareVersion_}";
+        return $"eviDense Module@{portName} SN:{serialNumber_} Version:{firmwareVersion_}";
     }
 
     /// <summary>
