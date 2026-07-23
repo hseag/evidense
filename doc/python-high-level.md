@@ -228,14 +228,14 @@ Typical use cases:
 - separate blank preparation from sample processing
 - prepare a kit file for later production workflows
 
-[run-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run
-[run-state-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.State
-[storage-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement
-[measurement-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.measurement.html#hse.evidense.measurement.Measurement
-[run-measure-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.measure
-[run-savestate-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.save_state
-[run-loadstate-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.load_state
-[run-checkempty-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.check_empty
-[run-exportascsv-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.export_as_csv
-[run-exportaskit-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.export_as_kit
-[run-importkit-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.import_kit
+[run-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run
+[run-state-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.State
+[storage-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement
+[measurement-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.measurement.html#hse.evidense.measurement.Measurement
+[run-measure-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.measure
+[run-savestate-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.save_state
+[run-loadstate-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.load_state
+[run-checkempty-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.check_empty
+[run-exportascsv-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.export_as_csv
+[run-exportaskit-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.export_as_kit
+[run-importkit-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.import_kit

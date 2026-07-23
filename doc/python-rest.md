@@ -29,7 +29,7 @@ The current REST API covers:
 To install the published wheel directly from the documentation site, use:
 
 ```bash
-python -m pip install "hse-evidense[rest] @ https://hseag.github.io/evidense/pre-release/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl"
+python -m pip install "hse-evidense[rest] @ https://hseag.github.io/evidense/main/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl"
 ```
 
 Start the REST API with:
@@ -726,5 +726,5 @@ Typical categories are:
 - The `--working-dir` option controls both generated data files and the default log file location.
 - The `--debug` option enables stderr logging for easier interactive troubleshooting.
 
-[rest-server-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.rest_server.html
-[rest-client-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.rest_client.html
+[rest-server-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.rest_server.html
+[rest-client-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.rest_client.html

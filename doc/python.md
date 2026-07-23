@@ -27,7 +27,7 @@ This documentation describes Python package version `0.10.0`.
 To install the published wheel directly from the documentation site, use:
 
 ```bash
-python -m pip install https://hseag.github.io/evidense/pre-release/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl
+python -m pip install https://hseag.github.io/evidense/main/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl
 ```
 
 Runtime dependency:
@@ -54,7 +54,7 @@ python -m hse.evidense --help
 The REST API can be started as:
 
 ```bash
-python -m pip install "hse-evidense[rest] @ https://hseag.github.io/evidense/pre-release/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl"
+python -m pip install "hse-evidense[rest] @ https://hseag.github.io/evidense/main/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl"
 ```
 
 Then start it with:
@@ -171,4 +171,4 @@ For most users, the best order is:
 4. Use [Python Command Line Interface](./python-cli.md) for shell-based workflows.
 5. Use [Python REST API](./python-rest.md) if you want HTTP-based integration.
 
-[python-api-docs]: https://hseag.github.io/evidense/pre-release/doc/api/python/index.html
+[python-api-docs]: https://hseag.github.io/evidense/main/doc/api/python/index.html

@@ -15,10 +15,10 @@ On the [Opentrons OT-2](https://opentrons.com/robots/ot-2) a [Single-Channel Pip
 1. Install the Python package with:
 
 ```bash
-python -m pip install https://hseag.github.io/evidense/pre-release/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl
+python -m pip install https://hseag.github.io/evidense/main/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl
 ```
 
-If the OT-2 has no internet connection, download the wheel file [hse_evidense-0.10.0-py3-none-any.whl](https://hseag.github.io/evidense/pre-release/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl) and copy it to the device with:
+If the OT-2 has no internet connection, download the wheel file [hse_evidense-0.10.0-py3-none-any.whl](https://hseag.github.io/evidense/main/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl) and copy it to the device with:
 
 ```bash
 scp -i ot2_ssh_key hse_evidense-0.10.0-py3-none-any.whl root@YOUR_IP:
@@ -48,7 +48,7 @@ The first wells on the plate must contain one or more blanks, for example `A1`, 
 
 ### 3.3 Labware and Protocol
 
-Install the custom labware [hse_evidense_pilot_right_20ul_tip_v3.json](https://hseag.github.io/evidense/pre-release/integration_kits/opentrons-ot2/labware/hse_evidense_pilot_right_20ul_tip_v3.json) and the protocol [evidense_demo_v3.py](https://hseag.github.io/evidense/pre-release/integration_kits/opentrons-ot2/protocols/evidense_demo_v3.py) in the Opentrons App.
+Install the custom labware [hse_evidense_pilot_right_20ul_tip_v3.json](https://hseag.github.io/evidense/main/integration_kits/opentrons-ot2/labware/hse_evidense_pilot_right_20ul_tip_v3.json) and the protocol [evidense_demo_v3.py](https://hseag.github.io/evidense/main/integration_kits/opentrons-ot2/protocols/evidense_demo_v3.py) in the Opentrons App.
 
 The demo protocol uses the following deck layout:
 

@@ -75,4 +75,4 @@ For most users, the best order is:
 2. Continue with [C# High-Level API](./csharp-high-level.md) if you want the guided workflow.
 3. Continue with [C# Low-Level API](./csharp-low-level.md) if you need direct control.
 
-[csharp-api-docs]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.html
+[csharp-api-docs]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.html

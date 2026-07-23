@@ -224,14 +224,14 @@ Typical use cases:
 - separate blank preparation from sample processing
 - prepare a kit file for later production workflows
 
-[run-api]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.Run.html
-[run-state-api]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.Run.RunState.html
-[storage-measurement-api]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.StorageMeasurement.html
-[measurement-api]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.Measurement.html
-[run-measure-api]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_measure_System_String_
-[run-savestate-api]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_SaveState_System_String_
-[run-loadstate-api]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_LoadState_System_String_
-[run-checkempty-api]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_checkEmpty
-[run-exportascsv-api]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_ExportAsCsv
-[run-exportaskit-api]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_ExportAsKit_System_String_System_String_
-[run-importkit-api]: https://hseag.github.io/evidense/pre-release/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_ImportKit_System_String_
+[run-api]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.Run.html
+[run-state-api]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.Run.RunState.html
+[storage-measurement-api]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.StorageMeasurement.html
+[measurement-api]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.Measurement.html
+[run-measure-api]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_measure_System_String_
+[run-savestate-api]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_SaveState_System_String_
+[run-loadstate-api]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_LoadState_System_String_
+[run-checkempty-api]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_checkEmpty
+[run-exportascsv-api]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_ExportAsCsv
+[run-exportaskit-api]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_ExportAsKit_System_String_System_String_
+[run-importkit-api]: https://hseag.github.io/evidense/main/doc/api/csharp/api/Hse.EviDense.Run.html#Hse_EviDense_Run_ImportKit_System_String_

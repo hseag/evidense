@@ -228,6 +228,6 @@ python -m hse.evidense run --working-dir .\data export
 The CLI is useful for scripting and operational workflows.
 For application integration and explicit measurement handling, use the low-level Python API described in [Python Low-Level API](./python-low-level.md).
 
-[cli-module-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.cli.html
-[cli-main-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.cli.html#hse.evidense.cli.main
-[main-module-api]: https://hseag.github.io/evidense/pre-release/doc/api/python/api/hse.evidense.__main__.html
+[cli-module-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.cli.html
+[cli-main-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.cli.html#hse.evidense.cli.main
+[main-module-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.__main__.html

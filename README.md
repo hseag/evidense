@@ -45,7 +45,7 @@ A typical workflow with a liquid handler is:
 10. The liquid handler moves out of the cuvette guide and discards the tip together with the cuvette.
 
 See a video of a simple workflow on an Opentrons OT-2 Robot:
-[![Simple workflow](doc/images/evidense-workflow.png)](https://hseag.github.io/evidense/pre-release/doc/images/evidense-workflow.mp4)
+[![Simple workflow](doc/images/evidense-workflow.png)](https://hseag.github.io/evidense/main/doc/images/evidense-workflow.mp4)
 
 ## 2. CAD
 
