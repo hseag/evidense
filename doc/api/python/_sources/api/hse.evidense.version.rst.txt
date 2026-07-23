@@ -1,0 +1,7 @@
+hse.evidense.version module
+===========================
+
+.. automodule:: hse.evidense.version
+   :members:
+   :show-inheritance:
+   :undoc-members:

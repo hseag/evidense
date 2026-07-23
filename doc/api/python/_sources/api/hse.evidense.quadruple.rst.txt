@@ -1,0 +1,7 @@
+hse.evidense.quadruple module
+=============================
+
+.. automodule:: hse.evidense.quadruple
+   :members:
+   :show-inheritance:
+   :undoc-members:

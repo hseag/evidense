@@ -1,0 +1,7 @@
+hse.evidense.constants module
+=============================
+
+.. automodule:: hse.evidense.constants
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>hse.evidense.measurement &#8212; eviDense Python API  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for hse.evidense.measurement</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: MIT</span>
+<span class="c1"># SPDX-FileCopyrightText: © 2025 HSE AG, &lt;opensource@hseag.com&gt;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">DictKeys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.quadruple</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quadruple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.singlemeasurement</span><span class="w"> </span><span class="kn">import</span> <span class="n">SingleMeasurement</span>
+
+<span class="n">DEFAULT_CUVETTE_PATH_LENGTH</span> <span class="o">=</span> <span class="mf">1.04</span> <span class="c1">#mm</span>
+
+<div class="viewcode-block" id="Results">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Results">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Results</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculated concentration, purity, and absorbance results.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds_dna</span><span class="p">,</span> <span class="n">ss_dna</span><span class="p">,</span> <span class="n">ss_rna</span><span class="p">,</span> <span class="n">purity_ratio_260_230</span><span class="p">,</span> <span class="n">purity_ratio_260_280</span><span class="p">,</span> <span class="n">a230</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">a260</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">a280</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">a340</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a result set for one measurement.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ds_dna</span>              <span class="o">=</span> <span class="n">ds_dna</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ss_dna</span>              <span class="o">=</span> <span class="n">ss_dna</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ss_rna</span>              <span class="o">=</span> <span class="n">ss_rna</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_230</span> <span class="o">=</span> <span class="n">purity_ratio_260_230</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_280</span> <span class="o">=</span> <span class="n">purity_ratio_260_280</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a230</span>                <span class="o">=</span> <span class="n">a230</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a260</span>                <span class="o">=</span> <span class="n">a260</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a280</span>                <span class="o">=</span> <span class="n">a280</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a340</span>                <span class="o">=</span> <span class="n">a340</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;ds_dna:</span><span class="si">{}</span><span class="s2"> ss_dna:</span><span class="si">{}</span><span class="s2"> ss_rna:</span><span class="si">{}</span><span class="s2"> 260/230:</span><span class="si">{}</span><span class="s2"> 260/280:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ds_dna</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_dna</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_rna</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_230</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_280</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">a230</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot; a230:</span><span class="si">{}</span><span class="s2"> a260:</span><span class="si">{}</span><span class="s2"> a280:</span><span class="si">{}</span><span class="s2"> a340:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a230</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a260</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a280</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a340</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+        
+<div class="viewcode-block" id="Results.to_json">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Results.to_json">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the results to a JSON-compatible dictionary.&quot;&quot;&quot;</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="p">{</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">DSDNA</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ds_dna</span><span class="p">,</span>
+              <span class="n">DictKeys</span><span class="o">.</span><span class="n">SSDNA</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_dna</span><span class="p">,</span>
+              <span class="n">DictKeys</span><span class="o">.</span><span class="n">SSRNA</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_rna</span><span class="p">,</span>
+              <span class="n">DictKeys</span><span class="o">.</span><span class="n">PURITY260_230</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_230</span><span class="p">,</span>
+              <span class="n">DictKeys</span><span class="o">.</span><span class="n">PURITY260_280</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_280</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">a230</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">m</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A230</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a230</span>
+            <span class="n">m</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A260</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a260</span>
+            <span class="n">m</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A280</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a280</span>
+            <span class="n">m</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A340</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a340</span>
+        <span class="k">return</span> <span class="n">m</span><span class="p">;</span></div>
+
+        
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="mf">0.00000001</span>
+        
+        <span class="k">def</span><span class="w"> </span><span class="nf">compare_optional</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">lhs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">rhs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">delta</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ds_dna</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">ds_dna</span><span class="p">,</span> <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">delta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss_dna</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">ss_dna</span><span class="p">,</span> <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">delta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss_rna</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">ss_rna</span><span class="p">,</span> <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">delta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_230</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">purity_ratio_260_230</span><span class="p">,</span> <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">delta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_280</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">purity_ratio_260_280</span><span class="p">,</span> <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">delta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">compare_optional</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a230</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">a230</span><span class="p">)</span> <span class="ow">and</span> <span class="n">compare_optional</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a260</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">a260</span><span class="p">)</span> <span class="ow">and</span> <span class="n">compare_optional</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a280</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">a280</span><span class="p">)</span> <span class="ow">and</span> <span class="n">compare_optional</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a340</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">a340</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Results.from_json">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Results.from_json">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a result set from a JSON dictionary.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Results</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">DSDNA</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">SSDNA</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">SSRNA</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">PURITY260_230</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">PURITY260_280</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A230</span><span class="p">),</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A260</span><span class="p">),</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A280</span><span class="p">),</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A340</span><span class="p">))</span></div>
+</div>
+
+        
+<div class="viewcode-block" id="Factors">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Factors">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Factors</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Correction factors derived from blank measurements.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize correction factors.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_a_buffer_blank</span>  <span class="o">=</span> <span class="n">factor_a_buffer_blank</span> <span class="ow">or</span> <span class="n">Quadruple</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;f_a_buffer_blank:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f_a_buffer_blank</span><span class="p">)</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">Factors</span><span class="p">()</span>
+
+        <span class="n">ret</span><span class="o">.</span><span class="n">f_a_buffer_blank</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_a_buffer_blank</span>  <span class="o">+</span> <span class="n">rhs</span><span class="o">.</span><span class="n">f_a_buffer_blank</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">Factors</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">Factors</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">f_a_buffer_blank</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_a_buffer_blank</span>  <span class="o">/</span> <span class="n">rhs</span><span class="o">.</span><span class="n">f_a_buffer_blank</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">f_a_buffer_blank</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_a_buffer_blank</span>  <span class="o">/</span> <span class="n">rhs</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+
+<div class="viewcode-block" id="Factors.to_json">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Factors.to_json">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Convert the factors to a JSON-compatible dictionary.&quot;&quot;&quot;</span>
+            <span class="k">return</span>  <span class="p">{</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">BUFFER_BLANK</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_a_buffer_blank</span><span class="o">.</span><span class="n">to_json</span><span class="p">()}</span></div>
+
+
+<div class="viewcode-block" id="Factors.from_json">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Factors.from_json">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create correction factors from a JSON dictionary.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Factors</span><span class="p">(</span> <span class="n">Quadruple</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">BUFFER_BLANK</span><span class="p">]))</span></div>
+</div>
+
+
+<div class="viewcode-block" id="Measurement">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Measurement</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents one baseline-air-sample measurement triplet.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baseline</span><span class="p">,</span> <span class="n">air</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">comment</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a measurement from baseline, air, and sample steps.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_comment</span>           <span class="o">=</span> <span class="n">comment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_baseline</span>          <span class="o">=</span> <span class="n">baseline</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_air</span>               <span class="o">=</span> <span class="n">air</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span>            <span class="o">=</span> <span class="n">sample</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;baseline:</span><span class="si">{}</span><span class="s2"> air:</span><span class="si">{}</span><span class="s2"> sample:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_baseline</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_air</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Measurement.absorbance">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.absorbance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">absorbance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span> <span class="o">=</span> <span class="n">Quadruple</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate absorbance values for the measurement.&quot;&quot;&quot;</span>
+        <span class="n">aNNN</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_absorbance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_air</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span><span class="p">)</span> <span class="o">-</span> <span class="n">factor_a_buffer_blank</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">device_settings</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">a280_real</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_theoretical_dna_absorption</span><span class="p">(</span><span class="n">device_settings</span><span class="o">.</span><span class="n">center_wavelength_280</span><span class="p">)</span>
+            <span class="n">a280_theoretical</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_theoretical_dna_absorption</span><span class="p">(</span><span class="mf">280.0</span><span class="p">)</span>
+
+            <span class="n">a280_orig</span>     <span class="o">=</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value280</span>
+            <span class="n">aNNN</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value280</span> <span class="o">*</span> <span class="n">a280_theoretical</span> <span class="o">/</span> <span class="n">a280_real</span>
+        <span class="k">return</span> <span class="n">aNNN</span></div>
+
+                                                                    
+<div class="viewcode-block" id="Measurement.set_comment">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.set_comment">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_comment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set or replace the measurement comment.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_comment</span> <span class="o">=</span> <span class="n">comment</span></div>
+
+
+<div class="viewcode-block" id="Measurement.comment">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.comment">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">comment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the measurement comment.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_comment</span></div>
+
+
+<div class="viewcode-block" id="Measurement.factor_a_buffer_blank">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.factor_a_buffer_blank">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">factor_a_buffer_blank</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the blank absorbance factor derived from air and sample.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_absorbance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_air</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="Measurement.factors">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.factors">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">factors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the correction factors represented by this measurement.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Factors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">factor_a_buffer_blank</span><span class="p">())</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_theoretical_dna_absorption</span><span class="p">(</span><span class="n">wavelength</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span>    
+    <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">200.3950617283951</span><span class="p">,</span> <span class="mf">1.428571428571429</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">200.7901234567901</span><span class="p">,</span> <span class="mf">1.408637873754153</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">201.1851851851852</span><span class="p">,</span> <span class="mf">1.401993355481728</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">201.5802469135803</span><span class="p">,</span> <span class="mf">1.382059800664452</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">201.9753086419753</span><span class="p">,</span> <span class="mf">1.375415282392027</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">202.3703703703704</span><span class="p">,</span> <span class="mf">1.355481727574751</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">202.7654320987654</span><span class="p">,</span> <span class="mf">1.335548172757475</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">203.1604938271605</span><span class="p">,</span> <span class="mf">1.315614617940199</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">203.5555555555555</span><span class="p">,</span> <span class="mf">1.302325581395349</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">203.9506172839506</span><span class="p">,</span> <span class="mf">1.282392026578073</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">204.3456790123457</span><span class="p">,</span> <span class="mf">1.269102990033223</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">204.7407407407407</span><span class="p">,</span> <span class="mf">1.255813953488372</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">205.1358024691358</span><span class="p">,</span> <span class="mf">1.235880398671096</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">205.5308641975309</span><span class="p">,</span> <span class="mf">1.215946843853821</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">205.9259259259259</span><span class="p">,</span> <span class="mf">1.20265780730897</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">206.320987654321</span><span class="p">,</span> <span class="mf">1.182724252491694</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">206.7160493827161</span><span class="p">,</span> <span class="mf">1.162790697674419</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">207.1111111111111</span><span class="p">,</span> <span class="mf">1.149501661129568</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">207.5061728395062</span><span class="p">,</span> <span class="mf">1.129568106312292</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">207.9012345679012</span><span class="p">,</span> <span class="mf">1.109634551495017</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">208.2962962962963</span><span class="p">,</span> <span class="mf">1.096345514950166</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">208.6913580246914</span><span class="p">,</span> <span class="mf">1.083056478405316</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">209.0864197530864</span><span class="p">,</span> <span class="mf">1.06312292358804</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">209.4814814814815</span><span class="p">,</span> <span class="mf">1.049833887043189</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">209.8765432098765</span><span class="p">,</span> <span class="mf">1.023255813953488</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">210.2716049382716</span><span class="p">,</span> <span class="mf">1.009966777408638</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">210.6666666666667</span><span class="p">,</span> <span class="mf">0.9966777408637874</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">211.0617283950617</span><span class="p">,</span> <span class="mf">0.9833887043189369</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">211.4567901234568</span><span class="p">,</span> <span class="mf">0.9634551495016611</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">211.8518518518518</span><span class="p">,</span> <span class="mf">0.9435215946843855</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">212.2469135802469</span><span class="p">,</span> <span class="mf">0.9302325581395349</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">212.641975308642</span><span class="p">,</span> <span class="mf">0.9102990033222591</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">213.037037037037</span><span class="p">,</span> <span class="mf">0.8903654485049834</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">213.4320987654321</span><span class="p">,</span> <span class="mf">0.8770764119601329</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">213.8271604938272</span><span class="p">,</span> <span class="mf">0.8571428571428572</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">214.2222222222222</span><span class="p">,</span> <span class="mf">0.8372093023255814</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">214.6172839506173</span><span class="p">,</span> <span class="mf">0.823920265780731</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">215.0123456790124</span><span class="p">,</span> <span class="mf">0.8106312292358804</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">215.4074074074074</span><span class="p">,</span> <span class="mf">0.7906976744186047</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">215.8024691358025</span><span class="p">,</span> <span class="mf">0.770764119601329</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">216.1975308641975</span><span class="p">,</span> <span class="mf">0.7574750830564784</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">216.5925925925926</span><span class="p">,</span> <span class="mf">0.7375415282392027</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">216.9876543209876</span><span class="p">,</span> <span class="mf">0.717607973421927</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">217.3827160493827</span><span class="p">,</span> <span class="mf">0.7043189368770765</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">217.7777777777778</span><span class="p">,</span> <span class="mf">0.6843853820598007</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">218.1728395061728</span><span class="p">,</span> <span class="mf">0.6710963455149502</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">218.5679012345679</span><span class="p">,</span> <span class="mf">0.6578073089700996</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">218.962962962963</span><span class="p">,</span> <span class="mf">0.6445182724252492</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">219.358024691358</span><span class="p">,</span> <span class="mf">0.6245847176079734</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">219.7530864197531</span><span class="p">,</span> <span class="mf">0.6112956810631229</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">220.1481481481482</span><span class="p">,</span> <span class="mf">0.5980066445182725</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">220.5432098765432</span><span class="p">,</span> <span class="mf">0.5780730897009967</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">220.9382716049383</span><span class="p">,</span> <span class="mf">0.5647840531561462</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">221.3333333333333</span><span class="p">,</span> <span class="mf">0.5514950166112957</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">221.7283950617284</span><span class="p">,</span> <span class="mf">0.53156146179402</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">222.1234567901234</span><span class="p">,</span> <span class="mf">0.5249169435215947</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">222.5185185185185</span><span class="p">,</span> <span class="mf">0.5116279069767442</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">222.9135802469136</span><span class="p">,</span> <span class="mf">0.4983388704318937</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">223.3086419753086</span><span class="p">,</span> <span class="mf">0.4916943521594684</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">223.7037037037037</span><span class="p">,</span> <span class="mf">0.478405315614618</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">224.0987654320988</span><span class="p">,</span> <span class="mf">0.4651162790697674</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">224.4938271604938</span><span class="p">,</span> <span class="mf">0.4584717607973422</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">224.8888888888889</span><span class="p">,</span> <span class="mf">0.451827242524917</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">225.2839506172839</span><span class="p">,</span> <span class="mf">0.4451827242524917</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">225.679012345679</span><span class="p">,</span> <span class="mf">0.4385382059800664</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">226.0740740740741</span><span class="p">,</span> <span class="mf">0.4318936877076412</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">226.4691358024691</span><span class="p">,</span> <span class="mf">0.425249169435216</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">226.8641975308642</span><span class="p">,</span> <span class="mf">0.4186046511627907</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">227.2592592592593</span><span class="p">,</span> <span class="mf">0.4119601328903655</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">227.6543209876543</span><span class="p">,</span> <span class="mf">0.4053156146179402</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">228.0493827160494</span><span class="p">,</span> <span class="mf">0.4053156146179402</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">228.4444444444445</span><span class="p">,</span> <span class="mf">0.4053156146179402</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">228.8395061728395</span><span class="p">,</span> <span class="mf">0.4053156146179402</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">229.2345679012346</span><span class="p">,</span> <span class="mf">0.398671096345515</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">229.6296296296296</span><span class="p">,</span> <span class="mf">0.398671096345515</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">230.0246913580247</span><span class="p">,</span> <span class="mf">0.398671096345515</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">230.4197530864197</span><span class="p">,</span> <span class="mf">0.3920265780730897</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">230.8148148148148</span><span class="p">,</span> <span class="mf">0.3920265780730897</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">231.2098765432099</span><span class="p">,</span> <span class="mf">0.3920265780730897</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">231.6049382716049</span><span class="p">,</span> <span class="mf">0.3920265780730897</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">232</span><span class="p">,</span> <span class="mf">0.3920265780730897</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">232.3950617283951</span><span class="p">,</span> <span class="mf">0.3920265780730897</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">232.7901234567901</span><span class="p">,</span> <span class="mf">0.398671096345515</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">233.1851851851852</span><span class="p">,</span> <span class="mf">0.398671096345515</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">233.5802469135803</span><span class="p">,</span> <span class="mf">0.4119601328903655</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">233.9753086419753</span><span class="p">,</span> <span class="mf">0.4053156146179402</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">234.3703703703704</span><span class="p">,</span> <span class="mf">0.4053156146179402</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">234.7654320987654</span><span class="p">,</span> <span class="mf">0.4119601328903655</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">235.1604938271605</span><span class="p">,</span> <span class="mf">0.4119601328903655</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">235.5555555555555</span><span class="p">,</span> <span class="mf">0.4186046511627907</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">235.9506172839506</span><span class="p">,</span> <span class="mf">0.425249169435216</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">236.3456790123457</span><span class="p">,</span> <span class="mf">0.4318936877076412</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">236.7407407407407</span><span class="p">,</span> <span class="mf">0.4385382059800664</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">237.1358024691358</span><span class="p">,</span> <span class="mf">0.4385382059800664</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">237.5308641975309</span><span class="p">,</span> <span class="mf">0.4451827242524917</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">237.9259259259259</span><span class="p">,</span> <span class="mf">0.451827242524917</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">238.320987654321</span><span class="p">,</span> <span class="mf">0.4584717607973422</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">238.7160493827161</span><span class="p">,</span> <span class="mf">0.4717607973421927</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">239.1111111111111</span><span class="p">,</span> <span class="mf">0.478405315614618</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">239.5061728395062</span><span class="p">,</span> <span class="mf">0.4850498338870432</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">239.9012345679012</span><span class="p">,</span> <span class="mf">0.4916943521594684</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">240.2962962962963</span><span class="p">,</span> <span class="mf">0.4983388704318937</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">240.6913580246913</span><span class="p">,</span> <span class="mf">0.5049833887043189</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">241.0864197530864</span><span class="p">,</span> <span class="mf">0.5182724252491695</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">241.4814814814815</span><span class="p">,</span> <span class="mf">0.5249169435215947</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">241.8765432098766</span><span class="p">,</span> <span class="mf">0.5382059800664452</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">242.2716049382716</span><span class="p">,</span> <span class="mf">0.5514950166112957</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">242.6666666666667</span><span class="p">,</span> <span class="mf">0.5581395348837209</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">243.0617283950617</span><span class="p">,</span> <span class="mf">0.5647840531561462</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">243.4567901234568</span><span class="p">,</span> <span class="mf">0.5780730897009967</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">243.8518518518518</span><span class="p">,</span> <span class="mf">0.5913621262458472</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">244.2469135802469</span><span class="p">,</span> <span class="mf">0.5980066445182725</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">244.641975308642</span><span class="p">,</span> <span class="mf">0.6046511627906976</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">245.037037037037</span><span class="p">,</span> <span class="mf">0.6179401993355482</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">245.4320987654321</span><span class="p">,</span> <span class="mf">0.6312292358803987</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">245.8271604938272</span><span class="p">,</span> <span class="mf">0.6378737541528239</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">246.2222222222222</span><span class="p">,</span> <span class="mf">0.6511627906976745</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">246.6172839506173</span><span class="p">,</span> <span class="mf">0.6644518272425249</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">247.0123456790124</span><span class="p">,</span> <span class="mf">0.6710963455149502</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">247.4074074074074</span><span class="p">,</span> <span class="mf">0.6843853820598007</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">247.8024691358025</span><span class="p">,</span> <span class="mf">0.6910299003322259</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">248.1975308641975</span><span class="p">,</span> <span class="mf">0.6976744186046512</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">248.5925925925926</span><span class="p">,</span> <span class="mf">0.7109634551495017</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">248.9876543209876</span><span class="p">,</span> <span class="mf">0.7242524916943521</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">249.3827160493827</span><span class="p">,</span> <span class="mf">0.7308970099667774</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">249.7777777777778</span><span class="p">,</span> <span class="mf">0.7441860465116279</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">250.1728395061728</span><span class="p">,</span> <span class="mf">0.7508305647840532</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">250.5679012345679</span><span class="p">,</span> <span class="mf">0.7574750830564784</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">250.962962962963</span><span class="p">,</span> <span class="mf">0.7641196013289037</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">251.358024691358</span><span class="p">,</span> <span class="mf">0.770764119601329</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">251.7530864197531</span><span class="p">,</span> <span class="mf">0.7840531561461794</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">252.1481481481482</span><span class="p">,</span> <span class="mf">0.7906976744186047</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">252.5432098765432</span><span class="p">,</span> <span class="mf">0.7973421926910299</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">252.9382716049383</span><span class="p">,</span> <span class="mf">0.7973421926910299</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">253.3333333333333</span><span class="p">,</span> <span class="mf">0.8039867109634552</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">253.7283950617284</span><span class="p">,</span> <span class="mf">0.8106312292358804</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">254.1234567901234</span><span class="p">,</span> <span class="mf">0.8106312292358804</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">254.5185185185185</span><span class="p">,</span> <span class="mf">0.8172757475083057</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">254.9135802469136</span><span class="p">,</span> <span class="mf">0.823920265780731</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">255.3086419753086</span><span class="p">,</span> <span class="mf">0.823920265780731</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">255.7037037037037</span><span class="p">,</span> <span class="mf">0.8305647840531561</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">256.0987654320987</span><span class="p">,</span> <span class="mf">0.8305647840531561</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">256.4938271604938</span><span class="p">,</span> <span class="mf">0.8305647840531561</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">256.8888888888889</span><span class="p">,</span> <span class="mf">0.8372093023255814</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">257.2839506172839</span><span class="p">,</span> <span class="mf">0.8372093023255814</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">257.679012345679</span><span class="p">,</span> <span class="mf">0.8372093023255814</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">258.0740740740741</span><span class="p">,</span> <span class="mf">0.8438538205980066</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">258.4691358024691</span><span class="p">,</span> <span class="mf">0.8438538205980066</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">258.8641975308642</span><span class="p">,</span> <span class="mf">0.8438538205980066</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">259.2592592592592</span><span class="p">,</span> <span class="mf">0.8372093023255814</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">259.6543209876543</span><span class="p">,</span> <span class="mf">0.8372093023255814</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">260.0493827160494</span><span class="p">,</span> <span class="mf">0.8372093023255814</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">260.4444444444445</span><span class="p">,</span> <span class="mf">0.8372093023255814</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">260.8395061728395</span><span class="p">,</span> <span class="mf">0.8372093023255814</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">261.2345679012346</span><span class="p">,</span> <span class="mf">0.8305647840531561</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">261.6296296296296</span><span class="p">,</span> <span class="mf">0.8305647840531561</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">262.0246913580247</span><span class="p">,</span> <span class="mf">0.823920265780731</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">262.4197530864197</span><span class="p">,</span> <span class="mf">0.8172757475083057</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">262.8148148148148</span><span class="p">,</span> <span class="mf">0.8106312292358804</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">263.2098765432099</span><span class="p">,</span> <span class="mf">0.8106312292358804</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">263.604938271605</span><span class="p">,</span> <span class="mf">0.7973421926910299</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">264</span><span class="p">,</span> <span class="mf">0.7973421926910299</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">264.395061728395</span><span class="p">,</span> <span class="mf">0.7906976744186047</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">264.7901234567901</span><span class="p">,</span> <span class="mf">0.7840531561461794</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">265.1851851851852</span><span class="p">,</span> <span class="mf">0.7774086378737541</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">265.5802469135803</span><span class="p">,</span> <span class="mf">0.770764119601329</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">265.9753086419753</span><span class="p">,</span> <span class="mf">0.7641196013289037</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">266.3703703703704</span><span class="p">,</span> <span class="mf">0.7574750830564784</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">266.7654320987654</span><span class="p">,</span> <span class="mf">0.7508305647840532</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">267.1604938271605</span><span class="p">,</span> <span class="mf">0.7441860465116279</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">267.5555555555555</span><span class="p">,</span> <span class="mf">0.7375415282392027</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">267.9506172839506</span><span class="p">,</span> <span class="mf">0.7308970099667774</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">268.3456790123457</span><span class="p">,</span> <span class="mf">0.7242524916943521</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">268.7407407407408</span><span class="p">,</span> <span class="mf">0.717607973421927</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">269.1358024691358</span><span class="p">,</span> <span class="mf">0.7109634551495017</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">269.5308641975308</span><span class="p">,</span> <span class="mf">0.6976744186046512</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">269.9259259259259</span><span class="p">,</span> <span class="mf">0.6910299003322259</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">270.320987654321</span><span class="p">,</span> <span class="mf">0.6843853820598007</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">270.7160493827161</span><span class="p">,</span> <span class="mf">0.6777408637873754</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">271.1111111111111</span><span class="p">,</span> <span class="mf">0.6710963455149502</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">271.5061728395062</span><span class="p">,</span> <span class="mf">0.6644518272425249</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">271.9012345679012</span><span class="p">,</span> <span class="mf">0.6578073089700996</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">272.2962962962963</span><span class="p">,</span> <span class="mf">0.6445182724252492</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">272.6913580246913</span><span class="p">,</span> <span class="mf">0.6378737541528239</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">273.0864197530864</span><span class="p">,</span> <span class="mf">0.6312292358803987</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">273.4814814814815</span><span class="p">,</span> <span class="mf">0.6179401993355482</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">273.8765432098766</span><span class="p">,</span> <span class="mf">0.6112956810631229</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">274.2716049382716</span><span class="p">,</span> <span class="mf">0.5980066445182725</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">274.6666666666666</span><span class="p">,</span> <span class="mf">0.5913621262458472</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">275.0617283950617</span><span class="p">,</span> <span class="mf">0.5780730897009967</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">275.4567901234568</span><span class="p">,</span> <span class="mf">0.5714285714285714</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">275.8518518518518</span><span class="p">,</span> <span class="mf">0.5647840531561462</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">276.2469135802469</span><span class="p">,</span> <span class="mf">0.5514950166112957</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">276.641975308642</span><span class="p">,</span> <span class="mf">0.5448504983388704</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">277.0370370370371</span><span class="p">,</span> <span class="mf">0.53156146179402</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">277.4320987654321</span><span class="p">,</span> <span class="mf">0.5182724252491695</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">277.8271604938271</span><span class="p">,</span> <span class="mf">0.5116279069767442</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">278.2222222222222</span><span class="p">,</span> <span class="mf">0.5049833887043189</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">278.6172839506173</span><span class="p">,</span> <span class="mf">0.4983388704318937</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">279.0123456790124</span><span class="p">,</span> <span class="mf">0.4850498338870432</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">279.4074074074074</span><span class="p">,</span> <span class="mf">0.478405315614618</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">279.8024691358025</span><span class="p">,</span> <span class="mf">0.4717607973421927</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">280.1975308641975</span><span class="p">,</span> <span class="mf">0.4584717607973422</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">280.5925925925926</span><span class="p">,</span> <span class="mf">0.4451827242524917</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">280.9876543209876</span><span class="p">,</span> <span class="mf">0.4385382059800664</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">281.3827160493827</span><span class="p">,</span> <span class="mf">0.4318936877076412</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">281.7777777777778</span><span class="p">,</span> <span class="mf">0.425249169435216</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">282.1728395061729</span><span class="p">,</span> <span class="mf">0.4119601328903655</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">282.5679012345679</span><span class="p">,</span> <span class="mf">0.4053156146179402</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">282.9629629629629</span><span class="p">,</span> <span class="mf">0.3920265780730897</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">283.358024691358</span><span class="p">,</span> <span class="mf">0.3853820598006645</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">283.7530864197531</span><span class="p">,</span> <span class="mf">0.3720930232558139</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">284.1481481481482</span><span class="p">,</span> <span class="mf">0.3588039867109635</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">284.5432098765432</span><span class="p">,</span> <span class="mf">0.3521594684385382</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">284.9382716049383</span><span class="p">,</span> <span class="mf">0.3388704318936877</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">285.3333333333333</span><span class="p">,</span> <span class="mf">0.3255813953488372</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">285.7283950617284</span><span class="p">,</span> <span class="mf">0.3122923588039867</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">286.1234567901234</span><span class="p">,</span> <span class="mf">0.3056478405315615</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">286.5185185185185</span><span class="p">,</span> <span class="mf">0.292358803986711</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">286.9135802469136</span><span class="p">,</span> <span class="mf">0.2857142857142857</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">287.3086419753087</span><span class="p">,</span> <span class="mf">0.2724252491694352</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">287.7037037037037</span><span class="p">,</span> <span class="mf">0.2591362126245847</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">288.0987654320987</span><span class="p">,</span> <span class="mf">0.2458471760797342</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">288.4938271604938</span><span class="p">,</span> <span class="mf">0.239202657807309</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">288.8888888888889</span><span class="p">,</span> <span class="mf">0.2259136212624585</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">289.2839506172839</span><span class="p">,</span> <span class="mf">0.2192691029900332</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">289.679012345679</span><span class="p">,</span> <span class="mf">0.212624584717608</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">290.0740740740741</span><span class="p">,</span> <span class="mf">0.2059800664451827</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">290.4691358024691</span><span class="p">,</span> <span class="mf">0.1926910299003322</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">290.8641975308642</span><span class="p">,</span> <span class="mf">0.186046511627907</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">291.2592592592592</span><span class="p">,</span> <span class="mf">0.1727574750830565</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">291.6543209876543</span><span class="p">,</span> <span class="mf">0.1661129568106312</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">292.0493827160494</span><span class="p">,</span> <span class="mf">0.159468438538206</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">292.4444444444445</span><span class="p">,</span> <span class="mf">0.1528239202657807</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">292.8395061728395</span><span class="p">,</span> <span class="mf">0.1395348837209302</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">293.2345679012345</span><span class="p">,</span> <span class="mf">0.132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">293.6296296296296</span><span class="p">,</span> <span class="mf">0.1262458471760797</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">294.0246913580247</span><span class="p">,</span> <span class="mf">0.1196013289036545</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">294.4197530864197</span><span class="p">,</span> <span class="mf">0.1129568106312292</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">294.8148148148148</span><span class="p">,</span> <span class="mf">0.106312292358804</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">295.2098765432099</span><span class="p">,</span> <span class="mf">0.09966777408637874</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">295.604938271605</span><span class="p">,</span> <span class="mf">0.09302325581395349</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">296</span><span class="p">,</span> <span class="mf">0.08637873754152824</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">296.395061728395</span><span class="p">,</span> <span class="mf">0.07973421926910298</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">296.7901234567901</span><span class="p">,</span> <span class="mf">0.07308970099667775</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">297.1851851851852</span><span class="p">,</span> <span class="mf">0.07308970099667775</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">297.5802469135803</span><span class="p">,</span> <span class="mf">0.0664451827242525</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">297.9753086419753</span><span class="p">,</span> <span class="mf">0.05980066445182725</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">298.3703703703704</span><span class="p">,</span> <span class="mf">0.05980066445182725</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">298.7654320987654</span><span class="p">,</span> <span class="mf">0.05315614617940199</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">299.1604938271605</span><span class="p">,</span> <span class="mf">0.05315614617940199</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">299.5555555555555</span><span class="p">,</span> <span class="mf">0.05315614617940199</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">299.9506172839506</span><span class="p">,</span> <span class="mf">0.04651162790697674</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">300.3456790123457</span><span class="p">,</span> <span class="mf">0.04651162790697674</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">300.7407407407408</span><span class="p">,</span> <span class="mf">0.04651162790697674</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">301.1358024691358</span><span class="p">,</span> <span class="mf">0.03986710963455149</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">301.5308641975308</span><span class="p">,</span> <span class="mf">0.03986710963455149</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">301.9259259259259</span><span class="p">,</span> <span class="mf">0.03986710963455149</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">302.320987654321</span><span class="p">,</span> <span class="mf">0.03322259136212625</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">302.7160493827161</span><span class="p">,</span> <span class="mf">0.03322259136212625</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">303.1111111111111</span><span class="p">,</span> <span class="mf">0.03322259136212625</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">303.5061728395062</span><span class="p">,</span> <span class="mf">0.03322259136212625</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">303.9012345679012</span><span class="p">,</span> <span class="mf">0.03322259136212625</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">304.2962962962963</span><span class="p">,</span> <span class="mf">0.03322259136212625</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">304.6913580246913</span><span class="p">,</span> <span class="mf">0.03322259136212625</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">305.0864197530864</span><span class="p">,</span> <span class="mf">0.026578073089701</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">305.4814814814815</span><span class="p">,</span> <span class="mf">0.026578073089701</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">305.8765432098766</span><span class="p">,</span> <span class="mf">0.03322259136212625</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">306.2716049382716</span><span class="p">,</span> <span class="mf">0.03322259136212625</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">306.6666666666666</span><span class="p">,</span> <span class="mf">0.026578073089701</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">307.0617283950617</span><span class="p">,</span> <span class="mf">0.026578073089701</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">307.4567901234568</span><span class="p">,</span> <span class="mf">0.026578073089701</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">307.8518518518518</span><span class="p">,</span> <span class="mf">0.026578073089701</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">308.2469135802469</span><span class="p">,</span> <span class="mf">0.026578073089701</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">308.641975308642</span><span class="p">,</span> <span class="mf">0.01993355481727575</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">309.0370370370371</span><span class="p">,</span> <span class="mf">0.026578073089701</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">309.4320987654321</span><span class="p">,</span> <span class="mf">0.026578073089701</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">309.8271604938271</span><span class="p">,</span> <span class="mf">0.01993355481727575</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">310.2222222222222</span><span class="p">,</span> <span class="mf">0.01993355481727575</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">310.6172839506173</span><span class="p">,</span> <span class="mf">0.01993355481727575</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">311.0123456790124</span><span class="p">,</span> <span class="mf">0.01993355481727575</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">311.4074074074074</span><span class="p">,</span> <span class="mf">0.01993355481727575</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">311.8024691358025</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">312.1975308641975</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">312.5925925925926</span><span class="p">,</span> <span class="mf">0.01993355481727575</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">312.9876543209876</span><span class="p">,</span> <span class="mf">0.01993355481727575</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">313.3827160493827</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">313.7777777777778</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">314.1728395061729</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">314.5679012345679</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">314.9629629629629</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">315.358024691358</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">315.7530864197531</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">316.1481481481482</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">316.5432098765432</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">316.9382716049383</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">317.3333333333333</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">317.7283950617284</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">318.1234567901234</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">318.5185185185185</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">318.9135802469136</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">319.3086419753087</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">319.7037037037037</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">320.0987654320987</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">320.4938271604938</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">320.8888888888889</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">321.2839506172839</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">321.679012345679</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">322.0740740740741</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">322.4691358024691</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">322.8641975308642</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">323.2592592592592</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">323.6543209876543</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">324.0493827160494</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">324.4444444444445</span><span class="p">,</span> <span class="mf">0.0132890365448505</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">324.8395061728395</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">325.2345679012345</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">325.6296296296296</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">326.0246913580247</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">326.4197530864197</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">326.8148148148148</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">327.2098765432099</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">327.604938271605</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">328</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">328.395061728395</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">328.7901234567901</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">329.1851851851852</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">329.5802469135803</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">329.9753086419753</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">330.3703703703703</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">330.7654320987654</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">331.1604938271605</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">331.5555555555555</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">331.9506172839506</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">332.3456790123457</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">332.7407407407408</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">333.1358024691358</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">333.5308641975308</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">333.9259259259259</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">334.320987654321</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">334.7160493827161</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">335.1111111111111</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">335.5061728395062</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">335.9012345679012</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">336.2962962962963</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">336.6913580246913</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">337.0864197530864</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">337.4814814814815</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">337.8765432098766</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">338.2716049382716</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">338.6666666666666</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">339.0617283950617</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">339.4567901234568</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">339.8518518518518</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">340.2469135802469</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">340.641975308642</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">341.0370370370371</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">341.4320987654321</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">341.8271604938271</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">342.2222222222222</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">342.6172839506173</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">343.0123456790124</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">343.4074074074074</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">343.8024691358024</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">344.1975308641975</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">344.5925925925926</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">344.9876543209876</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">345.3827160493827</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">345.7777777777778</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">346.1728395061729</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">346.5679012345679</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">346.9629629629629</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">347.358024691358</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">347.7530864197531</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">348.1481481481482</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">348.5432098765432</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">348.9382716049382</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">349.3333333333333</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">349.7283950617284</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">350.1234567901234</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">350.5185185185185</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">350.9135802469136</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">351.3086419753087</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">351.7037037037037</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">352.0987654320987</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">352.4938271604938</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">352.8888888888889</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">353.2839506172839</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">353.679012345679</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">354.0740740740741</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">354.4691358024692</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">354.8641975308642</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">355.2592592592592</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">355.6543209876543</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">356.0493827160494</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">356.4444444444445</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">356.8395061728395</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">357.2345679012345</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">357.6296296296296</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">358.0246913580247</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">358.4197530864197</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">358.8148148148148</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">359.2098765432099</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">359.604938271605</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">wavelength</span> <span class="o">&lt;=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">wavelength</span> <span class="o">&gt;=</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Interpolation</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">x0</span> <span class="o">&lt;=</span> <span class="n">wavelength</span> <span class="o">&lt;=</span> <span class="n">x1</span><span class="p">:</span>
+                <span class="c1"># linear interpolation</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">wavelength</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">))</span>
+
+        <span class="c1"># Fallback (should never happen)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+        
+<div class="viewcode-block" id="Measurement.algorithm_v9">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.algorithm_v9">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">algorithm_v9</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">a_sample_minus_blank</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">absorbance</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span> <span class="o">=</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="n">device_settings</span><span class="p">)</span>
+        <span class="n">ret</span>                  <span class="o">=</span> <span class="n">a_sample_minus_blank</span> <span class="o">-</span> <span class="n">Quadruple</span><span class="p">(</span><span class="n">a_sample_minus_blank</span><span class="o">.</span><span class="n">value340</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_results_from_algorithm_v9</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aNNN</span><span class="p">,</span> <span class="n">absorbance</span><span class="p">,</span> <span class="n">cuvettePathLength</span> <span class="o">=</span> <span class="n">DEFAULT_CUVETTE_PATH_LENGTH</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value280</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">purity_ratio_260_280</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">purity_ratio_260_280</span> <span class="o">=</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value260</span> <span class="o">/</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value280</span>
+
+        <span class="k">if</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value230</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">purity_ratio_260_230</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">purity_ratio_260_230</span> <span class="o">=</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value260</span> <span class="o">/</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value230</span>
+
+        <span class="k">return</span> <span class="n">Results</span><span class="p">(</span><span class="n">aNNN</span><span class="o">.</span><span class="n">value260</span> <span class="o">*</span> <span class="mi">50</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">cuvettePathLength</span><span class="p">,</span>
+                       <span class="n">aNNN</span><span class="o">.</span><span class="n">value260</span> <span class="o">*</span> <span class="mi">33</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">cuvettePathLength</span><span class="p">,</span>
+                       <span class="n">aNNN</span><span class="o">.</span><span class="n">value260</span> <span class="o">*</span> <span class="mi">40</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">cuvettePathLength</span><span class="p">,</span>
+                       <span class="n">purity_ratio_260_230</span><span class="p">,</span>
+                       <span class="n">purity_ratio_260_280</span><span class="p">,</span>
+                       <span class="n">absorbance</span><span class="o">.</span><span class="n">value230</span><span class="p">,</span> <span class="n">absorbance</span><span class="o">.</span><span class="n">value260</span><span class="p">,</span> <span class="n">absorbance</span><span class="o">.</span><span class="n">value280</span><span class="p">,</span> <span class="n">absorbance</span><span class="o">.</span><span class="n">value340</span><span class="p">)</span>
+         
+<div class="viewcode-block" id="Measurement.ds_dna">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.ds_dna">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ds_dna</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">cuvettePathLength</span> <span class="o">=</span> <span class="n">DEFAULT_CUVETTE_PATH_LENGTH</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span><span class="p">)</span><span class="o">.</span><span class="n">value260</span> <span class="o">*</span> <span class="mi">50</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">cuvettePathLength</span> <span class="c1"># 50ng/ul * 10mm / 1.04mm</span></div>
+
+
+<div class="viewcode-block" id="Measurement.ss_dna">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.ss_dna">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ss_dna</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">cuvettePathLength</span> <span class="o">=</span> <span class="n">DEFAULT_CUVETTE_PATH_LENGTH</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span><span class="p">)</span><span class="o">.</span><span class="n">value260</span> <span class="o">*</span> <span class="mi">33</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">cuvettePathLength</span> <span class="c1"># 33ng/ul * 10mm / 1.04mm</span></div>
+
+
+<div class="viewcode-block" id="Measurement.ss_rna">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.ss_rna">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ss_rna</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">cuvettePathLength</span> <span class="o">=</span> <span class="n">DEFAULT_CUVETTE_PATH_LENGTH</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span><span class="p">)</span><span class="o">.</span><span class="n">value260</span> <span class="o">*</span> <span class="mi">40</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">cuvettePathLength</span> <span class="c1"># 40ng/ul * 10mm / 1.04mm</span></div>
+
+         
+<div class="viewcode-block" id="Measurement.purity_ratio_260_280">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.purity_ratio_260_280">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">purity_ratio_260_280</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">aNNN</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value280</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value260</span> <span class="o">/</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value280</span></div>
+
+
+<div class="viewcode-block" id="Measurement.purity_ratio_260_230">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.purity_ratio_260_230">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">purity_ratio_260_230</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">aNNN</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value230</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value260</span> <span class="o">/</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value230</span></div>
+
+         
+<div class="viewcode-block" id="Measurement.results">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.results">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">absorbance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">absorbance</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">f_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="n">device_settings</span><span class="p">)</span>
+        <span class="n">aNNN</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">f_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="n">device_settings</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_results_from_algorithm_v9</span><span class="p">(</span><span class="n">aNNN</span><span class="p">,</span> <span class="n">absorbance</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Measurement.to_json">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.to_json">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="p">{</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">BASELINE</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_baseline</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+              <span class="n">DictKeys</span><span class="o">.</span><span class="n">AIR</span>      <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_air</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+              <span class="n">DictKeys</span><span class="o">.</span><span class="n">SAMPLE</span>   <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+            <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_comment</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">m</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">COMMENT</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_comment</span>
+
+        <span class="k">return</span> <span class="n">m</span><span class="p">;</span></div>
+
+
+<div class="viewcode-block" id="Measurement.from_json">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.from_json">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Measurement</span><span class="p">(</span><span class="n">SingleMeasurement</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">BASELINE</span><span class="p">]),</span> <span class="n">SingleMeasurement</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">AIR</span><span class="p">]),</span> <span class="n">SingleMeasurement</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">SAMPLE</span><span class="p">]),</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">COMMENT</span><span class="p">))</span></div>
+
+    
+<div class="viewcode-block" id="Measurement.calculate_absorbance">
+<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.calculate_absorbance">[docs]</a>
+    <span class="nd">@staticmethod</span>    
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_absorbance</span><span class="p">(</span><span class="n">baseline</span><span class="p">,</span> <span class="n">measurement</span><span class="p">,</span> <span class="n">correctionFactor</span> <span class="o">=</span> <span class="n">Quadruple</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)):</span>
+        <span class="n">ods</span> <span class="o">=</span> <span class="n">Quadruple</span><span class="p">()</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">sample</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">sample</span> <span class="o">/</span> <span class="n">baseline</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">reference</span> <span class="o">*</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">reference</span> <span class="o">/</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">sample</span> <span class="o">*</span> <span class="n">correctionFactor</span><span class="o">.</span><span class="n">value230</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">sample</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">sample</span> <span class="o">/</span> <span class="n">baseline</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">reference</span> <span class="o">*</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">reference</span> <span class="o">/</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">sample</span> <span class="o">*</span> <span class="n">correctionFactor</span><span class="o">.</span><span class="n">value260</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">sample</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">sample</span> <span class="o">/</span> <span class="n">baseline</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">reference</span> <span class="o">*</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">reference</span> <span class="o">/</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">sample</span> <span class="o">*</span> <span class="n">correctionFactor</span><span class="o">.</span><span class="n">value280</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">sample</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">sample</span> <span class="o">/</span> <span class="n">baseline</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">reference</span> <span class="o">*</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">reference</span> <span class="o">/</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">sample</span> <span class="o">*</span> <span class="n">correctionFactor</span><span class="o">.</span><span class="n">value340</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ods</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">eviDense Python API</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">hse</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

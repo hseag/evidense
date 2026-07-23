@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>hse.evidense.quadruple &#8212; eviDense Python API  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for hse.evidense.quadruple</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: MIT</span>
+<span class="c1"># SPDX-FileCopyrightText: © 2025 HSE AG, &lt;opensource@hseag.com&gt;</span>
+
+<div class="viewcode-block" id="Quadruple">
+<a class="viewcode-back" href="../../../api/hse.evidense.quadruple.html#hse.evidense.Quadruple">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Quadruple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents four wavelength-dependent values handled together.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value230</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">value260</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">value280</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">value340</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a quadruple.</span>
+
+<span class="sd">        When only ``value230`` is provided, the value is copied to all four</span>
+<span class="sd">        wavelengths.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value230</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value260</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value280</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value340</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="n">value230</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="n">value230</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="n">value230</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="n">value230</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="n">value230</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="n">value260</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="n">value280</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="n">value340</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;230=</span><span class="si">{}</span><span class="s2">, 260=</span><span class="si">{}</span><span class="s2">, 280=</span><span class="si">{}</span><span class="s2">, 340=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value230</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value260</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value280</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value340</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">Quadruple</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">Quadruple</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value230</span> <span class="o">+</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value230</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value260</span> <span class="o">+</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value260</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value280</span> <span class="o">+</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value280</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value340</span> <span class="o">+</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value340</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value230</span> <span class="o">+</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value260</span> <span class="o">+</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value280</span> <span class="o">+</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value340</span> <span class="o">+</span> <span class="n">rhs</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">Quadruple</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">Quadruple</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value230</span> <span class="o">-</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value230</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value260</span> <span class="o">-</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value260</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value280</span> <span class="o">-</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value280</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value340</span> <span class="o">-</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value340</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value230</span> <span class="o">-</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value260</span> <span class="o">-</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value280</span> <span class="o">-</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value340</span> <span class="o">-</span> <span class="n">rhs</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">Quadruple</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">Quadruple</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value230</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ZeroDivisionError</span><span class="p">(</span><span class="s2">&quot;division by zero in Quadruple.value230&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value260</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ZeroDivisionError</span><span class="p">(</span><span class="s2">&quot;division by zero in Quadruple.value260&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value280</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ZeroDivisionError</span><span class="p">(</span><span class="s2">&quot;division by zero in Quadruple.value280&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value340</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ZeroDivisionError</span><span class="p">(</span><span class="s2">&quot;division by zero in Quadruple.value340&quot;</span><span class="p">)</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value230</span> <span class="o">/</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value230</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value260</span> <span class="o">/</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value260</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value280</span> <span class="o">/</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value280</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value340</span> <span class="o">/</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value340</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rhs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ZeroDivisionError</span><span class="p">(</span><span class="s2">&quot;division by zero in Quadruple scalar division&quot;</span><span class="p">)</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value230</span> <span class="o">/</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value260</span> <span class="o">/</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value280</span> <span class="o">/</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value340</span> <span class="o">/</span> <span class="n">rhs</span>
+
+
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">Quadruple</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rhs</span><span class="p">,</span> <span class="n">Quadruple</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value230</span> <span class="o">*</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value230</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value260</span> <span class="o">*</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value260</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value280</span> <span class="o">*</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value280</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value340</span> <span class="o">*</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value340</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value230</span> <span class="o">*</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value260</span> <span class="o">*</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value280</span> <span class="o">*</span> <span class="n">rhs</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value340</span> <span class="o">*</span> <span class="n">rhs</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="fm">__abs__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">Quadruple</span><span class="p">()</span>
+
+        <span class="n">ret</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value230</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value260</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value280</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value340</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value230</span> <span class="o">&lt;=</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value230</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">value260</span> <span class="o">&lt;=</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value260</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">value280</span> <span class="o">&lt;=</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value280</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">value340</span> <span class="o">&lt;=</span> <span class="n">rhs</span><span class="o">.</span><span class="n">value340</span>
+
+<div class="viewcode-block" id="Quadruple.to_json">
+<a class="viewcode-back" href="../../../api/hse.evidense.quadruple.html#hse.evidense.Quadruple.to_json">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Convert the quadruple to a JSON-compatible dictionary.&quot;&quot;&quot;</span>
+            <span class="k">return</span>  <span class="p">{</span> <span class="s2">&quot;value230&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value230</span><span class="p">,</span> <span class="s2">&quot;value260&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value260</span><span class="p">,</span> <span class="s2">&quot;value280&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value280</span><span class="p">,</span> <span class="s2">&quot;value340&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value340</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Quadruple.from_json">
+<a class="viewcode-back" href="../../../api/hse.evidense.quadruple.html#hse.evidense.Quadruple.from_json">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a quadruple from a JSON dictionary.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Quadruple</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;value230&quot;</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;value260&quot;</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;value280&quot;</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;value340&quot;</span><span class="p">])</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">eviDense Python API</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">hse</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

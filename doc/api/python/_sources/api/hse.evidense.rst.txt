@@ -1,0 +1,29 @@
+hse.evidense package
+====================
+
+.. automodule:: hse.evidense
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   hse.evidense.channel
+   hse.evidense.cli
+   hse.evidense.constants
+   hse.evidense.device
+   hse.evidense.devicesettings
+   hse.evidense.kit
+   hse.evidense.measurement
+   hse.evidense.quadruple
+   hse.evidense.rest_client
+   hse.evidense.rest_server
+   hse.evidense.run
+   hse.evidense.service
+   hse.evidense.singlemeasurement
+   hse.evidense.storage
+   hse.evidense.version

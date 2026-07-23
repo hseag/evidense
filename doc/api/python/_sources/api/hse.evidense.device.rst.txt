@@ -1,0 +1,7 @@
+hse.evidense.device module
+==========================
+
+.. automodule:: hse.evidense.device
+   :members:
+   :show-inheritance:
+   :undoc-members:
