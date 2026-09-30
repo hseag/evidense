@@ -41,6 +41,7 @@ jobs:
           cp -r simulator public/${BRANCH_NAME}/
           cp -r api public/${BRANCH_NAME}/
           cp -r integration_kits public/${BRANCH_NAME}/
+          cp -r firmware public/${BRANCH_NAME}/
 
           cat > public/index.html <<'EOF'
           <!doctype html>
@@ -84,7 +85,7 @@ jobs:
           BRANCH_SLUG="$(printf '%s' "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9.]+/-/g; s/^[.-]+//; s/[.-]+$//' | cut -c1-63)"
           
           test -n "$BRANCH_SLUG"       
-          url="${PAGE_URL%/}/${BRANCH_NAME}/doc/api/python/index.html"
+          url="${PAGE_URL%/}/${BRANCH_NAME}/index.html"
           printf 'Documentation will be available at: %s\n' "${PAGE_URL%/}/${BRANCH_SLUG}/"
           echo "Checking $url"
           for i in $(seq 1 12); do
