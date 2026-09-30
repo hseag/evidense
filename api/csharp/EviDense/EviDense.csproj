@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Hse.EviDense</RootNamespace>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <NoWarn>$(NoWarn);1591;1573</NoWarn>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>    
+    <Version>0.12.0</Version>
+    <AssemblyVersion>0.12.0</AssemblyVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Library for controlling an eviDense module.</Title>
+    <Company>HSE•AG</Company>
+    <Copyright>© 2026 HSE AG. All rights reserved. </Copyright>
+    <PackageProjectUrl>https://www.hseag.com/colibri-factsheet-and-contact</PackageProjectUrl>
+    <Description>The eviDense module is an ultra-compact 4-color UV/VIS optical absorption photometer which enables full Quality Control on liquid handlers</Description>
+    <PackageLicenseFile>LICENSE.TXT</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <FileVersion>0.12.0</FileVersion>
+    <PackageId>Hseagcom.$(AssemblyName)</PackageId>
+    <AssemblyName>Hseagcom.$(MSBuildProjectName)</AssemblyName>
+    <RepositoryUrl>https://github.com/hseag/evidense</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>EviDense</PackageTags>
+    <IncludeSymbols>False</IncludeSymbols>
+    <PackageIcon>hseag_logo.png</PackageIcon>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\hseag_logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="8.0.0" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE.TXT">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

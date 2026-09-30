@@ -1,0 +1,7 @@
+hse.evidense.storage module
+===========================
+
+.. automodule:: hse.evidense.storage
+   :members:
+   :show-inheritance:
+   :undoc-members:

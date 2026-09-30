@@ -1,0 +1,7 @@
+hse.evidense.rest\_client module
+================================
+
+.. automodule:: hse.evidense.rest_client
+   :members:
+   :show-inheritance:
+   :undoc-members:

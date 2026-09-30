@@ -1,0 +1,7 @@
+hse.evidense.cli module
+=======================
+
+.. automodule:: hse.evidense.cli
+   :members:
+   :show-inheritance:
+   :undoc-members:
