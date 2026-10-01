@@ -50,7 +50,7 @@ nav:
   - Applications:
       - applications/index.md
       - Workflow: applications-workflow.md
-      - DNA Quantification and Quality Control: applications-supported.md      
+      - Supported Applications: applications-supported.md      
       - Results and Data Handling: applications-results-and-data-handling.md
   - Software:
       - software/index.md

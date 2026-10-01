@@ -1,6 +1,6 @@
 # Firmware Updates and Versions
 
-Firmware controls the behavior of the eviDense UV Photometer device itself. In day-to-day work, firmware version information matters most before rollout, during support, and after an update.
+The instrument firmware controls the behavior of the eviDense UV Photometer device itself. In day-to-day work, firmware version information matters most before rollout, during support, and after an update.
 
 ## Current Repository Snapshot
 
@@ -14,9 +14,9 @@ Before and after an update, confirm:
 
 - which firmware version is installed on the device
 - which firmware image is approved for the workflow
-- whether the device firmware, host software, and integration assets belong to the same validated release set
+- whether the instrument firmware, host software, and integration assets belong to the same validated release set
 
-## Where to Find More Detail
+## Where to Find More Details
 
 - Use [Update Process](software-firmware-update.md) for the product-level update flow.
 - Use [Python Low-Level API](python-low-level.md), [C# Low-Level API](csharp-low-level.md), or [C CLI](c-cli.md) when you need technical access to version queries and update commands.
