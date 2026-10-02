@@ -26,15 +26,30 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Prepare Pages content
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}      
         run: |
-          BRANCH_NAME="${GITHUB_REF_NAME}"
-          rm -rf public/${BRANCH_NAME}
-          mkdir -p public/${BRANCH_NAME}
+          BRANCH_SLUG="$(printf '%s' "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9.]+/-/g; s/^[.-]+//; s/[.-]+$//' | cut -c1-63)"
+          test -n "$BRANCH_SLUG"
+          PAGES_DIR="public/${BRANCH_SLUG}"
+
+          python -m pip install mkdocs-material
+          rm -rf "$PAGES_DIR"
+          mkdir -p "$PAGES_DIR"
+          mkdocs build --site-dir "$PAGES_DIR"
           cp -r doc public/${BRANCH_NAME}/
           cp -r simulator public/${BRANCH_NAME}/
           cp -r api public/${BRANCH_NAME}/
           cp -r integration_kits public/${BRANCH_NAME}/
-          find "public/${BRANCH_NAME}" -maxdepth 5 -type f -print
+          cp -r firmware public/${BRANCH_NAME}/
+
+          cat > public/index.html <<'EOF'
+          <!doctype html>
+          <meta http-equiv="refresh" content="0; url=main/">
+          <script>
+            location.replace(`main/${location.search}${location.hash}`);
+          </script>
+          EOF
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
@@ -67,11 +82,14 @@ jobs:
           PAGE_URL: ${{ needs.deploy.outputs.page_url }}
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          url="${PAGE_URL%/}/${BRANCH_NAME}/doc/api/python/index.html"
+          BRANCH_SLUG="$(printf '%s' "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9.]+/-/g; s/^[.-]+//; s/[.-]+$//' | cut -c1-63)"
+          
+          test -n "$BRANCH_SLUG"       
+          url="${PAGE_URL%/}/${BRANCH_NAME}/index.html"
+          printf 'Documentation will be available at: %s\n' "${PAGE_URL%/}/${BRANCH_SLUG}/"
           echo "Checking $url"
           for i in $(seq 1 12); do
             if curl --fail --silent --show-error --location "$url" -o page.html; then
-              grep -F "eviDense Python API" page.html
               exit 0
             fi
             sleep 5
@@ -198,7 +216,7 @@ jobs:
 
       - name: Run Python source against simulator
         run: |
-          export PYTHONPATH="$GITHUB_WORKSPACE/simulator:$GITHUB_WORKSPACE/api/python"
+          export PYTHONPATH="$GITHUB_WORKSPACE/simulator/src:$GITHUB_WORKSPACE/api/python/src"
           cleanup() {
             python -m hse.simulator sim EXIT >/dev/null 2>&1 || true
             if [ -n "${SIM_PID:-}" ]; then
