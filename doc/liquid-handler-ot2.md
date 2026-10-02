@@ -13,7 +13,7 @@ UV Python software with an Opentrons OT-2 liquid handler.
 2. Install the Python package with:
 
 ```bash
-python -m pip install https://hseag.github.io/evidense/pre-release/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl
+python -m pip install https://hseag.github.io/evidense/pre-release/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl --no-deps
 ```
 
 If the OT-2 has no internet connection, download the Python wheel to your computer:
@@ -23,13 +23,13 @@ If the OT-2 has no internet connection, download the Python wheel to your comput
 and copy it to your OT-2:
 
 ```bash
-scp -i ot2_ssh_key hse_evidense-0.10.0-py3-none-any.whl root@YOUR_IP:
+scp -O -i ot2_ssh_key hse_evidense-0.10.0-py3-none-any.whl root@YOUR_IP:
 ```
 
 Then install it locally on the OT-2 with:
 
 ```bash
-python -m pip install hse_evidense-0.10.0-py3-none-any.whl
+python -m pip install hse_evidense-0.10.0-py3-none-any.whl --no-deps
 ```
 
 After the installation, restart the OT-2.
