@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>hse.evidense.storage module &#8212; eviDense Python API  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="hse.evidense.version module" href="hse.evidense.version.html" />
+    <link rel="prev" title="hse.evidense.singlemeasurement module" href="hse.evidense.singlemeasurement.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-hse.evidense.storage">
+<span id="hse-evidense-storage-module"></span><h1>hse.evidense.storage module<a class="headerlink" href="#module-hse.evidense.storage" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurement">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">hse.evidense.storage.</span></span><span class="sig-name descname"><span class="pre">StorageMeasurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurement" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores measurements and associated metadata in JSON form.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurement.add_device_info">
+<span class="sig-name descname"><span class="pre">add_device_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurement.add_device_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurement.add_device_info" title="Link to this definition">¶</a></dt>
+<dd><p>Store device metadata in the JSON structure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurement.add_dict">
+<span class="sig-name descname"><span class="pre">add_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurement.add_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurement.add_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Store or replace an arbitrary top-level JSON node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurement.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurement.append"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurement.append" title="Link to this definition">¶</a></dt>
+<dd><p>Append a measurement without precomputed results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurement.append_with_results">
+<span class="sig-name descname"><span class="pre">append_with_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurement.append_with_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurement.append_with_results" title="Link to this definition">¶</a></dt>
+<dd><p>Append a measurement together with precomputed results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurement.export_as_csv">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">export_as_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenameJson</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurement.export_as_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurement.export_as_csv" title="Link to this definition">¶</a></dt>
+<dd><p>Export a JSON measurement file as CSV.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurement.measurements">
+<span class="sig-name descname"><span class="pre">measurements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurement.measurements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurement.measurements" title="Link to this definition">¶</a></dt>
+<dd><p>Return all stored measurements as <code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code> objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurement.results">
+<span class="sig-name descname"><span class="pre">results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurement.results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurement.results" title="Link to this definition">¶</a></dt>
+<dd><p>Return all stored result objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurement.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurement.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurement.save" title="Link to this definition">¶</a></dt>
+<dd><p>Save the storage content as JSON.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurementEntry">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">hse.evidense.storage.</span></span><span class="sig-name descname"><span class="pre">StorageMeasurementEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurementEntry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurementEntry" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents one entry in measurement storage.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurementEntry.apply_results">
+<span class="sig-name descname"><span class="pre">apply_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_settings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurementEntry.apply_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurementEntry.apply_results" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate and write results back into the underlying JSON node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurementEntry.from_json">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurementEntry.from_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurementEntry.from_json" title="Link to this definition">¶</a></dt>
+<dd><p>Create a storage entry from a JSON measurement node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.storage.StorageMeasurementEntry.has_results">
+<span class="sig-name descname"><span class="pre">has_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/storage.html#StorageMeasurementEntry.has_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.storage.StorageMeasurementEntry.has_results" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if the entry already contains calculated results.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="modules.html">eviDense Python API</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="hse.html">hse namespace</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="hse.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="hse.evidense.html">hse.evidense package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Channel"><code class="docutils literal notranslate"><span class="pre">Channel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Device"><code class="docutils literal notranslate"><span class="pre">Device</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.DeviceSettings"><code class="docutils literal notranslate"><span class="pre">DeviceSettings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.DictKeys"><code class="docutils literal notranslate"><span class="pre">DictKeys</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Error"><code class="docutils literal notranslate"><span class="pre">Error</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Factors"><code class="docutils literal notranslate"><span class="pre">Factors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Index"><code class="docutils literal notranslate"><span class="pre">Index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Kit"><code class="docutils literal notranslate"><span class="pre">Kit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.LevellingChannelResult"><code class="docutils literal notranslate"><span class="pre">LevellingChannelResult</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.LevellingResult"><code class="docutils literal notranslate"><span class="pre">LevellingResult</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Measurement"><code class="docutils literal notranslate"><span class="pre">Measurement</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Quadruple"><code class="docutils literal notranslate"><span class="pre">Quadruple</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Results"><code class="docutils literal notranslate"><span class="pre">Results</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Run"><code class="docutils literal notranslate"><span class="pre">Run</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Selftest"><code class="docutils literal notranslate"><span class="pre">Selftest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.SelfttestResult"><code class="docutils literal notranslate"><span class="pre">SelfttestResult</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.SingleMeasurement"><code class="docutils literal notranslate"><span class="pre">SingleMeasurement</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.StorageMeasurement"><code class="docutils literal notranslate"><span class="pre">StorageMeasurement</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.StorageMeasurementEntry"><code class="docutils literal notranslate"><span class="pre">StorageMeasurementEntry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.TypeOf"><code class="docutils literal notranslate"><span class="pre">TypeOf</span></code></a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="hse.evidense.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="modules.html">Documentation overview</a><ul>
+  <li><a href="hse.html">hse namespace</a><ul>
+  <li><a href="hse.evidense.html">hse.evidense package</a><ul>
+      <li>Previous: <a href="hse.evidense.singlemeasurement.html" title="previous chapter">hse.evidense.singlemeasurement module</a></li>
+      <li>Next: <a href="hse.evidense.version.html" title="next chapter">hse.evidense.version module</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/hse.evidense.storage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

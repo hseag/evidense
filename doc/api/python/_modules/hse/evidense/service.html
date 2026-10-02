@@ -57,14 +57,14 @@
 
 
 <div class="viewcode-block" id="resolve_state_path">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.resolve_state_path">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.resolve_state_path">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">resolve_state_path</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">_resolve_path</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">Run</span><span class="o">.</span><span class="n">_resolve_state_filename</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">))</span></div>
 
 
 
 <div class="viewcode-block" id="resolve_run_paths">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.resolve_run_paths">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.resolve_run_paths">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">resolve_run_paths</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">working_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
     <span class="n">data_file</span> <span class="o">=</span> <span class="n">_resolve_path</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
@@ -82,34 +82,34 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_read_json_if_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_run_snapshot</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
-    <span class="n">data_file</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="s2">&quot;_filename&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="s2">"_filename"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;state_file&quot;</span><span class="p">:</span> <span class="n">state_file</span><span class="p">,</span>
-        <span class="s2">&quot;data_file&quot;</span><span class="p">:</span> <span class="n">data_file</span><span class="p">,</span>
-        <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="s2">&quot;SIMULATION&quot;</span> <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">is_simulation</span> <span class="k">else</span> <span class="n">run</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">serial_number</span><span class="p">(),</span>
-        <span class="s2">&quot;nr_of_blanks&quot;</span><span class="p">:</span> <span class="n">run</span><span class="o">.</span><span class="n">nr_of_blanks</span><span class="p">,</span>
-        <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">run</span><span class="o">.</span><span class="n">_count</span><span class="p">,</span>
-        <span class="s2">&quot;next_state&quot;</span><span class="p">:</span> <span class="n">_run_state_name</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">_state</span><span class="p">),</span>
-        <span class="s2">&quot;measurement_count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">storage</span><span class="p">),</span>
-        <span class="s2">&quot;has_factors&quot;</span><span class="p">:</span> <span class="n">run</span><span class="o">.</span><span class="n">_factors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"state_file"</span><span class="p">:</span> <span class="n">state_file</span><span class="p">,</span>
+        <span class="s2">"data_file"</span><span class="p">:</span> <span class="n">data_file</span><span class="p">,</span>
+        <span class="s2">"device"</span><span class="p">:</span> <span class="s2">"SIMULATION"</span> <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">is_simulation</span> <span class="k">else</span> <span class="n">run</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">serial_number</span><span class="p">(),</span>
+        <span class="s2">"nr_of_blanks"</span><span class="p">:</span> <span class="n">run</span><span class="o">.</span><span class="n">nr_of_blanks</span><span class="p">,</span>
+        <span class="s2">"count"</span><span class="p">:</span> <span class="n">run</span><span class="o">.</span><span class="n">_count</span><span class="p">,</span>
+        <span class="s2">"next_state"</span><span class="p">:</span> <span class="n">_run_state_name</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">_state</span><span class="p">),</span>
+        <span class="s2">"measurement_count"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">storage</span><span class="p">),</span>
+        <span class="s2">"has_factors"</span><span class="p">:</span> <span class="n">run</span><span class="o">.</span><span class="n">_factors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_kit_payload</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="n">filename</span><span class="p">,</span>
-        <span class="s2">&quot;kit&quot;</span><span class="p">:</span> <span class="n">Kit</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
+        <span class="s2">"file"</span><span class="p">:</span> <span class="n">filename</span><span class="p">,</span>
+        <span class="s2">"kit"</span><span class="p">:</span> <span class="n">Kit</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
     <span class="p">}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_lock_key</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-    <span class="n">normalized</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;run&quot;</span> <span class="k">else</span> <span class="n">value</span>
-    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">normalized</span><span class="p">)</span>
+    <span class="n">normalized</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"run"</span> <span class="k">else</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="s2">"</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">normalized</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_lock</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -126,11 +126,11 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">device</span> <span class="ow">or</span> <span class="s2">&quot;__default__&quot;</span>
+    <span class="k">return</span> <span class="n">device</span> <span class="ow">or</span> <span class="s2">"__default__"</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_device_lock_is_busy</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">lock</span> <span class="o">=</span> <span class="n">_get_lock</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+    <span class="n">lock</span> <span class="o">=</span> <span class="n">_get_lock</span><span class="p">(</span><span class="s2">"device"</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
     <span class="n">acquired</span> <span class="o">=</span> <span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">acquired</span><span class="p">:</span>
         <span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
@@ -142,8 +142,8 @@
     <span class="n">evidense</span> <span class="o">=</span> <span class="n">Device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;serialnumber&quot;</span><span class="p">:</span> <span class="n">evidense</span><span class="o">.</span><span class="n">serial_number</span><span class="p">(),</span>
-            <span class="s2">&quot;firmwareVersion&quot;</span><span class="p">:</span> <span class="n">evidense</span><span class="o">.</span><span class="n">firmware_version</span><span class="p">(),</span>
+            <span class="s2">"serialnumber"</span><span class="p">:</span> <span class="n">evidense</span><span class="o">.</span><span class="n">serial_number</span><span class="p">(),</span>
+            <span class="s2">"firmwareVersion"</span><span class="p">:</span> <span class="n">evidense</span><span class="o">.</span><span class="n">firmware_version</span><span class="p">(),</span>
         <span class="p">}</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="n">evidense</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -153,41 +153,41 @@
     <span class="n">state</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">return</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"device"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="get_device_info">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.get_device_info">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.get_device_info">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_device_info</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">)):</span>
+    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"device"</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">)):</span>
         <span class="k">return</span> <span class="n">_probe_device_info</span><span class="p">(</span><span class="n">device</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="list_devices">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.list_devices">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.list_devices">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">list_devices</span><span class="p">():</span>
     <span class="n">devices</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">serial</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">list_ports</span><span class="o">.</span><span class="n">comports</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">port</span><span class="o">.</span><span class="n">vid</span> <span class="o">==</span> <span class="n">USB</span><span class="o">.</span><span class="n">VID</span> <span class="ow">and</span> <span class="n">port</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="n">USB</span><span class="o">.</span><span class="n">PID</span><span class="p">:</span>
             <span class="n">devices</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="n">port</span><span class="o">.</span><span class="n">serial_number</span><span class="p">,</span>
-                <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="n">port</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+                <span class="s2">"device_id"</span><span class="p">:</span> <span class="n">port</span><span class="o">.</span><span class="n">serial_number</span><span class="p">,</span>
+                <span class="s2">"port"</span><span class="p">:</span> <span class="n">port</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
             <span class="p">})</span>
     <span class="k">return</span> <span class="n">devices</span></div>
 
 
 
 <div class="viewcode-block" id="run_selftest">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.run_selftest">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.run_selftest">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">run_selftest</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_details</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">)):</span>
+    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"device"</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">)):</span>
         <span class="n">evidense</span> <span class="o">=</span> <span class="n">Device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">payload</span> <span class="o">=</span> <span class="n">evidense</span><span class="o">.</span><span class="n">selftest</span><span class="p">()</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">include_details</span><span class="p">:</span>
                 <span class="n">payload</span> <span class="o">|=</span> <span class="n">evidense</span><span class="o">.</span><span class="n">selftest_details_as_json</span><span class="p">()</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;hasProblems&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">"hasProblems"</span><span class="p">]</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"result"</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span>
             <span class="k">return</span> <span class="n">payload</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">evidense</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
@@ -195,13 +195,13 @@
 
 
 <div class="viewcode-block" id="check_empty">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.check_empty">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.check_empty">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_empty</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">)):</span>
+    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"device"</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">)):</span>
         <span class="n">evidense</span> <span class="o">=</span> <span class="n">Device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;empty&quot;</span><span class="p">:</span> <span class="n">evidense</span><span class="o">.</span><span class="n">is_cuvette_holder_empty</span><span class="p">(),</span>
+                <span class="s2">"empty"</span><span class="p">:</span> <span class="n">evidense</span><span class="o">.</span><span class="n">is_cuvette_holder_empty</span><span class="p">(),</span>
             <span class="p">}</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">evidense</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
@@ -209,11 +209,11 @@
 
 
 <div class="viewcode-block" id="init_run">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.init_run">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">init_run</span><span class="p">(</span><span class="n">nr_of_blanks</span><span class="p">,</span> <span class="n">working_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_purity_ratio_260_280_correction</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.init_run">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">init_run</span><span class="p">(</span><span class="n">nr_of_blanks</span><span class="p">,</span> <span class="n">working_dir</span><span class="o">=</span><span class="s2">"."</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_purity_ratio_260_280_correction</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">working_dir</span><span class="p">,</span> <span class="n">data_file</span><span class="p">,</span> <span class="n">state_file</span> <span class="o">=</span> <span class="n">resolve_run_paths</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
-        <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">)):</span>
+    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"run"</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"device"</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">)):</span>
             <span class="n">run</span> <span class="o">=</span> <span class="n">Run</span><span class="p">(</span>
                 <span class="n">nr_of_blanks</span><span class="p">,</span>
                 <span class="n">path</span><span class="o">=</span><span class="n">working_dir</span><span class="p">,</span>
@@ -224,7 +224,7 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">run</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
                 <span class="n">snapshot</span> <span class="o">=</span> <span class="n">_run_snapshot</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">state_file</span><span class="p">)</span>
-                <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
+                <span class="n">snapshot</span><span class="p">[</span><span class="s2">"state"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">snapshot</span>
             <span class="k">finally</span><span class="p">:</span>
                 <span class="n">run</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
@@ -232,22 +232,22 @@
 
 
 <div class="viewcode-block" id="load_run">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.load_run">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_run</span><span class="p">(</span><span class="n">working_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.load_run">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_run</span><span class="p">(</span><span class="n">working_dir</span><span class="o">=</span><span class="s2">"."</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">state_file</span> <span class="o">=</span> <span class="n">resolve_run_paths</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">load_run_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="load_run_state">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.load_run_state">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.load_run_state">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_run_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"run"</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
         <span class="n">run</span> <span class="o">=</span> <span class="n">Run</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">snapshot</span> <span class="o">=</span> <span class="n">_run_snapshot</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">state_file</span><span class="p">)</span>
-            <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
-            <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;data_file&quot;</span><span class="p">])</span>
+            <span class="n">snapshot</span><span class="p">[</span><span class="s2">"state"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
+            <span class="n">snapshot</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">snapshot</span><span class="p">[</span><span class="s2">"data_file"</span><span class="p">])</span>
             <span class="k">return</span> <span class="n">snapshot</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">run</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
@@ -255,26 +255,26 @@
 
 
 <div class="viewcode-block" id="measure_run">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.measure_run">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">measure_run</span><span class="p">(</span><span class="n">working_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.measure_run">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">measure_run</span><span class="p">(</span><span class="n">working_dir</span><span class="o">=</span><span class="s2">"."</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">state_file</span> <span class="o">=</span> <span class="n">resolve_run_paths</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">measure_run_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="measure_run_state">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.measure_run_state">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.measure_run_state">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">measure_run_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"run"</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
         <span class="n">device</span> <span class="o">=</span> <span class="n">_device_from_state_file</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">)):</span>
+        <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"device"</span><span class="p">,</span> <span class="n">_device_lock_value</span><span class="p">(</span><span class="n">device</span><span class="p">)):</span>
             <span class="n">run</span> <span class="o">=</span> <span class="n">Run</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">run</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span>
                 <span class="n">run</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
                 <span class="n">snapshot</span> <span class="o">=</span> <span class="n">_run_snapshot</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">state_file</span><span class="p">)</span>
-                <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
-                <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;data_file&quot;</span><span class="p">])</span>
+                <span class="n">snapshot</span><span class="p">[</span><span class="s2">"state"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
+                <span class="n">snapshot</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">snapshot</span><span class="p">[</span><span class="s2">"data_file"</span><span class="p">])</span>
                 <span class="k">return</span> <span class="n">snapshot</span>
             <span class="k">finally</span><span class="p">:</span>
                 <span class="n">run</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
@@ -282,68 +282,68 @@
 
 
 <div class="viewcode-block" id="get_device_status">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.get_device_status">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.get_device_status">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_device_status</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">devices</span> <span class="o">=</span> <span class="n">list_devices</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">_device_lock_is_busy</span><span class="p">():</span>
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;busy&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">"device_id"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"busy"</span><span class="p">,</span>
+                <span class="s2">"error"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">_device_lock_is_busy</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="s2">&quot;device_id&quot;</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">_device_lock_is_busy</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="s2">"device_id"</span><span class="p">]):</span>
                 <span class="k">return</span> <span class="p">{</span>
-                    <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;device_id&quot;</span><span class="p">],</span>
-                    <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;busy&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s2">"device_id"</span><span class="p">:</span> <span class="n">entry</span><span class="p">[</span><span class="s2">"device_id"</span><span class="p">],</span>
+                    <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"busy"</span><span class="p">,</span>
+                    <span class="s2">"error"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="p">}</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;device_id&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">"device_id"</span><span class="p">:</span> <span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"device_id"</span><span class="p">],</span>
+                <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"idle"</span><span class="p">,</span>
+                <span class="s2">"error"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;No available device found&quot;</span><span class="p">,</span>
+            <span class="s2">"device_id"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"error"</span><span class="p">,</span>
+            <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"No available device found"</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="k">if</span> <span class="n">device</span> <span class="o">==</span> <span class="s2">&quot;SIMULATION&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">device</span> <span class="o">==</span> <span class="s2">"SIMULATION"</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="n">device</span><span class="p">,</span>
-            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;busy&quot;</span> <span class="k">if</span> <span class="n">_device_lock_is_busy</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">"device_id"</span><span class="p">:</span> <span class="n">device</span><span class="p">,</span>
+            <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"busy"</span> <span class="k">if</span> <span class="n">_device_lock_is_busy</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"idle"</span><span class="p">,</span>
+            <span class="s2">"error"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="k">if</span> <span class="n">_device_lock_is_busy</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="n">device</span><span class="p">,</span>
-            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;busy&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">"device_id"</span><span class="p">:</span> <span class="n">device</span><span class="p">,</span>
+            <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"busy"</span><span class="p">,</span>
+            <span class="s2">"error"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;device_id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">device</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">entry</span><span class="p">[</span><span class="s2">"device_id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">device</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="n">device</span><span class="p">,</span>
-                <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">"device_id"</span><span class="p">:</span> <span class="n">device</span><span class="p">,</span>
+                <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"idle"</span><span class="p">,</span>
+                <span class="s2">"error"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="p">}</span>
 
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="n">device</span><span class="p">,</span>
-        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Device &#39;</span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&#39; not found in available devices&quot;</span><span class="p">,</span>
+        <span class="s2">"device_id"</span><span class="p">:</span> <span class="n">device</span><span class="p">,</span>
+        <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"error"</span><span class="p">,</span>
+        <span class="s2">"error"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Device '</span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">' not found in available devices"</span><span class="p">,</span>
     <span class="p">}</span></div>
 
 
 
 <div class="viewcode-block" id="add_kit_to_run">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.add_kit_to_run">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">add_kit_to_run</span><span class="p">(</span><span class="n">kit_file</span><span class="p">,</span> <span class="n">working_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.add_kit_to_run">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_kit_to_run</span><span class="p">(</span><span class="n">kit_file</span><span class="p">,</span> <span class="n">working_dir</span><span class="o">=</span><span class="s2">"."</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">working_dir</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">state_file</span> <span class="o">=</span> <span class="n">resolve_run_paths</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">kit_file</span><span class="p">):</span>
         <span class="n">kit_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">kit_file</span><span class="p">)</span>
@@ -352,16 +352,16 @@
 
 
 <div class="viewcode-block" id="add_kit_to_run_state">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.add_kit_to_run_state">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.add_kit_to_run_state">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">add_kit_to_run_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">,</span> <span class="n">kit_file</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"run"</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
         <span class="n">run</span> <span class="o">=</span> <span class="n">Run</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">run</span><span class="o">.</span><span class="n">import_kit</span><span class="p">(</span><span class="n">kit_file</span><span class="p">)</span>
             <span class="n">run</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
             <span class="n">snapshot</span> <span class="o">=</span> <span class="n">_run_snapshot</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">state_file</span><span class="p">)</span>
-            <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;kit_file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kit_file</span>
-            <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
+            <span class="n">snapshot</span><span class="p">[</span><span class="s2">"kit_file"</span><span class="p">]</span> <span class="o">=</span> <span class="n">kit_file</span>
+            <span class="n">snapshot</span><span class="p">[</span><span class="s2">"state"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">snapshot</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">run</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
@@ -369,16 +369,16 @@
 
 
 <div class="viewcode-block" id="add_kit_content_to_run_state">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.add_kit_content_to_run_state">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.add_kit_content_to_run_state">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">add_kit_content_to_run_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">,</span> <span class="n">kit</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"run"</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
         <span class="n">run</span> <span class="o">=</span> <span class="n">Run</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">run</span><span class="o">.</span><span class="n">import_kit_content</span><span class="p">(</span><span class="n">kit</span><span class="p">)</span>
             <span class="n">run</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
             <span class="n">snapshot</span> <span class="o">=</span> <span class="n">_run_snapshot</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">state_file</span><span class="p">)</span>
-            <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;kit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kit</span>
-            <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
+            <span class="n">snapshot</span><span class="p">[</span><span class="s2">"kit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">kit</span>
+            <span class="n">snapshot</span><span class="p">[</span><span class="s2">"state"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_json_if_exists</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">snapshot</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">run</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
@@ -386,26 +386,26 @@
 
 
 <div class="viewcode-block" id="export_run">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.export_run">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">export_run</span><span class="p">(</span><span class="n">working_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.export_run">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_run</span><span class="p">(</span><span class="n">working_dir</span><span class="o">=</span><span class="s2">"."</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">state_file</span> <span class="o">=</span> <span class="n">resolve_run_paths</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">export_run_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="export_run_state">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.export_run_state">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.export_run_state">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">export_run_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"run"</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
         <span class="n">run</span> <span class="o">=</span> <span class="n">Run</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">run</span><span class="o">.</span><span class="n">export_as_csv</span><span class="p">()</span>
             <span class="n">snapshot</span> <span class="o">=</span> <span class="n">_run_snapshot</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">state_file</span><span class="p">)</span>
-            <span class="n">data_file</span> <span class="o">=</span> <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;data_file&quot;</span><span class="p">]</span>
+            <span class="n">data_file</span> <span class="o">=</span> <span class="n">snapshot</span><span class="p">[</span><span class="s2">"data_file"</span><span class="p">]</span>
             <span class="n">csv_file</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">data_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">csv_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">data_file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.csv&quot;</span>
-            <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;csv_file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">csv_file</span>
+                <span class="n">csv_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">data_file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">".csv"</span>
+            <span class="n">snapshot</span><span class="p">[</span><span class="s2">"csv_file"</span><span class="p">]</span> <span class="o">=</span> <span class="n">csv_file</span>
             <span class="k">return</span> <span class="n">snapshot</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">run</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
@@ -413,11 +413,11 @@
 
 
 <div class="viewcode-block" id="create_kit">
-<a class="viewcode-back" href="../../../api/hse.evidense.service.html#hse.evidense.service.create_kit">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">create_kit</span><span class="p">(</span><span class="n">working_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a class="viewcode-back" href="../../../hse.evidense.service.html#hse.evidense.service.create_kit">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_kit</span><span class="p">(</span><span class="n">working_dir</span><span class="o">=</span><span class="s2">"."</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">working_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">working_dir</span><span class="p">)</span>
     <span class="n">state_file</span> <span class="o">=</span> <span class="n">resolve_state_path</span><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">_acquire_lock</span><span class="p">(</span><span class="s2">"run"</span><span class="p">,</span> <span class="n">state_file</span><span class="p">):</span>
         <span class="n">run</span> <span class="o">=</span> <span class="n">Run</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state_file</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">file2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -441,7 +441,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../index.html">eviDense Python API</a></h1>
+<h1 class="logo"><a href="../../../modules.html">eviDense Python API</a></h1>
 
 
 
@@ -460,15 +460,14 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">hse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hse.html">hse namespace</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../modules.html">Documentation overview</a><ul>
   <li><a href="../../index.html">Module code</a><ul>
   </ul></li>
   </ul></li>

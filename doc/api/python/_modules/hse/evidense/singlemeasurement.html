@@ -39,24 +39,24 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.quadruple</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quadruple</span>
 
 <div class="viewcode-block" id="SingleMeasurement">
-<a class="viewcode-back" href="../../../api/hse.evidense.singlemeasurement.html#hse.evidense.SingleMeasurement">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.singlemeasurement.html#hse.evidense.SingleMeasurement">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SingleMeasurement</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents one raw device measurement across all four wavelengths.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Represents one raw device measurement across all four wavelengths."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel230</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">channel260</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">channel280</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">channel340</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a single measurement from its wavelength channels.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Initialize a single measurement from its wavelength channels."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel230</span> <span class="o">=</span> <span class="n">Channel</span><span class="p">()</span> <span class="k">if</span> <span class="n">channel230</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">channel230</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel260</span> <span class="o">=</span> <span class="n">Channel</span><span class="p">()</span> <span class="k">if</span> <span class="n">channel260</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">channel260</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel280</span> <span class="o">=</span> <span class="n">Channel</span><span class="p">()</span> <span class="k">if</span> <span class="n">channel280</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">channel280</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel340</span> <span class="o">=</span> <span class="n">Channel</span><span class="p">()</span> <span class="k">if</span> <span class="n">channel340</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">channel340</span>
         
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;230: [</span><span class="si">{}</span><span class="s2">] 260: [</span><span class="si">{}</span><span class="s2">] 280: [</span><span class="si">{}</span><span class="s2">] 340: [</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel230</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel260</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel280</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel340</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">"230: [</span><span class="si">{}</span><span class="s2">] 260: [</span><span class="si">{}</span><span class="s2">] 280: [</span><span class="si">{}</span><span class="s2">] 340: [</span><span class="si">{}</span><span class="s2">]"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel230</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel260</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel280</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel340</span><span class="p">)</span>
         
 <div class="viewcode-block" id="SingleMeasurement.to_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.singlemeasurement.html#hse.evidense.SingleMeasurement.to_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.singlemeasurement.html#hse.evidense.SingleMeasurement.to_json">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the measurement to a JSON-compatible dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert the measurement to a JSON-compatible dictionary."""</span>
         <span class="k">return</span> <span class="p">{</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">CH_230</span> <span class="p">:</span>  <span class="bp">self</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
                  <span class="n">DictKeys</span><span class="o">.</span><span class="n">CH_260</span> <span class="p">:</span>  <span class="bp">self</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
                  <span class="n">DictKeys</span><span class="o">.</span><span class="n">CH_280</span> <span class="p">:</span>  <span class="bp">self</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span> 
@@ -65,24 +65,24 @@
 
                
 <div class="viewcode-block" id="SingleMeasurement.sample">
-<a class="viewcode-back" href="../../../api/hse.evidense.singlemeasurement.html#hse.evidense.SingleMeasurement.sample">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.singlemeasurement.html#hse.evidense.SingleMeasurement.sample">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the sample values as a :class:`Quadruple`.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the sample values as a :class:`Quadruple`."""</span>
         <span class="k">return</span> <span class="n">Quadruple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SingleMeasurement.reference">
-<a class="viewcode-back" href="../../../api/hse.evidense.singlemeasurement.html#hse.evidense.SingleMeasurement.reference">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.singlemeasurement.html#hse.evidense.SingleMeasurement.reference">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">reference</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the reference values as a :class:`Quadruple`.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the reference values as a :class:`Quadruple`."""</span>
         <span class="k">return</span> <span class="n">Quadruple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span></div>
 
                
 <div class="viewcode-block" id="SingleMeasurement.from_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.singlemeasurement.html#hse.evidense.SingleMeasurement.from_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.singlemeasurement.html#hse.evidense.SingleMeasurement.from_json">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a measurement from a JSON dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create a measurement from a JSON dictionary."""</span>
         <span class="k">return</span> <span class="n">SingleMeasurement</span><span class="p">(</span><span class="n">Channel</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">CH_230</span><span class="p">]),</span> <span class="n">Channel</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">CH_260</span><span class="p">]),</span> <span class="n">Channel</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">CH_280</span><span class="p">]),</span> <span class="n">Channel</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">CH_340</span><span class="p">]))</span></div>
 </div>
 
@@ -94,7 +94,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../index.html">eviDense Python API</a></h1>
+<h1 class="logo"><a href="../../../modules.html">eviDense Python API</a></h1>
 
 
 
@@ -113,15 +113,14 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">hse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hse.html">hse namespace</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../modules.html">Documentation overview</a><ul>
   <li><a href="../../index.html">Module code</a><ul>
   </ul></li>
   </ul></li>

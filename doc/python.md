@@ -30,6 +30,11 @@ To install the published wheel directly from the documentation site, use:
 python -m pip install https://hseag.github.io/evidense/main/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl
 ```
 
+or download it
+
+[`hse_evidense-0.10.0-py3-none-any.whl`](https://hseag.github.io/evidense/main/api/python/dist/hse_evidense-0.10.0-py3-none-any.whl){ download="hse_evidense-0.10.0-py3-none-any.whl" }
+
+
 Runtime dependency:
 
 - `pyserial>=3.5`

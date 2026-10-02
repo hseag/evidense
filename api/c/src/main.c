@@ -15,19 +15,18 @@
 #include "cmdempty.h"
 #include "cmdrun.h"
 #include "printerror.h"
+#include "version.h"
 #include <stdio.h>
 #include <string.h>
-
-#define VERSION_TOOL "0.10.0"
 
 void help(int argcCmd, char **argvCmd)
 {
 	if(argvCmd == NULL)
 	{
-            fprintf_s(stdout, "Usage: evidense [OPTIONS] COMMAND [ARGUMENTS]\n");
+            fprintf_s(stdout, "Usage: evidense-cli [OPTIONS] COMMAND [ARGUMENTS]\n");
             fprintf_s(stdout, "Commands:\n");
             fprintf_s(stdout, "  baseline            : starts a baseline measurement and returns the values\n");
-            fprintf_s(stdout, "  command COMMAND     : executes a command, e.g., evidense.exe command \"V 0\" returns the value at index 0\n");
+            fprintf_s(stdout, "  command COMMAND     : executes a command, e.g., evidense-cli command \"V 0\" returns the value at index 0\n");
             fprintf_s(stdout, "  data                : handles data in a data file\n");
             fprintf_s(stdout, "  empty               : checks if the cuvette guide is empty\n");
             fprintf_s(stdout, "  export              : exports JSON as CSV file\n");
@@ -70,7 +69,7 @@ void help(int argcCmd, char **argvCmd)
 		{
 			if(strcmp(argvCmd[1], "get") == 0)
 			{
-                fprintf_s(stdout, "Usage: evidense get INDEX\n");
+                fprintf_s(stdout, "Usage: evidense-cli get INDEX\n");
                 fprintf_s(stdout, "  Gets a value from the device\n");
                 fprintf_s(stdout, "INDEX:\n");
                 fprintf_s(stdout, "   0: Firmware version\n");
@@ -84,7 +83,7 @@ void help(int argcCmd, char **argvCmd)
 			}
 			else if(strcmp(argvCmd[1], "set") == 0)
 			{
-                fprintf_s(stdout, "Usage: evidense set INDEX VALUE\n");
+                fprintf_s(stdout, "Usage: evidense-cli set INDEX VALUE\n");
                 fprintf_s(stdout, "  Sets a value in the device\n");
                 fprintf_s(stdout, "WARNING:\n");
                 fprintf_s(stdout, "  Changing a value can damage the device or lead to incorrect results!\n");
@@ -93,7 +92,7 @@ void help(int argcCmd, char **argvCmd)
 			}
 			else if(strcmp(argvCmd[1], "save") == 0)
 			{
-                fprintf_s(stdout, "Usage: evidense save [OPTIONS] [FILE] [COMMENT]\n");
+                fprintf_s(stdout, "Usage: evidense-cli save [OPTIONS] [FILE] [COMMENT]\n");
                 fprintf_s(stdout, "  Saves the levelling data and the last measurements in the given file FILE as a JSON file.\n");
                 fprintf_s(stdout, "  The optional string COMMENT is added as a comment to the measurement in the JSON file.\n");
                 fprintf_s(stdout, "Options:\n");
@@ -104,7 +103,7 @@ void help(int argcCmd, char **argvCmd)
 			}
             else if(strcmp(argvCmd[1], "export") == 0)
             {
-                fprintf_s(stdout, "Usage: evidense export [OPTIONS] [JSON FILE] [CSV FILE]\n");
+                fprintf_s(stdout, "Usage: evidense-cli export [OPTIONS] [JSON FILE] [CSV FILE]\n");
                 fprintf_s(stdout, "  Exports data from the JSON file to CSV format.\n");
                 fprintf_s(stdout, "Options:\n");
                 fprintf_s(stdout, "  --delimiter-comma     : uses commas as separators (default).\n");
@@ -115,12 +114,12 @@ void help(int argcCmd, char **argvCmd)
             }
 			else if(strcmp(argvCmd[1], "data") == 0)
 			{
-                fprintf_s(stdout, "Usage: evidense data print FILE\n");
+                fprintf_s(stdout, "Usage: evidense-cli data print FILE\n");
                 fprintf_s(stdout, "  Prints the calculated values from file FILE.\n");
                 fprintf_s(stdout, "Output:\n");
                 fprintf_s(stdout, "  dsDNA ssDNA ssRNA purity_ratio_260/230 purity_ratio_260/280 comment\n");
                 fprintf_s(stdout, "\n");
-                fprintf_s(stdout, "Usage: evidense data calculate [OPTIONS] FILE\n");
+                fprintf_s(stdout, "Usage: evidense-cli data calculate [OPTIONS] FILE\n");
                 fprintf_s(stdout, "  Calculates the concentration in the given file and adds the values to the file.\n");
                 fprintf_s(stdout, "  To calculate the values, at least the first value must be a blank.\n");
                 fprintf_s(stdout, "Options:\n");
@@ -130,19 +129,19 @@ void help(int argcCmd, char **argvCmd)
 			}
             else if(strcmp(argvCmd[1], "run") == 0)
             {
-                fprintf_s(stdout, "Usage: evidense run [OPTIONS] init NR_OF_BLANKS\n");
+                fprintf_s(stdout, "Usage: evidense-cli run [OPTIONS] init NR_OF_BLANKS\n");
                 fprintf_s(stdout, "  Initializes a run.\n");
                 fprintf_s(stdout, "  Additional init options:\n");
                 fprintf_s(stdout, "    --no_purity_ratio_260_280_correction\n");
                 fprintf_s(stdout, "      Disable wavelength-based 260/280 correction.\n");
                 fprintf_s(stdout, "    --purity_ratio_260_280_correction\n");
                 fprintf_s(stdout, "      Explicitly enable wavelength-based 260/280 correction (default).\n");
-                fprintf_s(stdout, "Usage: evidense run [OPTIONS] measure [COMMENT]\n");
+                fprintf_s(stdout, "Usage: evidense-cli run [OPTIONS] measure [COMMENT]\n");
                 fprintf_s(stdout, "  Executes a measurement.\n");
-                fprintf_s(stdout, "Usage: evidense run [OPTIONS] checkempty\n");
+                fprintf_s(stdout, "Usage: evidense-cli run [OPTIONS] checkempty\n");
                 fprintf_s(stdout, "  Checks if the cuvette guide is empty.\n");
                 fprintf_s(stdout, "  Returns exit code 0 when the cuvette guide is empty; otherwise, the exit code is non-zero.\n");
-                fprintf_s(stdout, "Usage: evidense run [OPTIONS] export\n");
+                fprintf_s(stdout, "Usage: evidense-cli run [OPTIONS] export\n");
                 fprintf_s(stdout, "  Exports the active run data JSON file as a CSV file with the same basename.\n");
                 fprintf_s(stdout, "Options:\n");
                 fprintf_s(stdout, "  --working-dir=DIR      : working directory (default: .)\n");
@@ -150,9 +149,9 @@ void help(int argcCmd, char **argvCmd)
             }
 			else if(strcmp(argvCmd[1], "measure") == 0)
 			{
-                fprintf_s(stdout, "Usage: evidense measure\n");
+                fprintf_s(stdout, "Usage: evidense-cli measure\n");
                 fprintf_s(stdout, "  Measures with all LEDs and prints the values to stdout.\n");
-                fprintf_s(stdout, "Usage: evidense measure LAST\n");
+                fprintf_s(stdout, "Usage: evidense-cli measure LAST\n");
                 fprintf_s(stdout, "  Retrieves the measurement at index LAST and prints the values to stdout.\n");
                 fprintf_s(stdout, "  The last measurement is at index 0, the second last at index 1.\n");
                 fprintf_s(stdout, "Output: all units in [uV]\n");
@@ -160,7 +159,7 @@ void help(int argcCmd, char **argvCmd)
 			}
 			else if(strcmp(argvCmd[1], "baseline") == 0)
 			{
-                fprintf_s(stdout, "Usage: evidense baseline\n");
+                fprintf_s(stdout, "Usage: evidense-cli baseline\n");
                 fprintf_s(stdout, "  If a levelling is needed, the command levelling is executed before a measurement is started. For this measurement, the cuvette holder must be empty.\n");
                 fprintf_s(stdout, "  The firmware has an internal storage for up to ten measurements. The command baseline clears this storage.\n");
                 fprintf_s(stdout, "Output: all units in [uV]\n");
@@ -168,30 +167,30 @@ void help(int argcCmd, char **argvCmd)
 			}
 			else if(strcmp(argvCmd[1], "version") == 0)
 			{
-                fprintf_s(stdout, "Usage: evidense version\n");
+                fprintf_s(stdout, "Usage: evidense-cli version\n");
                 fprintf_s(stdout, "  Prints the version of this tool to stdout.\n");
 			}
 			else if(strcmp(argvCmd[1], "selftest") == 0)
 			{
-                fprintf_s(stdout, "Usage: evidense selftest\n");
+                fprintf_s(stdout, "Usage: evidense-cli selftest\n");
                 fprintf_s(stdout, "  Executes a selftest and prints the result.\n");
                 fprintf_s(stdout, "  If the result is not OK, the most common case is that the cuvette guide blocks the optical path.\n");
                 fprintf_s(stdout, "  or a cuvette is stuck in the cuvette guide.\n");
 			}
 			else if(strcmp(argvCmd[1], "fwupdate") == 0)
 			{
-                fprintf_s(stdout, "Usage: evidense fwupdate SREC_FILE\n");
+                fprintf_s(stdout, "Usage: evidense-cli fwupdate SREC_FILE\n");
                 fprintf_s(stdout, "  Updates the firmware.\n");
 			}
             else if(strcmp(argvCmd[1], "empty") == 0)
             {
-                fprintf_s(stdout, "Usage: evidense empty\n");
+                fprintf_s(stdout, "Usage: evidense-cli empty\n");
                 fprintf_s(stdout, "  Checks if the cuvette guide is empty.\n");
                 fprintf_s(stdout, "  Returns 'Empty' if the cuvette guide is empty; otherwise returns 'Not empty'.\n");
             }
 			else if(strcmp(argvCmd[1], "command") == 0)
             {
-                fprintf_s(stdout, "Usage: evidense command COMMAND\n");
+                fprintf_s(stdout, "Usage: evidense-cli command COMMAND\n");
                 fprintf_s(stdout, "  Executes any evidense command. Useful for testing.\n");
 			}
             else
@@ -313,7 +312,7 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
-            return printError(ERROR_EVI_UNKOWN_COMMAND_LINE_ARGUMENT, "'%s' is not a evidense command. See 'evidense --help'.", argvCmd[0]);
+            return printError(ERROR_EVI_UNKOWN_COMMAND_LINE_ARGUMENT, "'%s' is not a evidense command. See 'evidense-cli --help'.", argvCmd[0]);
 		}
 	}
 	else

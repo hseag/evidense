@@ -37,39 +37,39 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">DictKeys</span><span class="p">,</span> <span class="n">Index</span>
 
 <div class="viewcode-block" id="DeviceSettings">
-<a class="viewcode-back" href="../../../api/hse.evidense.devicesettings.html#hse.evidense.DeviceSettings">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.devicesettings.html#hse.evidense.DeviceSettings">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DeviceSettings</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Device-specific wavelength settings used for purity correction.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Device-specific wavelength settings used for purity correction."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center_wavelength_260</span> <span class="o">=</span> <span class="mf">260.0</span><span class="p">,</span> <span class="n">center_wavelength_280</span> <span class="o">=</span> <span class="mf">280.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize device settings.</span>
+<span class="w">        </span><span class="sd">"""Initialize device settings.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            center_wavelength_260: Effective center wavelength of the 260 nm</span>
 <span class="sd">                channel in nm.</span>
 <span class="sd">            center_wavelength_280: Effective center wavelength of the 280 nm</span>
 <span class="sd">                channel in nm.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">center_wavelength_260</span> <span class="o">=</span> <span class="n">center_wavelength_260</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">center_wavelength_280</span> <span class="o">=</span> <span class="n">center_wavelength_280</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Center wavelength 260:</span><span class="si">{}</span><span class="s2"> Center wavelength 280:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center_wavelength_260</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_wavelength_280</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">"Center wavelength 260:</span><span class="si">{}</span><span class="s2"> Center wavelength 280:</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center_wavelength_260</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_wavelength_280</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DeviceSettings.to_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.devicesettings.html#hse.evidense.DeviceSettings.to_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.devicesettings.html#hse.evidense.DeviceSettings.to_json">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the settings to a JSON-compatible dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert the settings to a JSON-compatible dictionary."""</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">ret</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">CENTER_WAVELENGTHS</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">CH_260</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_wavelength_260</span><span class="p">,</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">CH_280</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_wavelength_280</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">ret</span> </div>
 
 
 <div class="viewcode-block" id="DeviceSettings.from_device">
-<a class="viewcode-back" href="../../../api/hse.evidense.devicesettings.html#hse.evidense.DeviceSettings.from_device">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.devicesettings.html#hse.evidense.DeviceSettings.from_device">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_device</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read device-specific wavelength settings from a device.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Read device-specific wavelength settings from a device."""</span>
         <span class="n">device_settings</span> <span class="o">=</span> <span class="n">DeviceSettings</span><span class="p">()</span>
         <span class="c1"># The eviDense device stores the wavelengths in pm, but the SW API excepts nm.</span>
         <span class="k">try</span><span class="p">:</span>
@@ -85,10 +85,10 @@
 
 
 <div class="viewcode-block" id="DeviceSettings.from_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.devicesettings.html#hse.evidense.DeviceSettings.from_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.devicesettings.html#hse.evidense.DeviceSettings.from_json">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create device settings from a JSON dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create device settings from a JSON dictionary."""</span>
         <span class="k">if</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">CENTER_WAVELENGTHS</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">DeviceSettings</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -110,7 +110,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../index.html">eviDense Python API</a></h1>
+<h1 class="logo"><a href="../../../modules.html">eviDense Python API</a></h1>
 
 
 
@@ -129,15 +129,14 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">hse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hse.html">hse namespace</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../modules.html">Documentation overview</a><ul>
   <li><a href="../../index.html">Module code</a><ul>
   </ul></li>
   </ul></li>

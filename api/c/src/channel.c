@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: © 2024 HSE AG, <opensource@hseag.com>
 
-#include "evibase.h"
+#include "common/evibase.h"
 #include "dict.h"
 #include "channel.h"
 

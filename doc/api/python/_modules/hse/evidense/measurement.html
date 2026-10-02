@@ -43,12 +43,12 @@
 <span class="n">DEFAULT_CUVETTE_PATH_LENGTH</span> <span class="o">=</span> <span class="mf">1.04</span> <span class="c1">#mm</span>
 
 <div class="viewcode-block" id="Results">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Results">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Results">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Results</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculated concentration, purity, and absorbance results.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Calculated concentration, purity, and absorbance results."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds_dna</span><span class="p">,</span> <span class="n">ss_dna</span><span class="p">,</span> <span class="n">ss_rna</span><span class="p">,</span> <span class="n">purity_ratio_260_230</span><span class="p">,</span> <span class="n">purity_ratio_260_280</span><span class="p">,</span> <span class="n">a230</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">a260</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">a280</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">a340</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a result set for one measurement.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Initialize a result set for one measurement."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ds_dna</span>              <span class="o">=</span> <span class="n">ds_dna</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ss_dna</span>              <span class="o">=</span> <span class="n">ss_dna</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ss_rna</span>              <span class="o">=</span> <span class="n">ss_rna</span>
@@ -60,15 +60,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">a340</span>                <span class="o">=</span> <span class="n">a340</span>
         
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;ds_dna:</span><span class="si">{}</span><span class="s2"> ss_dna:</span><span class="si">{}</span><span class="s2"> ss_rna:</span><span class="si">{}</span><span class="s2"> 260/230:</span><span class="si">{}</span><span class="s2"> 260/280:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ds_dna</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_dna</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_rna</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_230</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_280</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="s2">"ds_dna:</span><span class="si">{}</span><span class="s2"> ss_dna:</span><span class="si">{}</span><span class="s2"> ss_rna:</span><span class="si">{}</span><span class="s2"> 260/230:</span><span class="si">{}</span><span class="s2"> 260/280:</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ds_dna</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_dna</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_rna</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_230</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_280</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">a230</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot; a230:</span><span class="si">{}</span><span class="s2"> a260:</span><span class="si">{}</span><span class="s2"> a280:</span><span class="si">{}</span><span class="s2"> a340:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a230</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a260</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a280</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a340</span><span class="p">)</span>
+            <span class="n">ret</span> <span class="o">+=</span> <span class="s2">" a230:</span><span class="si">{}</span><span class="s2"> a260:</span><span class="si">{}</span><span class="s2"> a280:</span><span class="si">{}</span><span class="s2"> a340:</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a230</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a260</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a280</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a340</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span>
         
 <div class="viewcode-block" id="Results.to_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Results.to_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Results.to_json">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the results to a JSON-compatible dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert the results to a JSON-compatible dictionary."""</span>
         <span class="n">m</span> <span class="o">=</span> <span class="p">{</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">DSDNA</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ds_dna</span><span class="p">,</span>
               <span class="n">DictKeys</span><span class="o">.</span><span class="n">SSDNA</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_dna</span><span class="p">,</span>
               <span class="n">DictKeys</span><span class="o">.</span><span class="n">SSRNA</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss_rna</span><span class="p">,</span>
@@ -94,25 +94,25 @@
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ds_dna</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">ds_dna</span><span class="p">,</span> <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">delta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss_dna</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">ss_dna</span><span class="p">,</span> <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">delta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss_rna</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">ss_rna</span><span class="p">,</span> <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">delta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_230</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">purity_ratio_260_230</span><span class="p">,</span> <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">delta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">purity_ratio_260_280</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">purity_ratio_260_280</span><span class="p">,</span> <span class="n">rel_tol</span> <span class="o">=</span> <span class="n">delta</span><span class="p">)</span> <span class="ow">and</span> <span class="n">compare_optional</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a230</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">a230</span><span class="p">)</span> <span class="ow">and</span> <span class="n">compare_optional</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a260</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">a260</span><span class="p">)</span> <span class="ow">and</span> <span class="n">compare_optional</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a280</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">a280</span><span class="p">)</span> <span class="ow">and</span> <span class="n">compare_optional</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a340</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">a340</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Results.from_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Results.from_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Results.from_json">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a result set from a JSON dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create a result set from a JSON dictionary."""</span>
         <span class="k">return</span> <span class="n">Results</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">DSDNA</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">SSDNA</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">SSRNA</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">PURITY260_230</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">PURITY260_280</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A230</span><span class="p">),</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A260</span><span class="p">),</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A280</span><span class="p">),</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">A340</span><span class="p">))</span></div>
 </div>
 
         
 <div class="viewcode-block" id="Factors">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Factors">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Factors">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Factors</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Correction factors derived from blank measurements.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Correction factors derived from blank measurements."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize correction factors.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Initialize correction factors."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f_a_buffer_blank</span>  <span class="o">=</span> <span class="n">factor_a_buffer_blank</span> <span class="ow">or</span> <span class="n">Quadruple</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;f_a_buffer_blank:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f_a_buffer_blank</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">"f_a_buffer_blank:</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f_a_buffer_blank</span><span class="p">)</span>
         
     <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">):</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="n">Factors</span><span class="p">()</span>
@@ -132,40 +132,40 @@
         <span class="k">return</span> <span class="n">ret</span>
 
 <div class="viewcode-block" id="Factors.to_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Factors.to_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Factors.to_json">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Convert the factors to a JSON-compatible dictionary.&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">"""Convert the factors to a JSON-compatible dictionary."""</span>
             <span class="k">return</span>  <span class="p">{</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">BUFFER_BLANK</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_a_buffer_blank</span><span class="o">.</span><span class="n">to_json</span><span class="p">()}</span></div>
 
 
 <div class="viewcode-block" id="Factors.from_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Factors.from_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Factors.from_json">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create correction factors from a JSON dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create correction factors from a JSON dictionary."""</span>
         <span class="k">return</span> <span class="n">Factors</span><span class="p">(</span> <span class="n">Quadruple</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">BUFFER_BLANK</span><span class="p">]))</span></div>
 </div>
 
 
 <div class="viewcode-block" id="Measurement">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Measurement</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents one baseline-air-sample measurement triplet.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Represents one baseline-air-sample measurement triplet."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baseline</span><span class="p">,</span> <span class="n">air</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">comment</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a measurement from baseline, air, and sample steps.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Initialize a measurement from baseline, air, and sample steps."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_comment</span>           <span class="o">=</span> <span class="n">comment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_baseline</span>          <span class="o">=</span> <span class="n">baseline</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_air</span>               <span class="o">=</span> <span class="n">air</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span>            <span class="o">=</span> <span class="n">sample</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;baseline:</span><span class="si">{}</span><span class="s2"> air:</span><span class="si">{}</span><span class="s2"> sample:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_baseline</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_air</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">"baseline:</span><span class="si">{}</span><span class="s2"> air:</span><span class="si">{}</span><span class="s2"> sample:</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_baseline</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_air</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Measurement.absorbance">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.absorbance">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.absorbance">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">absorbance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span> <span class="o">=</span> <span class="n">Quadruple</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate absorbance values for the measurement.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Calculate absorbance values for the measurement."""</span>
         <span class="n">aNNN</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_absorbance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_air</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span><span class="p">)</span> <span class="o">-</span> <span class="n">factor_a_buffer_blank</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">device_settings</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">a280_real</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_theoretical_dna_absorption</span><span class="p">(</span><span class="n">device_settings</span><span class="o">.</span><span class="n">center_wavelength_280</span><span class="p">)</span>
@@ -177,30 +177,30 @@
 
                                                                     
 <div class="viewcode-block" id="Measurement.set_comment">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.set_comment">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.set_comment">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_comment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set or replace the measurement comment.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Set or replace the measurement comment."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_comment</span> <span class="o">=</span> <span class="n">comment</span></div>
 
 
 <div class="viewcode-block" id="Measurement.comment">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.comment">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.comment">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">comment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the measurement comment.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the measurement comment."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_comment</span></div>
 
 
 <div class="viewcode-block" id="Measurement.factor_a_buffer_blank">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.factor_a_buffer_blank">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.factor_a_buffer_blank">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">factor_a_buffer_blank</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the blank absorbance factor derived from air and sample.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the blank absorbance factor derived from air and sample."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_absorbance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_air</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample</span><span class="p">)</span></div>
 
         
 <div class="viewcode-block" id="Measurement.factors">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.factors">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.factors">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">factors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the correction factors represented by this measurement.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the correction factors represented by this measurement."""</span>
         <span class="k">return</span> <span class="n">Factors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">factor_a_buffer_blank</span><span class="p">())</span></div>
 
 
@@ -633,7 +633,7 @@
         <span class="k">return</span> <span class="kc">None</span>
         
 <div class="viewcode-block" id="Measurement.algorithm_v9">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.algorithm_v9">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.algorithm_v9">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">algorithm_v9</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">a_sample_minus_blank</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">absorbance</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span> <span class="o">=</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="n">device_settings</span><span class="p">)</span>
         <span class="n">ret</span>                  <span class="o">=</span> <span class="n">a_sample_minus_blank</span> <span class="o">-</span> <span class="n">Quadruple</span><span class="p">(</span><span class="n">a_sample_minus_blank</span><span class="o">.</span><span class="n">value340</span><span class="p">)</span>
@@ -642,12 +642,12 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_results_from_algorithm_v9</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aNNN</span><span class="p">,</span> <span class="n">absorbance</span><span class="p">,</span> <span class="n">cuvettePathLength</span> <span class="o">=</span> <span class="n">DEFAULT_CUVETTE_PATH_LENGTH</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value280</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">purity_ratio_260_280</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+            <span class="n">purity_ratio_260_280</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'NaN'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">purity_ratio_260_280</span> <span class="o">=</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value260</span> <span class="o">/</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value280</span>
 
         <span class="k">if</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value230</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">purity_ratio_260_230</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+            <span class="n">purity_ratio_260_230</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'NaN'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">purity_ratio_260_230</span> <span class="o">=</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value260</span> <span class="o">/</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value230</span>
 
@@ -659,45 +659,45 @@
                        <span class="n">absorbance</span><span class="o">.</span><span class="n">value230</span><span class="p">,</span> <span class="n">absorbance</span><span class="o">.</span><span class="n">value260</span><span class="p">,</span> <span class="n">absorbance</span><span class="o">.</span><span class="n">value280</span><span class="p">,</span> <span class="n">absorbance</span><span class="o">.</span><span class="n">value340</span><span class="p">)</span>
          
 <div class="viewcode-block" id="Measurement.ds_dna">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.ds_dna">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.ds_dna">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">ds_dna</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">cuvettePathLength</span> <span class="o">=</span> <span class="n">DEFAULT_CUVETTE_PATH_LENGTH</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span><span class="p">)</span><span class="o">.</span><span class="n">value260</span> <span class="o">*</span> <span class="mi">50</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">cuvettePathLength</span> <span class="c1"># 50ng/ul * 10mm / 1.04mm</span></div>
 
 
 <div class="viewcode-block" id="Measurement.ss_dna">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.ss_dna">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.ss_dna">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">ss_dna</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">cuvettePathLength</span> <span class="o">=</span> <span class="n">DEFAULT_CUVETTE_PATH_LENGTH</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span><span class="p">)</span><span class="o">.</span><span class="n">value260</span> <span class="o">*</span> <span class="mi">33</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">cuvettePathLength</span> <span class="c1"># 33ng/ul * 10mm / 1.04mm</span></div>
 
 
 <div class="viewcode-block" id="Measurement.ss_rna">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.ss_rna">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.ss_rna">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">ss_rna</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">cuvettePathLength</span> <span class="o">=</span> <span class="n">DEFAULT_CUVETTE_PATH_LENGTH</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span><span class="p">)</span><span class="o">.</span><span class="n">value260</span> <span class="o">*</span> <span class="mi">40</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">cuvettePathLength</span> <span class="c1"># 40ng/ul * 10mm / 1.04mm</span></div>
 
          
 <div class="viewcode-block" id="Measurement.purity_ratio_260_280">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.purity_ratio_260_280">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.purity_ratio_260_280">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">purity_ratio_260_280</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">aNNN</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value280</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'NaN'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value260</span> <span class="o">/</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value280</span></div>
 
 
 <div class="viewcode-block" id="Measurement.purity_ratio_260_230">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.purity_ratio_260_230">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.purity_ratio_260_230">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">purity_ratio_260_230</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">aNNN</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value230</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'NaN'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value260</span> <span class="o">/</span> <span class="n">aNNN</span><span class="o">.</span><span class="n">value230</span></div>
 
          
 <div class="viewcode-block" id="Measurement.results">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.results">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.results">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">absorbance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">absorbance</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">f_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="n">device_settings</span><span class="p">)</span>
         <span class="n">aNNN</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_v9</span><span class="p">(</span><span class="n">factor_a_buffer_blank</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">f_a_buffer_blank</span><span class="p">,</span> <span class="n">device_settings</span> <span class="o">=</span> <span class="n">device_settings</span><span class="p">)</span>
@@ -705,7 +705,7 @@
 
 
 <div class="viewcode-block" id="Measurement.to_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.to_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.to_json">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">m</span> <span class="o">=</span> <span class="p">{</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">BASELINE</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_baseline</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
               <span class="n">DictKeys</span><span class="o">.</span><span class="n">AIR</span>      <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_air</span><span class="o">.</span><span class="n">to_json</span><span class="p">(),</span>
@@ -719,34 +719,34 @@
 
 
 <div class="viewcode-block" id="Measurement.from_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.from_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.from_json">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Measurement</span><span class="p">(</span><span class="n">SingleMeasurement</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">BASELINE</span><span class="p">]),</span> <span class="n">SingleMeasurement</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">AIR</span><span class="p">]),</span> <span class="n">SingleMeasurement</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">SAMPLE</span><span class="p">]),</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">COMMENT</span><span class="p">))</span></div>
 
     
 <div class="viewcode-block" id="Measurement.calculate_absorbance">
-<a class="viewcode-back" href="../../../api/hse.evidense.measurement.html#hse.evidense.Measurement.calculate_absorbance">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.measurement.html#hse.evidense.Measurement.calculate_absorbance">[docs]</a>
     <span class="nd">@staticmethod</span>    
     <span class="k">def</span><span class="w"> </span><span class="nf">calculate_absorbance</span><span class="p">(</span><span class="n">baseline</span><span class="p">,</span> <span class="n">measurement</span><span class="p">,</span> <span class="n">correctionFactor</span> <span class="o">=</span> <span class="n">Quadruple</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)):</span>
         <span class="n">ods</span> <span class="o">=</span> <span class="n">Quadruple</span><span class="p">()</span>
         <span class="k">if</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">sample</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-            <span class="n">ods</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'NaN'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ods</span><span class="o">.</span><span class="n">value230</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">sample</span> <span class="o">/</span> <span class="n">baseline</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">reference</span> <span class="o">*</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">reference</span> <span class="o">/</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel230</span><span class="o">.</span><span class="n">sample</span> <span class="o">*</span> <span class="n">correctionFactor</span><span class="o">.</span><span class="n">value230</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
         <span class="k">if</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">sample</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-            <span class="n">ods</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'NaN'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ods</span><span class="o">.</span><span class="n">value260</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">sample</span> <span class="o">/</span> <span class="n">baseline</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">reference</span> <span class="o">*</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">reference</span> <span class="o">/</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel260</span><span class="o">.</span><span class="n">sample</span> <span class="o">*</span> <span class="n">correctionFactor</span><span class="o">.</span><span class="n">value260</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
         <span class="k">if</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">sample</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-            <span class="n">ods</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'NaN'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ods</span><span class="o">.</span><span class="n">value280</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">sample</span> <span class="o">/</span> <span class="n">baseline</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">reference</span> <span class="o">*</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">reference</span> <span class="o">/</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel280</span><span class="o">.</span><span class="n">sample</span> <span class="o">*</span> <span class="n">correctionFactor</span><span class="o">.</span><span class="n">value280</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
         <span class="k">if</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">sample</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-            <span class="n">ods</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;NaN&#39;</span><span class="p">)</span>
+            <span class="n">ods</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'NaN'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ods</span><span class="o">.</span><span class="n">value340</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">sample</span> <span class="o">/</span> <span class="n">baseline</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">reference</span> <span class="o">*</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">reference</span> <span class="o">/</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel340</span><span class="o">.</span><span class="n">sample</span> <span class="o">*</span> <span class="n">correctionFactor</span><span class="o">.</span><span class="n">value340</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ods</span></div>
@@ -760,7 +760,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../index.html">eviDense Python API</a></h1>
+<h1 class="logo"><a href="../../../modules.html">eviDense Python API</a></h1>
 
 
 
@@ -779,15 +779,14 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">hse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hse.html">hse namespace</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../modules.html">Documentation overview</a><ul>
   <li><a href="../../index.html">Module code</a><ul>
   </ul></li>
   </ul></li>

@@ -5,7 +5,11 @@
 This chapter describes the high-level Python API based on the [`Run`][run-api] class.
 It is intended for applications that want a guided measurement workflow instead of manually controlling each low-level step.
 
-## 2. Overview
+## 2. Installation and Python Variants
+
+Installation instructions and an overview of the available Python variants are provided in [Python Interfaces](./python.md).
+
+## 3. Overview
 
 [`Run`][run-api] wraps the repeated measurement sequence and manages:
 
@@ -25,7 +29,7 @@ from hse.evidense.run import Run
 
 [`Run`][run-api] is the recommended API when the application wants to execute a standard workflow with minimal boilerplate.
 
-## 3. Typical High-Level Example
+## 4. Typical High-Level Example
 
 The following example demonstrates a complete high-level workflow:
 
@@ -58,7 +62,7 @@ if __name__ == "__main__":
     main()
 ```
 
-## 4. When to Use `Run`
+## 5. When to Use `Run`
 
 Use [`Run`][run-api] when:
 
@@ -78,7 +82,7 @@ See also:
 - [Python Low-Level API](./python-low-level.md)
 - [Python Command Line Interface](./python-cli.md)
 
-## 5. Constructor
+## 6. Constructor
 
 Create a new run with:
 
@@ -106,7 +110,7 @@ Behavior:
 - when purity-ratio correction is enabled, device settings are read automatically
 - if `nr_of_blanks` is `0`, factors are not derived from blank measurements and a kit can be loaded later with [`run.import_kit(...)`][run-importkit-api]
 
-## 6. Run State Model
+## 7. Run State Model
 
 [`Run`][run-api] keeps an internal state machine:
 
@@ -124,7 +128,7 @@ Practical effect:
 
 After the sample step, the state returns to `BASELINE`.
 
-## 7. Blank Handling and Recalculation
+## 8. Blank Handling and Recalculation
 
 [`Run`][run-api] derives correction factors automatically once enough blank measurements are available.
 
@@ -136,7 +140,7 @@ Behavior:
 
 This makes `Run` suitable for workflows where the blank measurements are collected first and the sample results become available afterwards.
 
-## 8. Persisted Files
+## 9. Persisted Files
 
 [`Run`][run-api] manages two kinds of files:
 
@@ -160,7 +164,7 @@ The run state file contains:
 - factors, if available
 - the measurement filename
 
-## 9. Saving and Loading Run State
+## 10. Saving and Loading Run State
 
 Use [`save_state()`][run-savestate-api] to persist the current run state:
 
@@ -188,7 +192,7 @@ This allows workflows such as:
 - continue the run in later CLI invocations or scripts
 - recover after application restart
 
-## 10. Checking the Cuvette Holder
+## 11. Checking the Cuvette Holder
 
 Use [`run.check_empty()`][run-checkempty-api]:
 
@@ -198,7 +202,7 @@ empty = run.check_empty()
 
 This forwards to the underlying device and returns `True` when the cuvette holder is empty.
 
-## 11. Exporting Data
+## 12. Exporting Data
 
 Export the active measurement file as CSV with [`run.export_as_csv()`][run-exportascsv-api]:
 
@@ -208,7 +212,7 @@ run.export_as_csv()
 
 This uses the internally managed measurement filename.
 
-## 12. Kit Import and Export
+## 13. Kit Import and Export
 
 Export a kit from the run with [`run.export_as_kit(...)`][run-exportaskit-api]:
 
@@ -228,14 +232,14 @@ Typical use cases:
 - separate blank preparation from sample processing
 - prepare a kit file for later production workflows
 
-[run-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run
-[run-state-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.State
-[storage-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement
-[measurement-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.measurement.html#hse.evidense.measurement.Measurement
-[run-measure-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.measure
-[run-savestate-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.save_state
-[run-loadstate-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.load_state
-[run-checkempty-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.check_empty
-[run-exportascsv-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.export_as_csv
-[run-exportaskit-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.export_as_kit
-[run-importkit-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run.import_kit
+[run-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.run.html#hse.evidense.run.Run
+[run-state-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.run.html#hse.evidense.run.Run.State
+[storage-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement
+[measurement-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.measurement.html#hse.evidense.measurement.Measurement
+[run-measure-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.run.html#hse.evidense.run.Run.measure
+[run-savestate-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.run.html#hse.evidense.run.Run.save_state
+[run-loadstate-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.run.html#hse.evidense.run.Run.load_state
+[run-checkempty-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.run.html#hse.evidense.run.Run.check_empty
+[run-exportascsv-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.run.html#hse.evidense.run.Run.export_as_csv
+[run-exportaskit-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.run.html#hse.evidense.run.Run.export_as_kit
+[run-importkit-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.run.html#hse.evidense.run.Run.import_kit

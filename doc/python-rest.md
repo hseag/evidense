@@ -5,6 +5,10 @@
 This chapter documents the Python-based REST API.
 It complements the high-level API, the low-level API, and the Python command line interface.
 
+## 2. Installation and Python Variants
+
+Installation instructions and an overview of the available Python variants are provided in [Python Interfaces](./python.md).
+
 ## 2. Overview
 
 The REST API provides HTTP access to the Python software stack of the eviDense UV Photometer.
@@ -704,7 +708,7 @@ if __name__ == "__main__":
 
 This example uses the Python REST client in:
 
-- [module/python/hse/evidense/rest_client.py](../api/python/hse/evidense/rest_client.py)
+- [api/python/src/hse/evidense/rest_client.py](../api/python/src/hse/evidense/rest_client.py)
 
 ## 8. Error Handling
 
@@ -726,5 +730,5 @@ Typical categories are:
 - The `--working-dir` option controls both generated data files and the default log file location.
 - The `--debug` option enables stderr logging for easier interactive troubleshooting.
 
-[rest-server-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.rest_server.html
-[rest-client-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.rest_client.html
+[rest-server-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.rest_server.html
+[rest-client-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.rest_client.html

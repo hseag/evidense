@@ -87,7 +87,7 @@ As a geometric reference, the lower edge of the cuvette is approximately 48.1 mm
 
 For development, automated tests, and workflow validation without physical hardware, an eviDense UV simulator is available.
 
-See [Simulator Guide](./doc/simulator.md) for setup, startup commands, web UI usage, CLI control options, and examples for using the simulator with the supported interfaces.
+See [Simulator Guide](./doc/simulation.md) for setup, startup commands, web UI usage, CLI control options, and examples for using the simulator with the supported interfaces.
 
 ## 4. Troubleshooting
 

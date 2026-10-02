@@ -5,7 +5,11 @@
 This chapter documents the Python command line interface.
 It complements the low-level Python API documentation.
 
-## 2. Overview
+## 2. Installation and Python Variants
+
+Installation instructions and an overview of the available Python variants are provided in [Python Interfaces](./python.md).
+
+## 3. Overview
 
 The Python CLI provides direct access to common device operations from the command line.
 Its implementation is exposed in the generated API docs through the [`hse.evidense.cli`][cli-module-api] module.
@@ -17,7 +21,7 @@ evidense --help
 python -m hse.evidense --help
 ```
 
-## 3. Command Syntax
+## 4. Command Syntax
 
 General syntax:
 
@@ -38,9 +42,9 @@ The currently implemented top-level commands are parsed in [`main()`][cli-main-a
 - `run`
 - `kit`
 
-## 4. Main Commands
+## 5. Main Commands
 
-### 4.1 `info`
+### 5.1 `info`
 
 Reads basic device information and prints:
 
@@ -55,7 +59,7 @@ python -m hse.evidense --device SN0010 info
 python -m hse.evidense info --json
 ```
 
-### 4.2 `selftest`
+### 5.2 `selftest`
 
 Runs the internal device self-test.
 
@@ -74,7 +78,7 @@ python -m hse.evidense selftest --json
 python -m hse.evidense selftest --file selftest.txt
 ```
 
-### 4.3 `checkempty`
+### 5.3 `checkempty`
 
 Checks whether the cuvette guide is empty.
 
@@ -90,7 +94,7 @@ Example:
 python -m hse.evidense checkempty
 ```
 
-### 4.4 `run`
+### 5.4 `run`
 
 Manages persisted run state.
 
@@ -141,7 +145,7 @@ python -m hse.evidense run export
 
 `run` uses a saved state file so the workflow can continue across invocations.
 
-### 4.5 `kit`
+### 5.5 `kit`
 
 Creates kit files from the active run state.
 
@@ -156,7 +160,7 @@ python -m hse.evidense kit create kit.json
 python -m hse.evidense kit create kit.json --comment "Batch A"
 ```
 
-## 5. Output Formats
+## 6. Output Formats
 
 The Python CLI supports:
 
@@ -172,7 +176,7 @@ Logging behavior:
 
 For `run` and `kit`, the working directory defaults to the current directory.
 
-## 6. Typical Examples
+## 7. Typical Examples
 
 Query device information:
 
@@ -223,11 +227,11 @@ python -m hse.evidense run --working-dir .\data measure "sample 2"
 python -m hse.evidense run --working-dir .\data export
 ```
 
-## 7. Relationship to the Low-Level API
+## 8. Relationship to the Low-Level API
 
 The CLI is useful for scripting and operational workflows.
 For application integration and explicit measurement handling, use the low-level Python API described in [Python Low-Level API](./python-low-level.md).
 
-[cli-module-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.cli.html
-[cli-main-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.cli.html#hse.evidense.cli.main
-[main-module-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.__main__.html
+[cli-module-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.cli.html
+[cli-main-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.cli.html#hse.evidense.cli.main
+[main-module-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.__main__.html

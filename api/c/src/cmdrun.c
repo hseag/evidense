@@ -545,7 +545,7 @@ Error_t cmdRun(Evi_t* self, int argcCmd, char** argvCmd)
         ret = eviGet(self, INDEX_SERIALNUMBER, value, sizeof(value));
         if (ret == ERROR_EVI_OK)
         {
-            char * file = malloc_printf("evifluor-SN%s-state.json", value);
+            char * file = malloc_printf("evidense-SN%s-state.json", value);
             options.filename_state = file;
         }
         else

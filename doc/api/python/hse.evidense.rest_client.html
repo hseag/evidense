@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>hse.evidense.rest_client module &#8212; eviDense Python API  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="hse.evidense.rest_server module" href="hse.evidense.rest_server.html" />
+    <link rel="prev" title="hse.evidense.quadruple module" href="hse.evidense.quadruple.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-hse.evidense.rest_client">
+<span id="hse-evidense-rest-client-module"></span><h1>hse.evidense.rest_client module<a class="headerlink" href="#module-hse.evidense.rest_client" title="Link to this heading">¶</a></h1>
+<dl class="py exception">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestApiError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">hse.evidense.rest_client.</span></span><span class="sig-name descname"><span class="pre">RestApiError</span></span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestApiError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestApiError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></p>
+<p>Raised when a REST request fails or returns a non-success status.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">hse.evidense.rest_client.</span></span><span class="sig-name descname"><span class="pre">RestClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'http://127.0.0.1:8000'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serial_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>HTTP client for the eviDense REST API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_url</strong> – Base URL of the REST server.</p></li>
+<li><p><strong>serial_number</strong> – Optional device serial number used for explicit
+<cite>/devices/{device_id}/…</cite> routes.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.checkempty">
+<span class="sig-name descname"><span class="pre">checkempty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.checkempty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.checkempty" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the cuvette holder is empty.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.health">
+<span class="sig-name descname"><span class="pre">health</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.health"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.health" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the REST service is reachable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.info">
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.info" title="Link to this definition">¶</a></dt>
+<dd><p>Return device information for the selected device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.kit_create">
+<span class="sig-name descname"><span class="pre">kit_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.kit_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.kit_create" title="Link to this definition">¶</a></dt>
+<dd><p>Create a kit from JSON run data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – Full JSON data file content of a completed or partially
+completed run.</p></li>
+<li><p><strong>comment</strong> – Optional comment stored in the generated kit.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.list_devices">
+<span class="sig-name descname"><span class="pre">list_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.list_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.list_devices" title="Link to this definition">¶</a></dt>
+<dd><p>Return the devices currently visible to the REST server.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.run_addkit">
+<span class="sig-name descname"><span class="pre">run_addkit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.run_addkit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.run_addkit" title="Link to this definition">¶</a></dt>
+<dd><p>Import a kit into an active run.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.run_data">
+<span class="sig-name descname"><span class="pre">run_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.run_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.run_data" title="Link to this definition">¶</a></dt>
+<dd><p>Return the generated JSON data file content for a run.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.run_export_csv">
+<span class="sig-name descname"><span class="pre">run_export_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.run_export_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.run_export_csv" title="Link to this definition">¶</a></dt>
+<dd><p>Export the run as CSV and return the generated CSV content.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.run_get">
+<span class="sig-name descname"><span class="pre">run_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.run_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.run_get" title="Link to this definition">¶</a></dt>
+<dd><p>Return the current snapshot of a previously created run.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.run_init">
+<span class="sig-name descname"><span class="pre">run_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nr_of_blanks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_purity_ratio_260_280_correction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.run_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.run_init" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize a new guided run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nr_of_blanks</strong> – Number of blank measurements expected at the start
+of the run.</p></li>
+<li><p><strong>no_purity_ratio_260_280_correction</strong> – Disable wavelength-based
+purity ratio correction when set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The initial run snapshot including the opaque <code class="docutils literal notranslate"><span class="pre">run_id</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.run_measure">
+<span class="sig-name descname"><span class="pre">run_measure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.run_measure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.run_measure" title="Link to this definition">¶</a></dt>
+<dd><p>Execute the next step of a run state machine.</p>
+<p>The first call performs the baseline step, the second call performs
+the air step, and the third call performs the sample step.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.selftest">
+<span class="sig-name descname"><span class="pre">selftest</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.selftest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.selftest" title="Link to this definition">¶</a></dt>
+<dd><p>Execute a self-test on the selected device.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.status">
+<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.status" title="Link to this definition">¶</a></dt>
+<dd><p>Return the service-side device status (<cite>idle</cite>, <cite>busy</cite>, or <cite>error</cite>).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hse.evidense.rest_client.RestClient.version">
+<span class="sig-name descname"><span class="pre">version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hse/evidense/rest_client.html#RestClient.version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hse.evidense.rest_client.RestClient.version" title="Link to this definition">¶</a></dt>
+<dd><p>Return the REST API and backend software version.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="modules.html">eviDense Python API</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="hse.html">hse namespace</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="hse.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="hse.evidense.html">hse.evidense package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Channel"><code class="docutils literal notranslate"><span class="pre">Channel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Device"><code class="docutils literal notranslate"><span class="pre">Device</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.DeviceSettings"><code class="docutils literal notranslate"><span class="pre">DeviceSettings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.DictKeys"><code class="docutils literal notranslate"><span class="pre">DictKeys</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Error"><code class="docutils literal notranslate"><span class="pre">Error</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Factors"><code class="docutils literal notranslate"><span class="pre">Factors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Index"><code class="docutils literal notranslate"><span class="pre">Index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Kit"><code class="docutils literal notranslate"><span class="pre">Kit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.LevellingChannelResult"><code class="docutils literal notranslate"><span class="pre">LevellingChannelResult</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.LevellingResult"><code class="docutils literal notranslate"><span class="pre">LevellingResult</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Measurement"><code class="docutils literal notranslate"><span class="pre">Measurement</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Quadruple"><code class="docutils literal notranslate"><span class="pre">Quadruple</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Results"><code class="docutils literal notranslate"><span class="pre">Results</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Run"><code class="docutils literal notranslate"><span class="pre">Run</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.Selftest"><code class="docutils literal notranslate"><span class="pre">Selftest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.SelfttestResult"><code class="docutils literal notranslate"><span class="pre">SelfttestResult</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.SingleMeasurement"><code class="docutils literal notranslate"><span class="pre">SingleMeasurement</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.StorageMeasurement"><code class="docutils literal notranslate"><span class="pre">StorageMeasurement</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.StorageMeasurementEntry"><code class="docutils literal notranslate"><span class="pre">StorageMeasurementEntry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hse.evidense.html#hse.evidense.TypeOf"><code class="docutils literal notranslate"><span class="pre">TypeOf</span></code></a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="hse.evidense.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="modules.html">Documentation overview</a><ul>
+  <li><a href="hse.html">hse namespace</a><ul>
+  <li><a href="hse.evidense.html">hse.evidense package</a><ul>
+      <li>Previous: <a href="hse.evidense.quadruple.html" title="previous chapter">hse.evidense.quadruple module</a></li>
+      <li>Next: <a href="hse.evidense.rest_server.html" title="next chapter">hse.evidense.rest_server module</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/hse.evidense.rest_client.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

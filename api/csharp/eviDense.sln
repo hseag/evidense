@@ -5,9 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EviDense", "EviDense\EviDense.csproj", "{5838AE5C-C975-4574-94B9-C2626DB20BEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EviDenseDemo", "EviDenseDemo\EviDenseDemo.csproj", "{43C2C991-DF8F-45F8-AD69-3467089AA32F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EviDenseDemo", "EviDenseDemo\EviDenseDemo.csproj", "{53941155-9498-606F-CFEE-1105394F48D2}"
 EndProject
-
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,14 +17,10 @@ Global
 		{5838AE5C-C975-4574-94B9-C2626DB20BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5838AE5C-C975-4574-94B9-C2626DB20BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5838AE5C-C975-4574-94B9-C2626DB20BEC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43C2C991-DF8F-45F8-AD69-3467089AA32F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43C2C991-DF8F-45F8-AD69-3467089AA32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43C2C991-DF8F-45F8-AD69-3467089AA32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43C2C991-DF8F-45F8-AD69-3467089AA32F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F160CC96-71B9-408B-918E-3E1F01E7277A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F160CC96-71B9-408B-918E-3E1F01E7277A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F160CC96-71B9-408B-918E-3E1F01E7277A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F160CC96-71B9-408B-918E-3E1F01E7277A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53941155-9498-606F-CFEE-1105394F48D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53941155-9498-606F-CFEE-1105394F48D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53941155-9498-606F-CFEE-1105394F48D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53941155-9498-606F-CFEE-1105394F48D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

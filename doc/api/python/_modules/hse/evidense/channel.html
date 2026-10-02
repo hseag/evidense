@@ -37,35 +37,35 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">DictKeys</span>
 
 <div class="viewcode-block" id="Channel">
-<a class="viewcode-back" href="../../../api/hse.evidense.channel.html#hse.evidense.Channel">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.channel.html#hse.evidense.Channel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Channel</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents one wavelength channel with sample and reference values.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Represents one wavelength channel with sample and reference values."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">reference</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a channel.</span>
+<span class="w">        </span><span class="sd">"""Initialize a channel.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            sample: Sample value in uV.</span>
 <span class="sd">            reference: Reference value in uV.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sample</span>    <span class="o">=</span> <span class="n">sample</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span>
         
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Sample:</span><span class="si">{}</span><span class="s2"> Reference:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">"Sample:</span><span class="si">{}</span><span class="s2"> Reference:</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Channel.to_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.channel.html#hse.evidense.Channel.to_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.channel.html#hse.evidense.Channel.to_json">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the channel to a JSON-compatible dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert the channel to a JSON-compatible dictionary."""</span>
         <span class="k">return</span> <span class="p">{</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">SAMPLE</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="n">DictKeys</span><span class="o">.</span><span class="n">REFERENCE</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">}</span></div>
 
      
 <div class="viewcode-block" id="Channel.from_json">
-<a class="viewcode-back" href="../../../api/hse.evidense.channel.html#hse.evidense.Channel.from_json">[docs]</a>
+<a class="viewcode-back" href="../../../hse.evidense.channel.html#hse.evidense.Channel.from_json">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_json</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a channel from a JSON dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Create a channel from a JSON dictionary."""</span>
         <span class="k">return</span> <span class="n">Channel</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">SAMPLE</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="n">DictKeys</span><span class="o">.</span><span class="n">REFERENCE</span><span class="p">])</span></div>
 </div>
 
@@ -77,7 +77,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../index.html">eviDense Python API</a></h1>
+<h1 class="logo"><a href="../../../modules.html">eviDense Python API</a></h1>
 
 
 
@@ -96,15 +96,14 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">hse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hse.html">hse namespace</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../modules.html">Documentation overview</a><ul>
   <li><a href="../../index.html">Module code</a><ul>
   </ul></li>
   </ul></li>

@@ -5,7 +5,11 @@
 This chapter describes the low-level Python API.
 It intentionally does not use the [`Run`][run-api] class, because the goal is to show the explicit device workflow.
 
-## 2. API Overview
+## 2. Installation and Python Variants
+
+Installation instructions and an overview of the available Python variants are provided in [Python Interfaces](./python.md).
+
+## 3. API Overview
 
 The low-level Python API is centered around explicit interaction with a [`Device`][device-api] object and related classes.
 
@@ -39,7 +43,7 @@ Important low-level [`Device`][device-api] methods:
 - [`Device.measure()`][device-measure-api]
 - [`Device.logging()`][device-logging-api]
 
-## 3. Complete Low-Level Example
+## 4. Complete Low-Level Example
 
 The following example demonstrates the full low-level workflow without [`Run`][run-api]:
 
@@ -116,7 +120,7 @@ if __name__ == "__main__":
     main()
 ```
 
-## 4. Opening a Device
+## 5. Opening a Device
 
 You can either let the library auto-detect a connected device or pass a specific serial number.
 
@@ -135,7 +139,7 @@ Notes:
 The Python `Device` class does not expose a dedicated context manager.
 For a hardware connection, the serial port is opened in the constructor and kept for the lifetime of the object.
 
-## 5. Querying Device Information
+## 6. Querying Device Information
 
 Use these methods for basic metadata:
 
@@ -153,7 +157,7 @@ Typical uses:
 - display firmware information in a UI or CLI
 - add device metadata to persisted measurement data
 
-## 6. Running a Self-Test
+## 7. Running a Self-Test
 
 Run the self-test with [`device.selftest()`][device-selftest-api]:
 
@@ -181,7 +185,7 @@ If you need a more detailed technical payload, use:
 details = device.selftest_details_as_json()
 ```
 
-## 7. Acquiring Raw Measurements
+## 8. Acquiring Raw Measurements
 
 The low-level measurement workflow is explicit:
 
@@ -215,7 +219,7 @@ You can also check the cuvette guide state before starting:
 empty = device.is_cuvette_holder_empty()
 ```
 
-## 8. Building a `Measurement`
+## 9. Building a `Measurement`
 
 Create a [`Measurement`][measurement-api] from the three low-level acquisitions:
 
@@ -231,7 +235,7 @@ Useful accessors:
 - `measurement.set_comment(...)`
 - `measurement.factor_a_buffer_blank()`
 
-## 9. Calculating Results
+## 10. Calculating Results
 
 For absorbance values, use [`measurement.absorbance()`][measurement-absorbance-api]:
 
@@ -256,7 +260,7 @@ Notes:
 
 If your workflow disables the 260/280 correction, describe that decision explicitly in your application logic.
 
-## 10. Reading Device Settings
+## 11. Reading Device Settings
 
 Read settings directly from the connected device with [`DeviceSettings.from_device(device)`][devicesettings-fromdevice-api]:
 
@@ -277,7 +281,7 @@ Settings can also be reconstructed from stored JSON with [`DeviceSettings.from_j
 settings = DeviceSettings.from_json(node)
 ```
 
-## 11. Persisting Data
+## 12. Persisting Data
 
 Use [`StorageMeasurement`][storage-api] for JSON persistence:
 
@@ -304,7 +308,7 @@ CSV export example:
 StorageMeasurement.export_as_csv("run_data.json")
 ```
 
-## 12. Error Handling and Cleanup
+## 13. Error Handling and Cleanup
 
 The Python API uses exceptions for device communication and data errors.
 
@@ -333,35 +337,35 @@ Cleanup note:
 - the current API does not document an explicit `close()` method
 - keep the `Device` lifetime narrow and release the object when the workflow is complete
 
-## 13. Notes About `Run`
+## 14. Notes About `Run`
 
 The [`Run`][run-api] class is intentionally excluded from this chapter because it abstracts away the individual device operations.
 
-[run-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.run.html#hse.evidense.run.Run
-[device-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.Device
-[singlemeasurement-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.singlemeasurement.html#hse.evidense.singlemeasurement.SingleMeasurement
-[measurement-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.measurement.html#hse.evidense.measurement.Measurement
-[devicesettings-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.devicesettings.html#hse.evidense.devicesettings.DeviceSettings
-[storage-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement
-[selftest-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.SelfttestResult
-[device-finddevice-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.Device.find_device
-[device-serial-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.Device.serial_number
-[device-fw-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.Device.firmware_version
-[device-prod-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.Device.production_number
-[device-selftest-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.Device.selftest
-[device-empty-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.Device.is_cuvette_holder_empty
-[device-baseline-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.Device.baseline
-[device-measure-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.Device.measure
-[device-logging-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.Device.logging
-[selftest-result-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.SelfttestResult.result
-[selftest-hasproblems-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.SelfttestResult.has_problems
-[selftest-iled230-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.SelfttestResult.has_problems_with_iled_230
-[selftest-sample260-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.device.html#hse.evidense.device.SelfttestResult.has_problems_with_sample_260
-[measurement-absorbance-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.measurement.html#hse.evidense.measurement.Measurement.absorbance
-[measurement-results-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.measurement.html#hse.evidense.measurement.Measurement.results
-[devicesettings-fromdevice-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.devicesettings.html#hse.evidense.devicesettings.DeviceSettings.from_device
-[devicesettings-fromjson-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.devicesettings.html#hse.evidense.devicesettings.DeviceSettings.from_json
-[storage-adddeviceinfo-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement.add_device_info
-[storage-appendwithresults-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement.append_with_results
-[storage-save-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement.save
-[storage-exportcsv-api]: https://hseag.github.io/evidense/main/doc/api/python/api/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement.export_as_csv
+[run-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.run.html#hse.evidense.run.Run
+[device-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.Device
+[singlemeasurement-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.singlemeasurement.html#hse.evidense.singlemeasurement.SingleMeasurement
+[measurement-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.measurement.html#hse.evidense.measurement.Measurement
+[devicesettings-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.devicesettings.html#hse.evidense.devicesettings.DeviceSettings
+[storage-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement
+[selftest-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.SelfttestResult
+[device-finddevice-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.Device.find_device
+[device-serial-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.Device.serial_number
+[device-fw-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.Device.firmware_version
+[device-prod-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.Device.production_number
+[device-selftest-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.Device.selftest
+[device-empty-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.Device.is_cuvette_holder_empty
+[device-baseline-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.Device.baseline
+[device-measure-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.Device.measure
+[device-logging-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.Device.logging
+[selftest-result-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.SelfttestResult.result
+[selftest-hasproblems-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.SelfttestResult.has_problems
+[selftest-iled230-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.SelfttestResult.has_problems_with_iled_230
+[selftest-sample260-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.device.html#hse.evidense.device.SelfttestResult.has_problems_with_sample_260
+[measurement-absorbance-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.measurement.html#hse.evidense.measurement.Measurement.absorbance
+[measurement-results-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.measurement.html#hse.evidense.measurement.Measurement.results
+[devicesettings-fromdevice-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.devicesettings.html#hse.evidense.devicesettings.DeviceSettings.from_device
+[devicesettings-fromjson-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.devicesettings.html#hse.evidense.devicesettings.DeviceSettings.from_json
+[storage-adddeviceinfo-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement.add_device_info
+[storage-appendwithresults-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement.append_with_results
+[storage-save-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement.save
+[storage-exportcsv-api]: https://hseag.github.io/evidense/main/doc/api/python/hse.evidense.storage.html#hse.evidense.storage.StorageMeasurement.export_as_csv

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: © 2024 HSE AG, <opensource@hseag.com>
 
-#include "evibase.h"
+#include "common/evibase.h"
 #include "quadruple.h"
 
 Quadruple_t quadruple_initAllTheSame(double value)
